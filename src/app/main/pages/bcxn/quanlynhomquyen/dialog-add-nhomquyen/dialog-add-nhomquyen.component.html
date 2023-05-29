@@ -1,0 +1,82 @@
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        {{ !data.item.id ? "Thêm mới nhóm quyền" : "Sửa nhóm quyền"}}
+    </h3>
+</div>
+<div mat-dialog-content style="margin-top:10px;">
+    <div class="container" [formGroup]="formControl">
+        <div class="flex-6">
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Tên nhóm<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input type="text" formControlName="tenNhom" [(ngModel)]="data.item.roleName" matInput #input>
+                    <mat-error *ngIf="f.tenNhom.hasError('required')">
+                        Chưa nhập tên nhóm
+                    </mat-error>
+                    <mat-error *ngIf="f.tenNhom.hasError('minlength')">
+                        Tên nhóm quá ngắn
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Mô tả</p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <textarea matInput formControlName="moTa" [(ngModel)]="data.item.description" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="3" cdkAutosizeMaxRows="7" placeholder="Nội dung mô tả"></textarea>
+                    <mat-error *ngIf=" f.moTa.hasError('required')">
+                        Chưa nhập nội dung
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Thành viên</p>
+                <mat-form-field appearance="outline" style="width: 70%; font-size: 11px !important; " >
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let ncc of chipSelectedNcc" [selectable]=true [removable]=true
+                            (removed)="removeDonVi(ncc)">
+                            {{ncc.userName}}
+                            <mat-icon matChipRemove style="font-size: 11px; color: red;">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder="chọn để nhập" #nccInput [formControl]="nccControl" [matAutocomplete]="auto"
+                            [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]=true required >
+                    </mat-chip-list>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="nccSelected($event)">
+
+                        <mat-option *ngFor="let thisNccName of filteredNcc | async" [value]="thisNccName">
+                            {{thisNccName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Chức năng<span style="color: red;">(*)</span></p>
+                <div style="width: 70%;height: 300px;max-height: 300px !important;" class="box-outline" [ngClass]="{'red-border': isRequiredOk===false}">
+                    <div style="height: 100%; overflow: scroll;">
+                        <div id='treeparent'><ejs-treeview #treeview="" id='treeelement' [fields]='field' [showCheckBox]='true' (nodeChecked)='nodeChecked($event)'></ejs-treeview></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Chức năng mặc định<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-select formControlName="chucNangDefault" [(ngModel)]="data.item.chucNangDefault">
+                        <mat-option *ngFor="let item of dsNhomQuyenSelected" [value]="item.linkUrl">{{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.chucNangDefault.hasError('required')">
+                        Chưa chọn chức năng mặc định
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions style="text-align: right ; float: right;" class="fs-14">
+    <button mat-raised-button color="primary" (click)="save()">
+        <mat-icon>check_box</mat-icon> Lưu thông tin
+    </button>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+</div>

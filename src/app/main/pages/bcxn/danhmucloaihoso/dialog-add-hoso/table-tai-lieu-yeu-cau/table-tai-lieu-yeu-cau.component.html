@@ -1,0 +1,175 @@
+<button *ngIf="data.title" mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<h3 *ngIf="data.title" mat-dialog-title class="fs-16 color-text">{{ data.title }}</h3>
+<div class="container">
+    <div class="table-container" *ngIf="listNode">
+        <table mat-table [dataSource]="dataToDisplay" class="fs-13" cdkDropList
+        [cdkDropListData]="dataToDisplay" (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="dragDisabled">
+
+            <ng-container matColumnDef="stt">
+                <th mat-header-cell *matHeaderCellDef style="width:50px"> STT </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="text-align: center; vertical-align: top;">
+                    {{i+1}} </td>
+                <td mat-footer-cell *matFooterCellDef style="text-align: center;">
+                    <button (click)="add()" mat-icon-button color="primary">
+                        <mat-icon style="font-size: 2.5rem !important; font-weight: bold !important">add</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="giayToId">
+                <th mat-header-cell *matHeaderCellDef style="width: 350px"> Tên tài liệu </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="vertical-align: top">
+                    <ng-container *ngIf="selectedRow !== -1; else editting">
+                        <div *ngFor="let item of listNode">
+                            <div *ngIf="item.id === element.giayToId">
+                                {{item.tenGiayTo}}
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #editting>
+                        <mat-form-field appearance="outline">
+                            <mat-select [(ngModel)]="dataTable[i].giayToId">
+                                <mat-option>
+                                    <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                        [formControl]="filterTL"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let node of filteredTL" [value]='node.id' [disabled]='isDisabled(node.id)'>{{ node.tenGiayTo }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <mat-form-field appearance="outline">
+                        <mat-select [formControl]="inputTenTaiLieu" [value]='listNode[0].id'>
+                            <mat-option>
+                                <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                    [formControl]="filterTL"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let node of filteredTL" [value]='node.id'>{{ node.tenGiayTo }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="moTa">
+                <th mat-header-cell *matHeaderCellDef> Mô tả </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="vertical-align: top">
+                    <ng-container *ngIf="selectedRow !== -1; else editting">
+                        {{ element.moTa }}
+                    </ng-container>
+
+                    <ng-template #editting>
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" [(ngModel)]="dataTable[i].moTa">
+                        </mat-form-field>
+                    </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <mat-form-field appearance="outline">
+                        <input matInput [formControl]="inputMoTa" type="text">
+                    </mat-form-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="batBuoc">
+                <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Bắt buộc </th>
+                <td mat-cell *matCellDef="let element; let i = index"
+                    style="text-align: center;vertical-align: top; font-style: italic;">
+                    <ng-container *ngIf="selectedRow !== -1; else editting">
+                        {{ element.batBuoc === 1 ? 'Yes' : 'No' }}
+                    </ng-container>
+
+                    <ng-template #editting>
+                        <mat-form-field appearance="outline">
+                            <mat-select [(ngModel)]="dataTable[i].batBuoc">
+                                <mat-option [value]='1'>Yes</mat-option>
+                                <mat-option [value]='2'>No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <mat-form-field appearance="outline">
+                        <mat-select [formControl]="inputBatBuoc" [value]='2'>
+                            <mat-option [value]='1'>Yes</mat-option>
+                            <mat-option [value]='2'>No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nguon">
+                <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Nguồn tài liệu </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="text-align: center;vertical-align: top;">
+                    <ng-container *ngIf="selectedRow !== -1; else editting">
+                        {{ element.nguon }}
+                    </ng-container>
+
+                    <ng-template #editting>
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" [(ngModel)]="dataTable[i].nguon">
+                        </mat-form-field>
+                    </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <mat-form-field appearance="outline">
+                        <input matInput [formControl]="inputNguonTaiLieu" type="text">
+                    </mat-form-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="pheDuyetKySo">
+                <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Phê duyệt </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="text-align: center;vertical-align: top;">
+                    <ng-container *ngIf="selectedRow !== -1; else editting">
+                        {{ element.pheDuyetKySo === 1 ? 'Yes' : 'No' }}
+                    </ng-container>
+
+                    <ng-template #editting>
+                        <mat-form-field appearance="outline">
+                            <mat-select [(ngModel)]="dataTable[i].pheDuyetKySo">
+                                <mat-option [value]='1'>Yes</mat-option>
+                                <mat-option [value]='2'>No</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <mat-form-field appearance="outline">
+                        <mat-select [formControl]="inputPheDuyet" [value]='2'>
+                            <mat-option [value]='1'>Yes</mat-option>
+                            <mat-option [value]='2'>No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="hanhDong">
+                <th mat-header-cell *matHeaderCellDef style="width: 100px;"> </th>
+                <td mat-cell *matCellDef="let element; let i = index" style="text-align: center;vertical-align: top;">
+                    <ng-container>
+                        <button mat-icon-button color="primary" (mousedown)="dragDisabled = false;" [disabled]='disabledDrag'>
+                            <mat-icon>pan_tool</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="delete(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </ng-container>
+                </td>
+                <td mat-footer-cell *matFooterCellDef=""></td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" cdkDrag [cdkDragData]="row"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+        </table>
+    </div>
+    <div class="action" *ngIf="data.actions === 'UPDATE'" align='right'>
+        <button mat-raised-button color="primary" (click)="update()">Lưu thay đổi</button>
+    </div>
+</div>

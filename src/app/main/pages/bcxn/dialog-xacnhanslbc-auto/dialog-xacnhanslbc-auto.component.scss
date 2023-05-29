@@ -1,0 +1,107 @@
+.container {
+    display: "flex";
+    flex-direction: row;
+    width: 100%;
+}
+.flex-row{
+    flex:1;
+    display: "flex";
+    flex-direction: "row";
+}
+.flex-6 {
+    flex:6;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-5 {
+    flex:5;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-3 {
+    flex:3;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-2 {
+    flex:2;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-1 {
+    flex:1;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-05 {
+    flex:0.5;
+    padding-right:2px;
+    padding-left:2px;
+} ;
+.flex-row{
+    display: flex;
+    flex:1; 
+    flex-direction: row;
+}
+.full-width {
+    width:100%;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+::ng-deep .mat-paginator-page-size .mat-select-trigger {
+    width:max-content !important;
+}
+.mat-dialog-content
+  {
+    max-height: 80vh !important;    
+  }
+  .close-button{
+    float: right;
+    top: -40px;
+    right: 0;
+    padding: 2px;
+  }
+  .dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .resh-button{
+    float: right;
+    top: -40px;
+    right: 25%;
+    padding: 2px;
+  }
+
+// get AttachFile
+.box {
+    width: 100%;
+    height: 500px;
+    color: rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    position: relative;
+    border: solid 1px blue;
+    background-color: #efefef;
+
+    &-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+
+        p:first-of-type {
+            font-size: 26px;
+        }
+
+        p,
+        button {
+            margin: 0;
+        }
+    }
+}
+
+.active {
+    background-color: rgba(204, 218, 255, 0.897);
+}

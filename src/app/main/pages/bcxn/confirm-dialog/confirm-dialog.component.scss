@@ -1,0 +1,44 @@
+.confirm-dialog-title
+{
+    font-size: 16px !important;
+    text-align: center;
+}
+.btn-no {
+    background-color: #F44336;
+    /* Green */
+    font-size: 32px !important;
+    width: 200px;
+    height: 50px;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-no:hover{
+    background-color: #f31000;
+}
+.btn-yes {
+    margin-left: 10px;
+    font-size: 32px !important;
+    width: 200px;
+    height: 50px;
+    background-color: rgb(29, 170, 11);
+    /* Green */
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-yes:hover{
+    background-color: rgb(29, 199, 6);
+}

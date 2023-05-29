@@ -1,0 +1,126 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text" style="padding-bottom: 20px">
+        Xem chi tiết phiếu
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content *ngIf="data.type === 'PDK'">
+    <table mat-table [dataSource]="dataDetail" class="mat-elevation-z8" *ngIf="dataDetail?.length > 0">
+
+        <ng-container matColumnDef="noiDung">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Nội dung
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.LyDo }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nguoiDeNghi">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Người đề nghị
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.NguoiDeNghi }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ngayDeNghi">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Ngày đề nghị
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.NgayDeNghi | date:'dd/MM/yyyy' }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="soNguoiDK">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Số người đăng ký
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.SoNguoiDK }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="trangThai">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Trạng thái
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.Status }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="listVpp">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Danh sách VPP
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                <ng-container *ngFor="let item of listVpp">
+                    <li>
+                        {{ item.TenVPP }}
+                    </li>
+                  </ng-container>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsVPP"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsVPP;"></tr>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-content mat-dialog-content *ngIf="data.type === 'TH'">
+    <table mat-table [dataSource]="dataDetail" class="mat-elevation-z8" *ngIf="dataDetail?.length > 0">
+
+        <ng-container matColumnDef="soHoaDon">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Số hóa đơn
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.SoHoaDon }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nguoiDeNghi">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Người đề nghị
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.NguoiDeNghi }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PPThanhToan">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Phương pháp thanh toán
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.PPThanhToan }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="trangThai">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Trạng thái
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.StatusTT }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="xuLy">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                Tình trạng xử lý
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+                {{ element.XuLy }}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsTH"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsTH;"></tr>
+    </table>
+</mat-dialog-content>

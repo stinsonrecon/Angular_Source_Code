@@ -1,0 +1,430 @@
+<div style="width: 100%">
+<div style="background-color: white; padding-top: 10px; padding-bottom: 0px; margin-left: 5px">
+    <ul class="breadcrumb">
+        <ng-container *ngIf="action == 'TO_TRINH_KE_TOAN'" >
+            <li>Phê duyệt tờ trình</li>
+            <li><a routerLink="/to-trinh/pheduyettotrinhketoan">Phê duyệt tờ trình cấp vốn (Kế toán)</a></li>
+        </ng-container>
+        <ng-container *ngIf="action == 'TO_TRINH_THU_TRUONG'">
+            <li>Phê duyệt tờ trình</li>
+            <li><a routerLink="/to-trinh/pheduyettotrinhthutruong">Phê duyệt tờ trình cấp vốn (Thủ trưởng)</a></li>
+        </ng-container>
+        <ng-container *ngIf="action == 'DS_CHUNG_TU'">
+            <li>Phê duyệt hồ sơ chứng từ</li>
+            <li><a routerLink="/chung-tu/danhsachchungtu">Danh sách chứng từ</a></li>
+        </ng-container>
+        <ng-container *ngIf="action == 'CHUNG_TU_KE_TOAN'">
+            <li>Phê duyệt hồ sơ chứng từ</li>
+            <li><a routerLink="/chung-tu/pheduyetketoan">Phê duyệt CT (Kế toán trưởng)</a></li>
+        </ng-container>
+        <ng-container *ngIf="action == 'PHE_DUYET_THU_TRUONG'">
+            <li>Phê duyệt hồ sơ chứng từ</li>
+            <li><a routerLink="/chung-tu/pheduyetthutruong">Phê duyệt CT (Thủ trưởng)</a></li>
+        </ng-container>
+        <ng-container *ngIf="action == 'APPROVE'">
+            <li>Thẩm tra, soát xét hồ sơ</li>
+            <li><a routerLink="/ho-so-thanh-toan/hosochuapheduyet">Hồ sơ chưa phê duyệt</a></li>
+        </ng-container>
+        <ng-container *ngIf="action == 'CREATE_LICENSE'">
+            <li>Thẩm tra, soát xét hồ sơ</li>
+            <li><a routerLink="/ho-so-thanh-toan/hosodapheduyet">Hồ sơ đã phê duyệt</a></li>
+        </ng-container>
+        <ng-container *ngIf="action == 'YEU_CAU_THAY_DOI'">
+            <li>Thẩm tra, soát xét hồ sơ</li>
+            <li><a routerLink="/ho-so-thanh-toan/hosoyeucauthaydoi">Hồ sơ yêu cầu thay đổi</a></li>
+        </ng-container>
+        <ng-container *ngIf="action == 'DS_HO_SO'">
+            <li>Quản lý hồ sơ thanh toán</li>
+            <li><a routerLink="/ho-so-thanh-toan/hosotoitao">Danh sách hồ sơ</a></li>
+        </ng-container>
+        <li>Chi tiết hồ sơ</li>
+    </ul>
+</div>
+<div class="container" *ngIf="dataInfo">
+    <div class="action">
+        <ng-container
+            *ngIf="action === actionHstt?.aprrove && (dataInfo.trangThaiHoSo === constTrangThaiHoSo.chuaPheDuyet)">
+            <button mat-raised-button color="primary" (click)="openDialogApprove('APPROVED', danhSachThaoTac.btnPheDuyetHS)" 
+                *ngIf="enableButtonPheDuyet">
+                <mat-icon>done</mat-icon> Phê duyệt
+            </button>
+            
+            <button mat-raised-button color="primary" (click)="openDialogTaoChungTu(danhSachThaoTac.btnPheDuyetVaTaoChungTu)"
+                *ngIf="enableButtonPheDuyetVaTaoChungTu">
+                <mat-icon>done</mat-icon> Phê duyệt & tạo chứng từ
+            </button>
+
+            <button mat-raised-button color="warn" (click)="openDialogApprove('DENIED', danhSachThaoTac.btnTuChoiPheDuyetHS)"
+                *ngIf="enableButtonTuChoiPheDuyetHS">
+                <mat-icon>block</mat-icon> Từ chối
+            </button>
+        </ng-container>
+
+        <ng-container *ngIf="dataInfo.trangThaiHoSo >= constTrangThaiHoSo.daSoatXet && dataInfo.trangThaiHoSo !== constTrangThaiHoSo.khoiTao">
+            <button mat-raised-button color="accent" (click)="dialogLichSuPheDuyet()">
+                <mat-icon>history</mat-icon> Lịch sử phê duyệt
+            </button>
+
+            <button *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.daSoatXet && enableButtonTaoChungTu" mat-raised-button color="primary"
+                (click)="openDialogTaoChungTu(danhSachThaoTac.btnTaoChungTu)">
+                <mat-icon>post_add</mat-icon> Tạo chứng từ
+            </button>
+
+            <button *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.daTaoChungTu" mat-raised-button color="warn" disabled>
+                <mat-icon>done</mat-icon> Đã tạo chứng từ
+            </button>
+        </ng-container>
+
+        <ng-container *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.chuaPheDuyet && enableButtonPhanCongPheDuyet">
+            <button mat-raised-button color="primary" (click)="openDialogPhanCongPheDuyet(danhSachThaoTac.btnPhanCongPheDuyetHoSo)">
+                <mat-icon>post_add</mat-icon> Phân công phê duyệt
+            </button>
+        </ng-container>
+        <ng-container *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.chuaTiepNhan && enableButtonTuChoiTiepNhanHoSo">
+            <button mat-raised-button color="primary" (click)="openDialogTiepNhanHoSo(danhSachThaoTac.btnPhanCongPheDuyetHoSo)">
+                <mat-icon>post_add</mat-icon> Tiếp nhận và phê duyệt
+            </button>
+        </ng-container>
+        <ng-container *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.thamTraHoSo && enableButtonPhanCong">
+            <button mat-raised-button color="primary" (click)="openDialogPhanCongTiepNhan(danhSachThaoTac.btnPhanCongTiepNhan)">
+                <mat-icon>post_add</mat-icon> Phân công tạo phiếu thẩm tra
+            </button>
+        </ng-container>
+        <ng-container>
+            <button mat-raised-button color="warn" *ngIf="enableButtonTraLaiHoSo"
+                (click)="openDialogApprove('DENIED', danhSachThaoTac.btnTraLaiHoSo)">
+                <mat-icon>block</mat-icon> Trả lại hồ sơ
+            </button>
+        </ng-container>
+        <button 
+            *ngIf="(dataInfo.trangThaiHoSo === constTrangThaiHoSo.thamTraHoSo || dataInfo.trangThaiHoSo === constTrangThaiHoSo.yeuCauThayDoi) && enableButtonTaoPhieuThamTra" 
+            color="primary"
+            mat-raised-button mat-dialog-close 
+            (click)="taoPhieuThamTra()"
+        >
+        <mat-icon>post_add</mat-icon>
+            Tạo phiếu thẩm tra
+        </button>
+        <button 
+            *ngIf="(dataInfo.trangThaiHoSo === constTrangThaiHoSo.kyPhieuThamTra && checkShowKyPhieuThamTra === true || dataInfo.trangThaiHoSo === constTrangThaiHoSo.yeuCauThayDoi && checkShowKyPhieuThamTra === true) && enableButtonKyPhieuThamTra" 
+            color="primary"
+            mat-raised-button mat-dialog-close 
+            (click)="kyPhieuThamTra()"
+        >
+        <mat-icon>post_add</mat-icon>
+            Ký phiếu thẩm tra
+        </button>
+
+    </div>
+    <div class="box-inner">
+        <div class="box-1">
+            <div class="flex-row">
+                <p style="font-weight: bold;">Mã hồ sơ : </p>
+                <!-- <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput readonly type="text" [value]="dataInfo.maHoSo" #input>
+                </mat-form-field> -->
+                <label>{{dataInfo.maHoSo}}</label>
+            </div>
+            <div class="flex-row">
+                <p style="font-weight: bold;">Loại hồ sơ : </p>
+                <label>{{dataInfo.loaiHoSo}}</label>
+            </div>
+
+            <div class="flex-row">
+                <mat-checkbox [disabled]="true" [checked]="dataInfo.coBanCung === 0 ? false : true">
+                    Có bao gồm tài liệu bản cứng
+                </mat-checkbox>
+            </div>
+        </div>
+        <div class="box-2">
+            <div class="flex-row">
+                <p style="font-weight: bold;">Năm hồ sơ : </p>
+                <label>{{dataInfo.namHoSo}}</label>
+            </div>
+            <div class="flex-row">
+                <p style="font-weight: bold;">Thời hạn lưu trữ : </p>
+                <label>{{getThoiGianLuuTru(dataInfo.thoiGianLuutru)}}</label>
+
+            </div>
+            <div class="flex-row">
+                <p style="font-weight: bold; width: 40%;">Thời hạn yêu cầu TT: </p>
+                <label>{{dataInfo.thoiGianThanhToan | date:'dd/MM/yyyy' }}</label>
+            </div>
+        </div>
+        <div class="box-3">
+            <div class="flex-row">
+                <p style="font-weight: bold;">Lần thanh toán : </p>
+                <label>{{getLanThanhToan(dataInfo.lanThanhToan)}}</label>
+            </div>
+            <div class="flex-row">
+                <p style="font-weight: bold;">Mức độ ưu tiên : </p>
+                <label>{{getMucDoUuTien(dataInfo.mucDoUuTien)}}</label>
+            </div>
+            <div class="flex-row">
+                <mat-checkbox [disabled]="true" [checked]="dataInfo.hinhThucTT === 0 ? false : true">
+                    Thanh toán 1 lần
+                </mat-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="box-center">
+        <div class="flex-row">
+            <p style="font-weight: bold;">Tên hồ sơ TT : </p>
+            <label>{{dataInfo.tenVietTat}}</label>
+        </div>
+        <div class="flex-row">
+            <p style="font-weight: bold;">Mô tả: </p>
+            <label>{{dataInfo.ghiChu}}</label>
+        </div>
+    </div>
+
+    <div>
+        <h3 style="font-weight: bold;">Hồ sơ tham chiếu</h3>
+        <div class="table-container">
+            <table mat-table [dataSource]="dataInfo.hoSoThamChieu" class="mat-elevation-z8 fs-13 table">
+                <ng-container matColumnDef="stt">
+                    <th mat-header-cell *matHeaderCellDef style="width:1px"> Stt </th>
+                    <td mat-cell class="mat-cell" *matCellDef="let element; let i = index"
+                        style="text-align: center; vertical-align: top;">
+                        {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="maTaiLieu">
+                    <th mat-header-cell *matHeaderCellDef style="width:200px">Tên hồ sơ</th>
+                    <td mat-cell class="mat-cell" *matCellDef="let element" style="vertical-align: top; width: 200px;">
+                        {{element.tenHoSo}} - ( {{ element.maSoHoSoTT }})
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="nguonTaiLieu">
+                    <th mat-header-cell *matHeaderCellDef style="width: 100px;">Số tiền</th>
+                    <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                        {{ formatNumber(element.soTien) ||'' }}
+                    </td>
+                </ng-container>
+        
+                <ng-container matColumnDef="noiDungAndLink">
+                    <th mat-header-cell *matHeaderCellDef style="width: 50px;">Trạng thái </th>
+                    <td mat-cell class="mat-cell" *matCellDef="let element; let i = index"
+                        style="text-align: center;vertical-align: top;">
+                        {{renderTrangThaiHoSo(element.trangThaiHoSo) }}
+                    </td>
+                </ng-container>
+    
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsMaterial;" class="header-row"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsMaterial" class="row"></tr>
+                <!-- <tr mat-footer-row *matFooterRowDef="displayedColumnsMaterial"  [style.display]="showWhenEdit ? 'table-row' : 'none'"></tr> -->
+            </table>
+        
+        </div>
+
+        <!-- <button 
+            *ngIf="(dataInfo.trangThaiHoSo === constTrangThaiHoSo.thamTraHoSo || dataInfo.trangThaiHoSo === constTrangThaiHoSo.yeuCauThayDoi) && enableButtonTaoPhieuThamTra" 
+            color="primary"
+            mat-raised-button mat-dialog-close 
+            (click)="taoPhieuThamTra()"
+        >
+            Tạo phiếu thẩm tra
+        </button>
+        <button 
+            *ngIf="(dataInfo.trangThaiHoSo === constTrangThaiHoSo.kyPhieuThamTra && checkShowKyPhieuThamTra === true || dataInfo.trangThaiHoSo === constTrangThaiHoSo.yeuCauThayDoi && checkShowKyPhieuThamTra === true) && enableButtonKyPhieuThamTra" 
+            color="primary"
+            mat-raised-button mat-dialog-close 
+            (click)="kyPhieuThamTra()"
+        >
+            Ký phiếu thẩm tra
+        </button> -->
+
+
+    </div>
+
+    <!-- Thông Tin Thanh Toán -->
+    <div style="display: flex; align-items: center;">
+        <h3 class="payment-information">Thông tin thanh toán</h3>
+        <div class="line"></div>
+    </div>
+    <div class="billing-information">
+        <div class="bill-left">
+
+            <div class="flex-row">
+                <p class="name-input">Người yêu cầu TT : </p>
+                <label>{{dataInfo.tenYeuCauThanhToan}}</label>
+            </div>
+            <div class="flex-row">
+                <p class="name-input">Đơn vị yêu cầu : </p>
+                <label>{{dataInfo.donVi}}</label>
+            </div>
+
+            <!-- <div class="flex-row">
+                <p class="name-input">Chi nhánh yêu cầu</p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <input matInput type="text" disabled [value]="dataInfo.chiNhanh || ''">
+                </mat-form-field>
+            </div> -->
+        </div>
+        <div class="bill-right">
+            <!-- <div class="flex-row">
+                <p class="name-input">Tổng số tiền thanh toán theo ngoại tệ</p>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <input matInput readonly type="text" [(ngModel)]="tongTienThanhToan" #input>
+                </mat-form-field>
+            </div> -->
+            <div class="flex-row">
+                <p class="name-input">Tổng số tiền yêu cầu TT theo VNĐ : </p>
+                <label>{{renderPrice(dataInfo.tongTienDeNghiTT)}} VND</label>
+            </div>
+            <p style="margin-top: -10px;">
+                <b>Thành chữ: </b>
+                <span style="font-style: italic;">{{convertToVietnamese()}}</span>
+            </p>
+            <div class="flex-row">
+                <p class="name-input">Bộ phận yêu cầu : </p>
+                <label>{{dataInfo.boPhanYeuCau}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="bill-bottom">
+        
+        <h3 style="font-weight: bold;">Thông tin người thụ hưởng</h3>
+        <div class="flex-row">
+            <p class="name-input">Hình thức thanh toán : </p>
+            <label>Chuyển khoản</label>
+        </div>
+        <div style="display: flex;">
+            <div class="bill-left">
+                <div class="flex-row">
+                    <p class="name-input">Tên người thụ hưởng : </p>
+                    <label>{{dataInfo.nguoiThuHuong}}</label>
+                </div>
+                <div class="flex-row">
+                    <p class="name-input">Số tài khoản thụ hưởng : </p>
+                    <label>{{dataInfo.soTKThuHuong}}</label>
+                </div>
+
+            </div>
+
+            <div class="bill-right">
+                <div class="flex-row">
+                    <p class="name-input">Ngân hàng thụ hưởng : </p>
+                    <label>{{dataInfo.tenNganHang}}</label>
+                </div>
+                <div class="flex-row">
+                    <p class="name-input">Chi nhánh : </p>
+                    <label>{{dataInfo.tenChiNhanh}}</label>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="bill-bottom">
+        
+        <h3 style="font-weight: bold;">Thông tin thanh toán thực tế</h3>
+        <div style="display: flex;">
+            <div class="bill-left">
+                <div class="flex-row">
+                    <p class="name-input">Tổng thanh toán thực tế:</p>
+                    <label>{{renderPrice(dataInfo.thucTeSoTienNT || renderPrice(dataInfo.tongTienDeNghiTT))}} VND</label>
+                </div>
+                
+                <div class="flex-row">
+                    <p class="name-input">Số tài khoản thụ hưởng : </p>
+                    <label>{{dataInfo.thucTeSoTaiKhoanNT || dataInfo.soTKThuHuong}}</label>
+                </div>
+                <div class="flex-row">
+                    <p class="name-input">Tên tài khoản hưởng: </p>
+                    <label>{{dataInfo.thucTeTenNguoiNT || dataInfo.tkTenTaiKhoan}}</label>
+                </div>
+                <div class="flex-row">
+                    <p class="name-input">Nội dung thanh toán: </p>
+                    <label>{{dataInfo.noiDungThanhToan}}</label>
+                </div>
+            </div>
+            <div class="bill-right">
+                <div class="flex-row">
+                    <p class="name-input">Tên người thanh toán : </p>
+                    <label>{{dataInfo.thucTeTenNguoiNT || dataInfo.nguoiThuHuong}}</label>
+                </div>
+                <div class="flex-row">
+                    <p class="name-input">Tên ngân hàng:</p>
+                    <label>{{dataInfo.thuTeTenNganHangNT || dataInfo.tenNganHang}}</label>
+                </div>
+                <div class="flex-row">
+                    <p class="name-input">Chi nhánh:</p>
+                    <label>{{dataInfo.thuTeTenChiNhanhNganHangNT || dataInfo.tenChiNhanh}}</label>
+                </div>
+                
+                <!-- <div class="flex-row">Ngân hàng thụ hưởng : </p>
+                    <label>{{dataInfo.tkSoTk}}</label>
+                </div> -->
+            </div>
+        </div>
+        
+    </div>
+
+
+    <!-- Danh Sách Tài Liệu -->
+    <div class="materials">
+        <div style="display: flex; align-items: center;">
+            <h3 class="payment-information">Danh mục các tài liệu</h3>
+            <div class="line"></div>
+        </div>
+
+        <app-view-table-materials 
+            [id]="dataInfo.id" 
+            [arrTrangThaiHoSo]="arrTrangThaiHoSo"
+            (arrTrangThaiHSChanged)="notifyMessage($event)"
+        ></app-view-table-materials>
+
+    </div>
+    <div class="action">
+        <ng-container
+            *ngIf="action === actionHstt?.aprrove && (dataInfo.trangThaiHoSo === constTrangThaiHoSo.chuaPheDuyet)">
+            <button mat-raised-button color="primary" (click)="openDialogApprove('APPROVED', danhSachThaoTac.btnPheDuyetHS)"
+                *ngIf="enableButtonPheDuyet">
+                <mat-icon>done</mat-icon> Phê duyệt
+            </button>
+
+            <button mat-raised-button color="primary" (click)="openDialogTaoChungTu(danhSachThaoTac.btnPheDuyetVaTaoChungTu)"
+                *ngIf="enableButtonPheDuyetVaTaoChungTu">
+                <mat-icon>done</mat-icon> Phê duyệt & tạo chứng từ
+            </button>
+
+            <button mat-raised-button color="warn" (click)="openDialogApprove('DENIED', danhSachThaoTac.btnTuChoiPheDuyetHS)"
+                *ngIf="enableButtonTuChoiPheDuyetHS">
+                <mat-icon>block</mat-icon> Từ chối
+            </button>
+        </ng-container>
+
+        <ng-container *ngIf="dataInfo.trangThaiHoSo >= constTrangThaiHoSo.daSoatXet && dataInfo.trangThaiHoSo !== constTrangThaiHoSo.khoiTao">
+            <button mat-raised-button color="accent" (click)="dialogLichSuPheDuyet()">
+                <mat-icon>history</mat-icon> Lịch sử phê duyệt
+            </button>
+
+            <button *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.daSoatXet && enableButtonTaoChungTu" mat-raised-button color="primary"
+                (click)="openDialogTaoChungTu(danhSachThaoTac.btnTaoChungTu)">
+                <mat-icon>post_add</mat-icon> Tạo chứng từ
+            </button>
+
+            <button *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.daTaoChungTu" mat-raised-button color="warn" disabled>
+                <mat-icon>done</mat-icon> Đã tạo chứng từ
+            </button>
+        </ng-container>
+
+        <ng-container *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.chuaPheDuyet && enableButtonPhanCongPheDuyet">
+            <button mat-raised-button color="primary" (click)="openDialogPhanCongPheDuyet(danhSachThaoTac.btnPhanCongPheDuyetHoSo)">
+                <mat-icon>post_add</mat-icon> Phân công phê duyệt
+            </button>
+        </ng-container>
+        <ng-container *ngIf="dataInfo.trangThaiHoSo === constTrangThaiHoSo.chuaTiepNhan && enableButtonTuChoiTiepNhanHoSo">
+            <button mat-raised-button color="primary" (click)="openDialogTiepNhanHoSo(danhSachThaoTac.btnPhanCongPheDuyetHoSo)">
+                <mat-icon>post_add</mat-icon> Tiếp nhận hồ sơ
+            </button>
+        </ng-container>
+        <!-- những hồ sơ ở trạng thái khởi tạo (5) và trạng thái hủy (-1) là không hiển thị nút xem tờ trình -->
+        <!-- <button *ngIf="dataInfo.trangThaiHoSo !== constTrangThaiHoSo.khoiTao && dataInfo.trangThaiHoSo !== constTrangThaiHoSo.daXoa"
+        (click)="viewToTrinh(dataInfo)" color="accent" mat-raised-button>
+            <mat-icon>done</mat-icon> Xem tờ trình
+        </button> -->
+
+    </div>
+</div>
+</div>
+<mat-progress-bar mode="indeterminate" *ngIf="!dataInfo"></mat-progress-bar>

@@ -1,0 +1,150 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<h2 mat-dialog-title>{{ data.action === 'CREATE' ? 'Thêm tài khoản ngân hàng' : 'Cập nhật tài khoản ngân hàng' }}</h2>
+<div class="container" [formGroup]="formTaiKhoan" *ngIf="filteredDonVi && filteredNH">
+    <div class="box-center">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Tên tài khoản<span
+                    style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="tenTK" (input)="validateTenTK()" [readonly]="data.action === 'CREATE'? false : true">
+                <mat-error *ngIf="formTaiKhoan.controls.tenTK.hasError('pattern')">Tên tài khoản không được có dấu và ký tự đặc biệt</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Số tài khoản<span
+                    style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="soTK" [readonly]="data.action === 'CREATE'? false : true">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Số điện thoại<span
+                    style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="sdt">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Email</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="email">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Địa chỉ</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="diaChi">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Ngân hàng<span
+                    style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="tenNH" (selectionChange)="changeNgangHang($event)">
+                    <mat-option>
+                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm" [formControl]="filterNH">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="" [disabled]="data.action === 'CREATE'? false : true">---Chọn ngân hàng---</mat-option>
+                    <mat-option *ngFor="let item of filteredNH" [value]='item.nganHangId' [disabled]="data.action === 'CREATE'? false : true">{{ item.tenNganHang }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Loại tài khoản<span
+                    style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="loaiTK" (selectionChange)="changeLoaiTK($event)">
+                    <mat-option value="" [disabled]="data.action === 'CREATE'? false : true">---Chọn loại tài khoản---</mat-option>
+                    <mat-option value="CITAD" [disabled]="data.action === 'CREATE'? false : true">CITAD</mat-option> 
+                    <mat-option value="NAPAS" [disabled]="data.action === 'CREATE'? false : true">NAPAS</mat-option> 
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Chi nhánh<span
+                    style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="chiNhanh">
+                    <mat-option [disabled]="data.action === 'CREATE'? false : true">
+                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm" [formControl]="filterChiNhanh">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="" [disabled]="data.action === 'CREATE'? false : true">---Chọn chi nhánh---</mat-option>
+                    <mat-option *ngFor="let item of filteredChiNhanh" [value]='item.chiNhanhNganHangId' [disabled]="data.action === 'CREATE'? false : true">
+                        {{item.maChiNhanhErp}} - {{item.tenChiNhanh}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Đơn vị<span style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="donVi">
+                    <mat-option>
+                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm" [formControl]="filterDonVi">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="" [disabled]="data.action === 'CREATE'? false : true">---Chọn đơn vị---</mat-option>
+                    <mat-option *ngFor="let item of filteredDonVi" [value]='item.id' [disabled]="data.action === 'CREATE'? false : true">
+                        {{item.tenDonVi}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Quốc gia<span
+                    style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="quocGia" (selectionChange)="changeQuocGia($event)">
+                    <mat-option>
+                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm" [formControl]="filterQuocGia">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="">---Chọn quốc gia---</mat-option>
+                    <mat-option *ngFor="let item of filteredQG" [value]='item.quocGiaId'>{{ item.tenQuocGia }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Tỉnh/thành phố<span
+                    style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="tinhTP">
+                    <mat-option>
+                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm" [formControl]="filterTinhTP">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="">---Chọn tỉnh/thành phố---</mat-option>
+                    <mat-option *ngFor="let item of filteredTinhTP" [value]='item.tinhTpId'>{{item.tenTinhTp}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Ghi Chú</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="ghiChu">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Trạng thái<span
+                    style="color: red;">(*)</span></span>
+            <mat-checkbox formControlName="trangThai" style="flex: 1 1 100%; box-sizing: border-box; max-width: 70%;">Hoạt động</mat-checkbox>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;"><span
+                    style="color: red;"></span></span>
+            <mat-checkbox formControlName="type" style="flex: 1 1 100%; box-sizing: border-box; max-width: 70%;" [disabled]="data.action === 'CREATE'? false : true">Là tài khoản nhận</mat-checkbox>
+        </div>
+        <mat-dialog-actions align="end">
+            <button *ngIf="data.action == 'CREATE'" mat-raised-button (click)="createTaiKhoan()" color="primary">Lưu</button>
+            <button *ngIf="data.action == 'UPDATE'" mat-raised-button (click)="updateTaiKhoan()" color="primary">Lưu</button>
+            <button mat-raised-button (click)="close()">Hủy</button>
+        </mat-dialog-actions>
+    </div>
+</div>

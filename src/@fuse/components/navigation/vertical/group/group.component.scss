@@ -1,0 +1,45 @@
+:host {
+
+    .folded:not(.unfolded) & {
+
+        > .group-title {
+            align-items: center;
+
+            > span {
+                opacity: 0;
+                transition: opacity 200ms ease;
+            }
+
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                min-width: 1.6rem;
+                border-top: 2px solid;
+                opacity: 0.2;
+            }
+        }
+    }
+}
+.group-title {
+    margin-top: 0!important;
+    background-color: #F5FAFD!important;
+}
+.group-items {
+    background-color: #F5FAFD!important;
+}
+.hint-text {
+    color: black;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 17.58px;
+    font-style: Medium;
+    vertical-align: top;
+}
+.MuiDivider-root {
+    border: none;
+    height: 1px;
+    margin: 0;
+    flex-shrink: 0;
+    background-color: rgba(0, 0, 0, 0.12);
+}   

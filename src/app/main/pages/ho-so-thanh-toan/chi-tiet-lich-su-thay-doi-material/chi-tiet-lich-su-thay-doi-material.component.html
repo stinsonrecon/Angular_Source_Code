@@ -1,0 +1,61 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        Lịch sử thay đổi
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content>
+    <div>
+        <ul class="list-item-history">
+            <li *ngFor="let history of dataHistory">
+                <div class="inner-list">
+                    <div class="box-item" style="margin-bottom: -14px;">
+                        
+                        <div class="box-item">
+                            <div class="box-item">
+                                <p>Tên giấy tờ: </p>
+                                <span>{{history.tenGiayTo}}</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="box-item" >
+                        <div class="box-item">
+                            <div class="box-item">
+                                <p>Ngày cập nhập: </p>
+                                <span>{{formatTime(history.ngayCapNhat)}}</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- <div class="box-item"> 
+                        <p>Người cập nhập: </p>
+                        <span>{{history.nguoiCapNhat}}</span>
+                    </div> -->
+                    <div>
+                        <p style="font-weight: bold; margin-top: 0;">File thay đổi: </p>
+                        <ul class="list-file" >
+                            <li class="file-item" *ngFor="let file of history.file">
+                                <span class="file-history" (click)="handleShowFIle(file)">
+                                    <mat-icon style="color: #a10000;transform: translateY(3px);" *ngIf="checkTypeFile(file)">
+                                        picture_as_pdf</mat-icon>
+                                    <mat-icon *ngIf="!checkTypeFile(file)" style="color: #288312;transform: translateY(3px);">photo</mat-icon>
+
+                                    {{formatName(file)}}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+    
+</div>

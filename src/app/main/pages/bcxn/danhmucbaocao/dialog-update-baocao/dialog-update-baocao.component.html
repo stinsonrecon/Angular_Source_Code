@@ -1,0 +1,110 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        {{data.item.idBaoCao ? 'Cập nhật báo cáo' : 'Tạo mới báo cáo'}}
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content [formGroup]="formControl">
+    <div class="container">
+        <div class="flex-row">
+            <p style="width: 20%;font-weight: bold;">Tên báo cáo</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Tên báo cáo</mat-label>
+                <input matInput [(ngModel)]="data.item.tenBaoCao" formControlName="tenBaoCao">
+                <mat-error *ngIf="f.tenBaoCao.hasError('required')">
+                    Chưa nhập tên báo cáo
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 20%;font-weight: bold;">Loại báo cáo</p>
+            <mat-form-field appearance="outline" style="width: 25%; margin-left: 5%">
+                <mat-label>Loại báo cáo</mat-label>
+                <mat-select [(ngModel)]="data.item.loaiBaoCao" formControlName="loaiBaoCao">
+                    <mat-option [value]='1'>Tuần</mat-option>
+                    <mat-option [value]='2'>Tháng</mat-option>
+                    <mat-option [value]='3'>Quý </mat-option>
+                    <mat-option [value]='4'>Năm</mat-option>
+                </mat-select>
+                <mat-error *ngIf="f.loaiBaoCao.hasError('required')">
+                    Chưa nhập loại báo cáo
+                </mat-error>
+            </mat-form-field>
+            <p style="width: 15%;margin-left: 5%;font-weight: bold;">Lĩnh vực</p>
+            <mat-form-field appearance="outline" style="width: 25%; margin-left: 5%">
+                <mat-label>Lĩnh vực</mat-label>
+                <mat-select [(ngModel)]="data.item.linhVucId" formControlName="linhVucId">
+                    <mat-option *ngFor="let item of dsLinhVucBaoCao" [value]="item.id">{{item.tieuDe}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="f.linhVucId.hasError('required')">
+                    Chưa nhập lĩnh vực
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 20%;font-weight: bold;">Phòng ban chủ trì</p>
+            <mat-form-field appearance="outline" style="width: 25%; margin-left: 5%">
+                <mat-label>Phòng ban chủ trì</mat-label>
+                <mat-select [(ngModel)]="data.item.phongBan" formControlName="phongBan">
+                    <mat-option [value]='1'>Tuần</mat-option>
+                    <mat-option [value]='2'>Tháng</mat-option>
+                    <mat-option [value]='3'>Quý </mat-option>
+                    <mat-option [value]='4'>Năm</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <p style="width: 15%;margin-left: 5%;font-weight: bold;">Số liệu</p>
+            <mat-form-field appearance="outline" style="width: 25%; margin-left: 5%">
+                <mat-label>Số liệu</mat-label>
+                <mat-select [(ngModel)]="data.item.soLieu" formControlName="soLieu">
+                    <mat-option [value]='1'>Báo cáo tự động</mat-option>
+                    <mat-option [value]='2'>Attach file</mat-option>
+
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 20%;font-weight: bold;">UrlLink</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>UrlLink</mat-label>
+                <input matInput [(ngModel)]="data.item.urlLink" formControlName="urlLink">
+                <mat-error *ngIf="f.urlLink.hasError('required')">
+                    Chưa nhập urlLink
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 20%;font-weight: bold;">SiteName</p>
+            <mat-form-field appearance="outline" style="width: 25%; margin-left: 5%">
+                <mat-label>SiteName</mat-label>
+                <input matInput [(ngModel)]="data.item.siteName" formControlName="siteName">
+                <mat-error *ngIf="f.siteName.hasError('required')">
+                    Chưa nhập siteName
+                </mat-error>
+            </mat-form-field>
+            <p style="width: 15%;margin-left: 5%;font-weight: bold;">ViewName</p>
+            <mat-form-field appearance="outline" style="width: 25%; margin-left: 5%">
+                <mat-label>ViewName</mat-label>
+                <input matInput [(ngModel)]="data.item.viewName" formControlName="viewName">
+                <mat-error *ngIf="f.viewName.hasError('required')">
+                    Chưa nhập viewName
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 20%; font-weight: bold;">Trạng thái</p>
+            <mat-checkbox style=" margin-left: 5%" formControlName="trangThai" [(ngModel)]="data.item.trangThai">Hoạt
+                động</mat-checkbox>
+        </div>
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button color="primary" (click)="save()">
+        <mat-icon>save_alt</mat-icon> Lưu
+    </button>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+</div>

@@ -1,0 +1,53 @@
+<h3 matDialogTitle>Phân công người tạo phiếu</h3>
+<div mat-dialog-content>
+    <div class="box-center" *ngIf="isDataLoaded">
+        <div class="flex-row">
+            <p style="font-weight: bold;" style="width: 30%">Tên hồ sơ</p>
+            <p style="width: 70%">{{ dataInfo.tenVietTat }}</p>
+        </div>
+        <div class="flex-row">
+            <p style="font-weight: bold;" style="width: 30%">Đơn vị đề nghị</p>
+            <p style="width: 70%">{{ dataInfo.donVi }}</p>
+        </div>
+        <div class="flex-row">
+            <p style="font-weight: bold;" style="width: 30%">Người yêu cầu</p>
+            <p style="width: 70%">{{ dataInfo.tenNguoiTao }}</p>
+        </div>
+        <div class="flex-row">
+            <p style="font-weight: bold;" style="width: 30%">Số tiền</p>
+            <p style="width: 70%">{{ dataInfo.soTienThucTe | currency: "VND":"":"1.0-2":"vi-VN" }}
+                {{data.item.loaiTienTe}}
+            </p>
+        </div>
+        <div class="flex-row">
+            <p style="font-weight: bold;" style="width: 30%">Ngày gửi yêu cầu</p>
+            <p style="width: 70%">{{ dataInfo.ngayGui | date:'dd/MM/yyyy' }}</p>
+        </div>
+        <div class="flex-row">
+            <p style="font-weight: bold;" style="width: 30%">Người được phân công</p>
+            <mat-form-field appearance="outline" style="width: 70%" *ngIf="listNPD">
+                <mat-select [formControl]="nguoiPheDuyet" [compareWith]="compareFn">
+                    <mat-option>
+                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm" [formControl]="filterNPD">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let people of filteredNPD" [value]='people.id'>{{ people.firstName }}
+                        {{people.lastName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="font-weight: bold;" style="width: 30%">Nội dung phê duyệt</p>
+            <mat-form-field appearance="outline" style="width: 70%">
+                <input matInput type="text" [(ngModel)]="noiDung">
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button class="mat-accent mr-16"
+        (click)="access(danhSachThaoTac.btnDongYTiepNhanHSVaKyNhay)">Phân công</button>
+    <button mat-raised-button class="mat-accent mr-16"
+        (click)="deny(danhSachThaoTac.btnTuChoiTiepNhanHoSoVaKyNhay)">Từ chối</button>
+</div>

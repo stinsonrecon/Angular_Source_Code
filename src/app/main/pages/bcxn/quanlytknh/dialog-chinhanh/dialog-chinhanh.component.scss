@@ -1,0 +1,20 @@
+.filter {
+    ::ng-deep .mat-form-field-wrapper {
+        padding: 0 !important;
+    }
+}
+
+::ng-deep .timKiem {
+    padding: 5px 16px 0px 16px !important;
+}
+
+::ng-deep .mat-menu-panel {
+    max-width: none !important;
+}
+
+ngx-mat-select-search {
+    ::ng-deep .mat-select-search-inner {
+        height: 3.25rem;
+        box-shadow: none;
+    }
+}

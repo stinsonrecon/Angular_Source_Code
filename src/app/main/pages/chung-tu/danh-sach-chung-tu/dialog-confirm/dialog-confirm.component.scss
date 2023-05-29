@@ -1,0 +1,9 @@
+mat-dialog-content {
+    div {
+        margin-bottom: 1rem;
+    }
+}
+
+:host ::ng-deep button.mat-focus-indicator.mat-raised-button.mat-button-base.mat-primary.mat-button-disabled {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+  }

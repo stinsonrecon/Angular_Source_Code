@@ -1,0 +1,120 @@
+<div style="width: 100%">
+    <div style="background-color: white; padding-top: 10px; padding-bottom: 0px; margin-left: 5px">
+        <ul class="breadcrumb">
+            <li>Phê duyệt tờ trình</li>
+            <li>Phê duyệt tờ trình cấp vốn (KTT)</li>
+        </ul>
+    </div>
+    <div class="content p-12">
+        <h3>Phê duyệt tờ trình cấp vốn(Kế toán trưởng)</h3>
+        <div class="container">
+            <div class="flex-row respRow border-search" style="flex-wrap: wrap;">
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Ngày trình</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate [(ngModel)]='searchItem.TuNgay' placeholder="Từ ngày">
+                            <input matEndDate [(ngModel)]='searchItem.DenNgay' placeholder="Đến ngày">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Từ khóa</mat-label>
+                        <input matInput #input [(ngModel)]="searchItem.TuKhoa">
+                    </mat-form-field>
+                </div>
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Trạng thái</mat-label>
+                        <mat-select [(ngModel)]="searchItem.DaKy">
+                            <mat-option [value]="-99">---Tất cả---</mat-option>
+                            <mat-option [value]='0'>Chưa duyệt</mat-option>
+                            <mat-option [value]='1'>Đã duyệt</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="respSearch">
+                    <div fxFlexFill fxFlex="20">
+                        <button mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Tìm kiếm"
+                            (click)="search()">
+                            <mat-icon>search</mat-icon> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div style="float:left;" class="flex-row">
+                </div>
+                <div style=" width: 100%; float:right;">
+                    <mat-paginator #paginator [length]="totalRecord" [pageSize]="searchItem.pageSize"
+                        showFirstLastButtons [pageSizeOptions]="[10,20,50]" (page)="pageChange($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+            <div class="table">
+                <div class="table-container">
+                    <table mat-table [dataSource]="dataTable" class="mat-elevation-z8 fs-13">
+
+                        <ng-container matColumnDef="stt">
+                            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                                STT
+                            </th>
+                            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="noiDungToTring">
+                            <th mat-header-cell *matHeaderCellDef>Nội dung tờ trình</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{element.tenHoSoTT}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="hoSoThanhToan">
+                            <th mat-header-cell *matHeaderCellDef>Hồ sơ thanh toán</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                <a class="link" (click)="view(element.hoSoThanhToanId)">{{element.maHoSoTT}}</a>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ngayTring">
+                            <th mat-header-cell *matHeaderCellDef>Ngày Trình</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.ngayTao | date: "dd/MM/YYYY"}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="soTienTTVND">
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%">Số tiền đề nghị thanh toán</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right">
+                                {{element.soTienThanhToan | currency: "VND":"":"1.0-2":"vi-VN"}} {{element.loaiTien}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="trangThai">
+                            <th mat-header-cell *matHeaderCellDef>Trạng thái duyệt</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                {{(element.capKyHoSoTT == 2 && element.capKy == 2) ? 'Chưa duyệt' : 'Đã duyệt'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="thaoTac">
+                            <th mat-header-cell *matHeaderCellDef style="width: 70px">Thao tác</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                <mat-icon class="cursor-pointer" matTooltip="Xem chi tiết tờ trình"
+                                    matTooltipPosition="above" (click)="openDialogView(element)">
+                                    info
+                                </mat-icon>
+                                <mat-icon *ngIf="element.capKyHoSoTT == 2 && element.capKy == 2" class="cursor-pointer"
+                                    matTooltip="Phê duyệt" matTooltipPosition="above"
+                                    (click)="openDialogApprove(element)">
+                                    edit
+                                </mat-icon>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

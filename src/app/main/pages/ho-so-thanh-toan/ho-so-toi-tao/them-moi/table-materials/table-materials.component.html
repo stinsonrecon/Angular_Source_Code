@@ -1,0 +1,200 @@
+<div class="table-container">
+    <table  
+        mat-table 
+        [dataSource]="dataToDisplay" 
+        class="mat-elevation-z8 fs-13 table"
+        [formGroup]="formCreateMaterial"
+    >
+
+        <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef style="width:50px"> Stt </th>
+            <td mat-cell class="mat-cell" *matCellDef="let element; let i = index" style="text-align: center; vertical-align: top;">
+                {{i+1}} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+        <ng-container matColumnDef="maTaiLieu">
+            <th mat-header-cell *matHeaderCellDef style="width:50px">Mã tài liệu</th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="vertical-align: top; width: 200px;">
+                {{ element.chiTietHoSoId }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+        <ng-container matColumnDef="tenTaiLieu">
+            <th mat-header-cell *matHeaderCellDef > Tên tài liệu</th>
+            <td 
+                mat-cell 
+                class="mat-cell" 
+                *matCellDef="let element" 
+                style="vertical-align: top; width: 200px;"
+            >
+                {{ element.tenHoSoTT }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <mat-form-field appearance="outline" style="width: 100%">
+                    <input 
+                        matInput 
+                        type="text" 
+                        [(ngModel)]="inputTenTaiLieu" 
+                        #input 
+                        formControlName="inputTenTaiLieu" 
+                        placeholder="Nhập tên tài liệu"
+                     >
+                    <mat-error *ngIf="f.inputTenTaiLieu.hasError('required')">
+                        Bạn chưa nhập tên tài liệu
+                    </mat-error>
+                </mat-form-field>
+            </td>
+        </ng-container>
+        <!-- <ng-container matColumnDef="moTa">
+            <th mat-header-cell *matHeaderCellDef style="width: 150px;">Mô tả</th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="vertical-align: top;">
+                {{ element.moTa }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <div>
+                    <mat-form-field appearance="outline">
+                        <input matInput type="text" [(ngModel)]="maHoSo" #input formControlName="maHoSo" >
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container> -->
+        <!-- <ng-container matColumnDef="batBuoc">
+            <th mat-header-cell *matHeaderCellDef style="width: 70px;"> Bắt buộc</th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="vertical-align: top;">
+                {{ element.batBuoc }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <div class="box-input-footer">
+                    <mat-form-field appearance="outline" style="width: 60%;">
+                        <mat-select [(ngModel)]="hinhThucThanhToan" formControlName="hinhThucThanhToan">
+                            <mat-option [value]="2">Yes</mat-option>
+                            <mat-option [value]="2">No</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container> -->
+        <ng-container matColumnDef="ngayTao">
+            <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Ngày tạo </th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                {{ formatDatetime(element.ngayCapNhat) }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+        <ng-container matColumnDef="nguoiTao">
+            <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Người tạo </th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                {{ element.nguoiCapNhat || 'admin' }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+        <ng-container matColumnDef="nguonTaiLieu">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px;"> Nguồn tài liệu</th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                {{ element.nguonTaiLieu ||'' }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-select [(ngModel)]="inputNguonTaiLieu" formControlName="inputNguonTaiLieu">
+                        <mat-option [value]="1">Scan bản giấy</mat-option>
+                        <mat-option [value]="2">EVNPortal</mat-option>
+                        <mat-option [value]="3">D-Office</mat-option>
+                        <mat-option [value]="4">HRMS</mat-option>
+                        <mat-option [value]="5">Khác</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="pheDuyet">
+            <th mat-header-cell *matHeaderCellDef style="width: 100px;">Phê duyệt/Ký số</th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                {{ element?.pheDuyet || '' }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <div class="box-input-footer">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-select [(ngModel)]="pheDuyetKySo" formControlName="pheDuyetKySo">
+                            <mat-option [value]="1">Có</mat-option>
+                            <mat-option [value]="2">Không</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="noiDungAndLink">
+            <th mat-header-cell *matHeaderCellDef style="width: 250px;">Nội dung tài liệu/Link liên kết</th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                <div>
+                    <div *ngFor="let a of element.file; let index = index" class="box-material">
+                        <p> {{formatLinkMaterial(a) }}</p>
+                        <div class="wrap-input-search">
+                            <mat-icon class="amber-600-fg" (click)="handleShowDocument(formatLinkMaterial(a))">search</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <div style="text-align:center; margin-top: 10px; ">
+                    <mat-card style="margin-top:10px;">
+                            <mat-card-content>
+                                <ul>
+                                    <li *ngFor="let file of files">
+                                        <!-- <mat-progress-bar [value]="file.progress"></mat-progress-bar> -->
+                                        <span id="file-label">
+                                            {{file.data.name}}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-button color="warn" (click)="onClick()">
+                                    <mat-icon>file_upload</mat-icon>
+                                    Chọn file
+                                </button>
+                            </mat-card-actions>
+                        </mat-card>
+                    <input 
+                        type="file" 
+                        #fileUpload 
+                        id="fileUpload" 
+                        name="fileUpload" 
+                        multiple="multiple" 
+                        accept="image/*" 
+                        style="display:none;" 
+                        [(ngModel)]="inputFile"
+                        formControlName="inputFile"
+                    />
+                </div>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="lichSuThayDoi">
+            <th mat-header-cell *matHeaderCellDef style="width: 100px;">Lịch sử thay đổi</th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                Chi tiết
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="hanhDong">
+            <th mat-header-cell *matHeaderCellDef class="mat-cell" style="width: 100px;">Action</th>
+            <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                <button  mat-icon-button color="primary" (click)="editMaterial(element)">
+                    <mat-icon class="animation-scale">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" aria-label="Example icon button with a delete icon" (click)="deleteMaterial(element.chiTietHoSoId)">
+                    <mat-icon class="animation-scale">delete</mat-icon>
+                  </button>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <button mat-raised-button color="primary" (click)="handleAddMaterials()" [disabled]="formCreateMaterial.invalid">
+                    Thêm mới
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsMaterial;" class="header-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsMaterial" class="row"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumnsMaterial"></tr>
+    </table>
+</div>
+    

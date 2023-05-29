@@ -1,0 +1,132 @@
+<div style="width: 100%">
+    <div class="content p-12">
+        <h3>Danh sách giấy tờ</h3>
+        <div class="container">
+            <div class="flex-row">
+                <div class="flex-6">
+                    <div class="flex-row">
+                        <p style="width: 10%;">Từ khoá</p>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <input matInput #input [(ngModel)]="searchItem.tuKhoa">
+                        </mat-form-field>
+
+                        <p style="width: 10%; margin-left: 5%;">Nguồn giấy tờ</p>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>Nguồn giấy tờ</mat-label>
+                            <mat-select [(ngModel)]="searchItem.loaiHoSo"
+                                (ngModelChange)="toHeadPage(); getLenhNganHangAll()">
+                                <mat-option [value]='-99'>---Tất cả---</mat-option>
+                                <mat-option [value]='0'>Cấp phát chi phí SXKD</mat-option>
+                                <mat-option [value]='1'>Thanh toán Văn phòng phẩm</mat-option>
+                                <mat-option [value]='2'>Thanh toán Công tác phí</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <p style="width: 10%; margin-left: 5%;">Trạng thái giấy tờ</p>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>Trạng thái giấy tờ</mat-label>
+                            <mat-select [(ngModel)]="searchItem.trangThai"
+                                (ngModelChange)="toHeadPage(); getLenhNganHangAll()">
+                                <mat-option [value]='-99'>---Tất cả---</mat-option>
+                                <mat-option [value]='0'>Khởi tạo</mat-option>
+                                <mat-option [value]='1'>Đã gửi ngân hàng</mat-option>
+                                <mat-option [value]='2'>Bị hủy</mat-option>
+                                <mat-option [value]='3'>Gửi lại</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div style="float:left;" class="flex-row">
+                    <button mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Tìm kiếm"
+                        (click)="toHeadPage(); getLenhNganHangAll()">
+                        <mat-icon>search</mat-icon> Tìm kiếm
+                    </button>
+                    <button mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Cập nhật">
+                        <mat-icon>sync</mat-icon> Cập nhật
+                    </button>
+                </div>
+                <div style=" width: 100%; float:right;">
+                    <mat-paginator #paginator [length]="totalRecord" [pageSize]="searchItem.pageSize"
+                        [pageSizeOptions]="[10,20,50]" (page)="getLenhNganHangAll($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+            <div class="table-container">
+                <table mat-table [dataSource]="dataFake" class="mat-elevation-z8 fs-13">
+
+                    <ng-container matColumnDef="tt">
+                        <th mat-header-cell *matHeaderCellDef style=" width: 50px">
+                            TT
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="idGiayTo">
+                        <th mat-header-cell *matHeaderCellDef>Id giấy tờ</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.maGiayTo}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="maGiayTo">
+                        <th mat-header-cell *matHeaderCellDef>Mã giấy tờ</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.maGiayTo}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="tenGiayTo">
+                        <th mat-header-cell *matHeaderCellDef>Tên giấy tờ</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.tenGiayTo}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="kySo">
+                        <th mat-header-cell *matHeaderCellDef>Ký số</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            {{element.kySo}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="nguon">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px">Nguồn</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            {{element.nguon}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="trangThai">
+                        <th mat-header-cell *matHeaderCellDef style="width: 120px">Trạng thái</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            {{element.trangThai}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ngayTao">
+                        <th mat-header-cell *matHeaderCellDef style="width: 150px">Ngày tạo</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            {{element.ngayTao}}
+                            <!-- <div *ngIf="element.trangThai; then active else noActive"></div>
+                            <ng-template #active>Đã gửi ngân hàng</ng-template>
+                            <ng-template #noActive>Chưa gửi ngân hàng</ng-template> -->
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="nguoiTao">
+                        <th mat-header-cell *matHeaderCellDef style="width: 80px">Người tạo</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.nguoiTao}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="thaoTac">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px">Thao tác</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center; cursor: pointer">
+                            <!-- (click)="openDialogDetailChucNang(element)" -->
+                            <button [disabled]="element.trangThai === 'Đã gửi ngân hàng'" mat-button color="primary">Đẩy
+                                lệnh</button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,354 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<h2 mat-dialog-title>{{data.action == 'CREATE' ? 'Thêm mới bước phê duyệt' : 'Cập nhật bước phê duyệt'}}</h2>
+<div class="container" [formGroup]="formCauHinhBuoc">
+    <div class="box-center">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">Tên bước</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="tenBuoc">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="column" fxFlex="50">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <span fxFlex="40" style="width: 35%; font-weight: bold;">Bước trước</span>
+                    <mat-form-field fxFlex="50" appearance="outline">
+                        <mat-select formControlName="buocTruoc">
+                            <mat-option *ngFor="let item of listBuocPD" [value]="item.buocPheDuyetId">{{item.tenBuoc}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="column" fxFlex="50">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <span fxFlex="30" style="width: 35%; font-weight: bold;">Bước kế tiếp</span>
+                    <mat-form-field fxFlex="50" appearance="outline">
+                        <mat-select formControlName="buocSau">
+                            <mat-option *ngFor="let item of listBuocPD" [value]="item.buocPheDuyetId">{{item.tenBuoc}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">Người xử lý</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <!-- <input matInput formControlName="nguoiXuLy"> -->
+                <mat-chip-list #chipList>
+                    <mat-chip *ngFor="let ncc of chipSelectedNcc" [selectable]=true [removable]=true
+                        (removed)="removeDonVi(ncc)">
+                        {{ncc.userName}}
+                        <mat-icon matChipRemove style="font-size: 11px; color: red;">cancel</mat-icon>
+                    </mat-chip>
+                    <input placeholder="chọn để nhập" #nccInput formControlName="nguoiXuLy"
+                        [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]=true required>
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="nccSelected($event)">
+
+                    <mat-option *ngFor="let thisNccName of filteredNcc | async" [value]="thisNccName">
+                        {{thisNccName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">thời gian xử lý</span>
+            <mat-form-field fxFlex="20" appearance="outline">
+                <input matInput formControlName="thoiGianXuLy">
+            </mat-form-field>
+            <span fxFlex="10" style="width: 35%; font-weight: bold;"></span>
+            <mat-form-field fxFlex="20" appearance="outline">
+                <mat-select>
+                    <mat-option value="1">Giờ</mat-option>
+                    <mat-option value="2">Ngày</mat-option>
+                    <mat-option value="3">Tuần</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">Thứ tự</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="thuTu">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">Trạng thái hồ sơ</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="trangThaiHoSo">
+                    <mat-option *ngFor="let i of trangThaiHoSo" [value]="i.value">{{i.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">Trạng thái chứng từ</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="trangThaiChungTu">
+                    <mat-option *ngFor="let i of trangThaiChungTu" [value]="i.id">{{i.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">Định dạng ký</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="dinhDangKy">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">Vị trí ký</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="viTriKy">
+            </mat-form-field>
+        </div>
+        <!-- </div> -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="20" style="width: 35%; font-weight: bold;">Hành động</span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="table-container">
+                <table mat-table [dataSource]="dataToDisplay" class="fs-13" cdkDropList
+                    [cdkDropListData]="dataToDisplay">
+
+                    <ng-container matColumnDef="stt">
+                        <th mat-header-cell *matHeaderCellDef style="width:50px"> STT</th>
+                        <td mat-cell *matCellDef="let element; let i = index"
+                            style="text-align: center; vertical-align: top;">
+                            {{i+1}} </td>
+                        <td mat-footer-cell *matFooterCellDef style="text-align: center;">
+                            <button (click)="add()" mat-icon-button color="primary">
+                                <mat-icon style="font-size: 2.5rem !important; font-weight: bold !important">add
+                                </mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="hanhDong">
+                        <th mat-header-cell *matHeaderCellDef style="width: 350px"> Hành động </th>
+                        <td mat-cell *matCellDef="let element; let i = index" style="vertical-align: top">
+                            <mat-form-field appearance="outline">
+                                <mat-select [(ngModel)]="dataTable[i].hanhDong" [ngModelOptions]="{standalone: true}">
+                                    <mat-option>
+                                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                            [formControl]="filterTTac"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option [value]="">---</mat-option>
+                                    <mat-option *ngFor="let item of filteredThaoTac" [value]="item.value">{{item.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <mat-form-field appearance="outline">
+                                <mat-select [formControl]="inputHangDong">
+                                    <mat-option>
+                                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                            [formControl]="filterTTac"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let item of filteredThaoTac" [value]="item.value">{{item.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kySo">
+                        <th mat-header-cell *matHeaderCellDef style="width: 50px"> Ký số </th>
+                        <td mat-cell *matCellDef="let element; let i = index" style="vertical-align: top">
+                            <mat-form-field appearance="outline">
+                                <mat-select [(ngModel)]="dataTable[i].kySo" [ngModelOptions]="{standalone: true}">
+                                    <mat-option [value]='1'>Có</mat-option>
+                                    <mat-option [value]='2'>Không</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <mat-form-field appearance="outline">
+                                <mat-select [formControl]="inputKySo">
+                                    <mat-option [value]='1'>Có</mat-option>
+                                    <mat-option [value]='2'>Không</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="loaiKy">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Loại ký </th>
+                        <td mat-cell *matCellDef="let element; let i = index"
+                            style="text-align: center;vertical-align: top; font-style: italic;">
+                            <mat-form-field appearance="outline">
+                                <mat-select [(ngModel)]="dataTable[i].loaiKy" [ngModelOptions]="{standalone: true}">
+                                    <mat-option [value]='3'>Không ký</mat-option>
+                                    <mat-option [value]='1'>Ký nháy</mat-option>
+                                    <mat-option [value]='2'>Ký chính</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <mat-form-field appearance="outline">
+                                <mat-select [formControl]="inputLoaiKy">
+                                    <mat-option [value]='3'>Không ký</mat-option>
+                                    <mat-option [value]='1'>Ký nháy</mat-option>
+                                    <mat-option [value]='2'>Ký chính</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="isSendMail">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Gửi mail thông báo </th>
+                        <td mat-cell *matCellDef="let element; let i = index"
+                            style="text-align: center;vertical-align: top; font-style: italic;">
+                            <mat-form-field appearance="outline">
+                                <mat-select [(ngModel)]="dataTable[i].isSendMail" [ngModelOptions]="{standalone: true}">
+                                    <mat-option [value]='1'>Có</mat-option>
+                                    <mat-option [value]='2'>Không</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <mat-form-field appearance="outline">
+                                <mat-select [formControl]="inputIsSendMail">
+                                    <mat-option [value]='1'>Có</mat-option>
+                                    <mat-option [value]='2'>Không</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="taiLieu">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Nguồn tài liệu </th>
+                        <td mat-cell *matCellDef="let element; let i = index"
+                            style="text-align: center;vertical-align: top;">
+                            <mat-form-field appearance="outline">
+                                <!-- <input matInput type="text" [(ngModel)]="dataTable[i].GiayToId"
+                                    [ngModelOptions]="{standalone: true}"> -->
+                                <mat-select [(ngModel)]="dataTable[i].giayToId" [ngModelOptions]="{standalone: true}">
+                                    <mat-option>
+                                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                            [formControl]="filterGT"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option [value]="''">---</mat-option>
+                                    <mat-option *ngFor="let item of filteredGiayTo" [value]="item.id">{{item.tenGiayTo}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <mat-form-field appearance="outline">
+                                <!-- <input matInput type="text" [formControl]="inputGiayTo"> -->
+                                <mat-select [formControl]="inputGiayTo">
+                                    <mat-option>
+                                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                            [formControl]="filterGT"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option [value]="''">---</mat-option>
+                                    <mat-option *ngFor="let item of filteredGiayTo" [value]="item.id">{{item.tenGiayTo}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="trangThaiHoSo">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Trạng thái hồ sơ </th>
+                        <td mat-cell *matCellDef="let element; let i = index"
+                            style="text-align: center;vertical-align: top;">
+                            <mat-form-field appearance="outline">
+                                <mat-select [(ngModel)]="dataTable[i].trangThaiHoSo" [ngModelOptions]="{standalone: true}">
+                                    <mat-option>
+                                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                            [formControl]="filterTTHS"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let i of filteredTrangThaiHS" [value]="i.value">{{i.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <mat-form-field appearance="outline">
+                                <mat-select [formControl]="inputTrangThaiHoSo">
+                                    <mat-option>
+                                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                            [formControl]="filterTTHS"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let i of filteredTrangThaiHS" [value]="i.value">{{i.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="trangThaiChungTu">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Trạng thái chứng từ </th>
+                        <td mat-cell *matCellDef="let element; let i = index"
+                            style="text-align: center;vertical-align: top;">
+                            <mat-form-field appearance="outline">
+                                <mat-select [(ngModel)]="dataTable[i].trangThaiChungTu" [ngModelOptions]="{standalone: true}">
+                                    <mat-option>
+                                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                            [formControl]="filterTTCT"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let i of filteredTrangThaiChungTu" [value]="i.id">{{i.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <mat-form-field appearance="outline">
+                                <mat-select [formControl]="inputTrangThaiChungTu">
+                                    <mat-option>
+                                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                            [formControl]="filterTTCT"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let i of filteredTrangThaiChungTu" [value]="i.id">{{i.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="diDenBuocPheDuyet">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;"> Đi đến bước </th>
+                        <td mat-cell *matCellDef="let element; let i = index"
+                            style="text-align: center;vertical-align: top;">
+                            <mat-form-field appearance="outline">
+                                <mat-select [(ngModel)]="dataTable[i].diDenBuocPheDuyetId" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let i of listBuocPD" [value]="i.buocPheDuyetId">{{i.tenBuoc}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <mat-form-field appearance="outline">
+                                <mat-select [formControl]="inputDiDenBuocPheDuyet">
+                                    <mat-option *ngFor="let i of listBuocPD" [value]="i.buocPheDuyetId">{{i.tenBuoc}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="thaoTac">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;"> </th>
+                        <td mat-cell *matCellDef="let element; let i = index"
+                            style="text-align: center;vertical-align: top;">
+                            <ng-container>
+                                <button mat-icon-button color="warn" (click)="deleteThaoTac(i)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                <button mat-icon-button color="warn" (click)="updateThaoTac(element, i)">
+                                    <mat-icon>done</mat-icon>
+                                </button>
+                            </ng-container>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef=""></td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns" cdkDrag [cdkDragData]="row"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+                </table>
+            </div>
+        </div>
+        <mat-dialog-actions align="end">
+            <button mat-raised-button color="primary" *ngIf="data.action == 'CREATE'" (click)="createHanhDong()">Lưu</button>
+            <button mat-raised-button color="primary" *ngIf="data.action == 'UPDATE'" (click)="updateHanhDong()">Cập nhật</button>
+            <button mat-raised-button mat-dialog-close>Hủy</button>
+        </mat-dialog-actions>
+    </div>
+</div>

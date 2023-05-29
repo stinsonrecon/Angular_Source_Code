@@ -1,0 +1,232 @@
+<div class="search" style="margin-top: 20px;">
+    <div class="flex-row">
+        <p style="width: 10%;">Năm hồ sơ</p>
+        <mat-form-field appearance="outline" fxFlex="20">
+            <mat-select [(ngModel)]="searchItem.NAM_HS">
+                <mat-option [value]="''">---Tất cả---</mat-option>
+                <mat-option *ngFor="let year of listYears" [value]="year">{{year}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <p style="width: 10%; margin-left:5%">Ngày lập hồ sơ</p>
+        <mat-form-field appearance="outline" fxFlex="20">
+            <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate [(ngModel)]='searchItem.TU_NGAY_LAP' placeholder="Từ ngày">
+                <input matEndDate [(ngModel)]='searchItem.DEN_NGAY_LAP' placeholder="Đến ngày">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+
+        <p style="width: 10%; margin-left:5%">Từ khóa</p>
+        <mat-form-field appearance="outline" fxFlex="20">
+            <input matInput #input [(ngModel)]="searchItem.SEARCH">
+        </mat-form-field>
+    </div>
+    <div class="flex-row">
+
+        <button mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Tìm kiếm" (click)="search()">
+            <mat-icon>search</mat-icon> Tìm kiếm
+        </button>
+    </div>
+</div>
+<div class="result">
+    <h3><b>Kết quả tìm kiếm hồ sơ</b></h3>
+    <table mat-table #table1 [dataSource]="dataTable" *ngIf="dataTable?.length > 0" class="mat-elevation-z8 fs-13">
+        <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                STT
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}} </td>
+        </ng-container>
+        <ng-container matColumnDef="tieuDe">
+            <th mat-header-cell *matHeaderCellDef>Mã hồ sơ</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.MA_HOSO}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="loaiHoSo">
+            <th mat-header-cell *matHeaderCellDef>Tên hồ sơ</th>
+            <td mat-cell *matCellDef="let element" style="text-align: left">
+                {{element.TEN_HOSO}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="nguoiDuyet">
+            <th mat-header-cell *matHeaderCellDef>Người tạo</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.NAME_NGUOI_TAO}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="thaoTac">
+            <th mat-header-cell *matHeaderCellDef style="width: 70px">Thao tác</th>
+            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center">
+                <mat-checkbox [checked]="isSelected === i? true : false"
+                    style="flex: 1 1 100%; box-sizing: border-box; max-width: 70%;" (change)="change(element.ID_HS, i)">
+                    Chọn
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <span *ngIf="dataTable?.length === 0">Không tìm thấy hồ sơ</span>
+    <ng-container style="text-align: right;">
+        <mat-paginator [length]="totalRecord" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+            (page)="pageChange($event)">
+        </mat-paginator>
+    </ng-container>
+</div>
+<div class="detail">
+    <h3><b>Văn bản hồ sơ</b></h3>
+    <table mat-table #table2 [dataSource]="dataTable1" class="mat-elevation-z8 fs-13">
+        <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                STT
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}} </td>
+        </ng-container>
+        <ng-container matColumnDef="loaiVanBan">
+            <th mat-header-cell *matHeaderCellDef>Loại văn bản</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.LOAI_VB}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="soKyHieu">
+            <th mat-header-cell *matHeaderCellDef>Số ký hiệu</th>
+            <td mat-cell *matCellDef="let element" style="text-align: left">
+                {{element.KY_HIEU}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="trichYeu">
+            <th mat-header-cell *matHeaderCellDef>Trích yếu</th>
+            <td mat-cell *matCellDef="let element">
+                <span (click)="log(element,'')">{{element.TRICH_YEU}}</span>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="thaoTac">
+            <th mat-header-cell *matHeaderCellDef>Thêm tài liệu vào hồ sơ</th>
+            <td mat-cell *matCellDef="let element">
+                <ng-container *ngFor="let file of element.FILE">
+                    <li>
+                        <a class="link" (click)="viewFile(file)">{{file.TEN_FILE}}</a>
+                        <button mat-button [matMenuTriggerFor]="menu">
+                            <mat-icon>add_box</mat-icon> Thêm tài liệu
+                        </button>
+                    </li>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item *ngFor="let item of dataTable2; let i = index"
+                            (click)="addFile(file, item, i)">{{item.tenGiayTo}}</button>
+                    </mat-menu>
+                </ng-container>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+    </table>
+    <span *ngIf="dataTable1?.length === 0 && isSelected !== -1">Không tìm thấy văn bản trong hồ sơ này</span>
+    <ng-container style="text-align: right;">
+        <mat-paginator [length]="totalRecord1" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+            (page)="pageChange1($event)">
+        </mat-paginator>
+    </ng-container>
+    <table mat-table #table3 [dataSource]="dataTable2" class="mat-elevation-z8 fs-13" style="margin-top: 20px;">
+        <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                STT
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}} </td>
+        </ng-container>
+        <ng-container matColumnDef="taiLieu">
+            <th mat-header-cell *matHeaderCellDef>Tài liệu</th>
+            <td mat-cell *matCellDef="let element">
+                ({{element.maGiayTo}}) - {{element.tenGiayTo}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="nguon">
+            <th mat-header-cell *matHeaderCellDef>Nguồn</th>
+            <td mat-cell *matCellDef="let element" style="text-align: left">
+                {{element.nguon}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="file">
+            <th mat-header-cell *matHeaderCellDef>File đính kèm</th>
+            <td mat-cell *matCellDef="let element">
+                <div>
+                    <div *ngFor="let file of files">
+                        <div *ngIf="file.id === element.id || file.id === element.chiTietHoSoId; else boxFile"
+                            class="box-wrap-file">
+                            <div style="display: flex; margin-top: 4px;">
+                                <div *ngIf="file.type === 'pdf'" style="color: #f96565;">
+                                    <span style="margin: 5px 4px 7px 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+                                            width="18px" height="18px" preserveAspectRatio="xMidYMid meet"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M8.267 14.68c-.184 0-.308.018-.372.036v1.178c.076.018.171.023.302.023c.479 0 .774-.242.774-.651c0-.366-.254-.586-.704-.586zm3.487.012c-.2 0-.33.018-.407.036v2.61c.077.018.201.018.313.018c.817.006 1.349-.444 1.349-1.396c.006-.83-.479-1.268-1.255-1.268z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM9.498 16.19c-.309.29-.765.42-1.296.42a2.23 2.23 0 0 1-.308-.018v1.426H7v-3.936A7.558 7.558 0 0 1 8.219 14c.557 0 .953.106 1.22.319c.254.202.426.533.426.923c-.001.392-.131.723-.367.948zm3.807 1.355c-.42.349-1.059.515-1.84.515c-.468 0-.799-.03-1.024-.06v-3.917A7.947 7.947 0 0 1 11.66 14c.757 0 1.249.136 1.633.426c.415.308.675.799.675 1.504c0 .763-.279 1.29-.663 1.615zM17 14.77h-1.532v.911H16.9v.734h-1.432v1.604h-.906V14.03H17v.74zM14 9h-1V4l5 5h-4z"
+                                                fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <div
+                                    *ngIf="file.type === 'png' || file.type === 'jpg' || file.type === 'jpeg' || file.type === 'gif'">
+                                    <span style="margin: 5px 4px 7px 5px; color: #288312;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+                                            width="16px" height="16px" preserveAspectRatio="xMidYMid meet"
+                                            viewBox="0 0 16 16">
+                                            <g fill="currentColor">
+                                                <path d="M6.502 7a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3z" />
+                                                <path
+                                                    d="M14 14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5V14zM4 1a1 1 0 0 0-1 1v10l2.224-2.224a.5.5 0 0 1 .61-.075L8 11l2.157-3.02a.5.5 0 0 1 .76-.063L13 10V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4z" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div style="color: #0070ff"
+                                    *ngIf="file.type === 'docx' || file.type === 'doc' || file.type === 'ppt'">
+                                    <span style="margin: 5px 4px 7px 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+                                            width="18px" height="18px" preserveAspectRatio="xMidYMid meet"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6m1.2 18h-1.4L12 13.2L10.2 20H8.8l-2.2-9h1.5l1.4 6.8l1.8-6.8h1.3l1.8 6.8l1.4-6.8h1.5l-2.1 9M13 9V3.5L18.5 9H13z"
+                                                fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div *ngIf="file.type === 'xlsx' || file.type === 'xls'">
+                                    <span style="margin: 5px 4px 7px 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="18px" height="18px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><defs><linearGradient id="ssvg-id-file-type-excela" x1="4.494" y1="-2092.086" x2="13.832" y2="-2075.914" gradientTransform="translate(0 2100)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#18884f"/><stop offset=".5" stop-color="#117e43"/><stop offset="1" stop-color="#0b6631"/></linearGradient></defs><path d="M19.581 15.35L8.512 13.4v14.409A1.192 1.192 0 0 0 9.705 29h19.1A1.192 1.192 0 0 0 30 27.809V22.5z" fill="#185c37"/><path d="M19.581 3H9.705a1.192 1.192 0 0 0-1.193 1.191V9.5L19.581 16l5.861 1.95L30 16V9.5z" fill="#21a366"/><path d="M8.512 9.5h11.069V16H8.512z" fill="#107c41"/><path d="M16.434 8.2H8.512v16.25h7.922a1.2 1.2 0 0 0 1.194-1.191V9.391A1.2 1.2 0 0 0 16.434 8.2z" opacity=".1" fill="#000"/><path d="M15.783 8.85H8.512V25.1h7.271a1.2 1.2 0 0 0 1.194-1.191V10.041a1.2 1.2 0 0 0-1.194-1.191z" opacity=".2" fill="#000"/><path d="M15.783 8.85H8.512V23.8h7.271a1.2 1.2 0 0 0 1.194-1.191V10.041a1.2 1.2 0 0 0-1.194-1.191z" opacity=".2" fill="#000"/><path d="M15.132 8.85h-6.62V23.8h6.62a1.2 1.2 0 0 0 1.194-1.191V10.041a1.2 1.2 0 0 0-1.194-1.191z" opacity=".2" fill="#000"/><path d="M3.194 8.85h11.938a1.193 1.193 0 0 1 1.194 1.191v11.918a1.193 1.193 0 0 1-1.194 1.191H3.194A1.192 1.192 0 0 1 2 21.959V10.041A1.192 1.192 0 0 1 3.194 8.85z" fill="url(#ssvg-id-file-type-excela)"/><path d="M5.7 19.873l2.511-3.884l-2.3-3.862h1.847L9.013 14.6c.116.234.2.408.238.524h.017c.082-.188.169-.369.26-.546l1.342-2.447h1.7l-2.359 3.84l2.419 3.905h-1.809l-1.45-2.711A2.355 2.355 0 0 1 9.2 16.8h-.024a1.688 1.688 0 0 1-.168.351l-1.493 2.722z" fill="#fff"/><path d="M28.806 3h-9.225v6.5H30V4.191A1.192 1.192 0 0 0 28.806 3z" fill="#33c481"/><path d="M19.581 16H30v6.5H19.581z" fill="#107c41"/></svg>
+                                    </span>
+                                </div>
+                                <!-- <mat-progress-bar [value]="file.progress"></mat-progress-bar> -->
+                                <span id="file-label" (click)="handleShowFile(file)" class="link">
+                                    {{file.id === element.id || file.id === element.chiTietHoSoId ?
+                                    formatName(file.data.name) : ''}}
+                                </span>
+                                <button style="margin-top: -4px;" mat-icon-button color="warn" aria-label="Example icon button with a delete icon"
+                                    (click)="deleteMaterial(file)">
+                                    <svg class="animation-scale" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="16px" height="16px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 448 512"><path d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" fill="currentColor"/></svg>
+                                </button>
+                            </div>
+
+                        </div>
+                        <ng-template #boxFile>
+                        </ng-template>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+    </table>
+</div>

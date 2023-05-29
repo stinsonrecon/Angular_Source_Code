@@ -1,0 +1,32 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<h2 mat-dialog-title>Xác nhận thanh toán</h2>
+<mat-dialog-content>
+    <div *ngIf="dialogData">
+        <div class="flex-row">
+            <p style="width: 20%">Mã hồ sơ</p>
+            <mat-form-field appearance="outline" style="width: 80%;">
+                <input matInput #input readonly [(ngModel)]="dialogData.hoSoThanhToan.maHoSo">
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Nội dung thanh toán</mat-label>
+                <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="7"
+                    [formControl]="noiDung" cdkAutosizeMaxRows="7" placeholder="Nội dung thanh toán"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+    <div *ngIf="!dialogData">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>
+        Hủy
+    </button>
+    <button mat-raised-button color="primary" (click)="ok()">
+        Xác nhận
+    </button>
+</mat-dialog-actions>

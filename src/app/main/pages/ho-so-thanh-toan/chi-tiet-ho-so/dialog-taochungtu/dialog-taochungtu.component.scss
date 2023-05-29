@@ -1,0 +1,27 @@
+.row {
+    margin-bottom: 1rem;
+}
+
+mat-checkbox {
+    margin-right: 2rem;
+}
+
+.dialog-taochungtu {
+    ::ng-deep .mat-form-field-wrapper {
+        padding: 0 !important;
+    }
+}
+
+.required {
+    border: 1px solid red;
+}
+
+ngx-mat-select-search {
+    ::ng-deep .mat-select-search-inner {
+        height: 3.25rem;
+        box-shadow: none;
+    }
+}
+.textColor {
+    color: #A9A9A9;
+}

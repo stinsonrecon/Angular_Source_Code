@@ -1,0 +1,6 @@
+<h3 matDialogTitle>{{title}}</h3>
+<div mat-dialog-content style="max-width: 600px;">{{confirmMessage}}</div>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button  (click)="dialogRef.close(false)">Không</button>
+    <button mat-raised-button class="mat-accent mr-16" (click)="dialogRef.close(true)">Đồng ý</button>
+</div>

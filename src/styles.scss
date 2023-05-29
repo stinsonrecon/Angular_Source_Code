@@ -1,0 +1,175 @@
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+@import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-angular-navigations/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-inputs/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
+navbar navbar-vertical-style-2 .navbar-header {
+    height: 50px !important;
+    min-height: 50px !important;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+    height: 50px !important;
+}
+
+toolbar .user-button,
+toolbar fuse-search-bar,
+toolbar .language-button,
+toolbar .chat-panel-toggle-button,
+toolbar .quick-panel-toggle-button {
+    min-width: 50px !important;
+    height: 50px !important;
+}
+
+toolbar .toolbar-separator {
+    height: 50px !important;
+}
+
+.fuse-navy-900 {
+    background-color: #304FFE !important;   
+}
+
+.fuse-navy-700 {
+    //background-color: #F5FAFD
+    background-color: #fff;
+}
+
+body.theme-default {
+  color:#222!important;
+//   font-family: Arial, Helvetica, sans-serif!important;
+}
+body.theme-default .mat-flat-button.mat-primary,
+body.theme-default .mat-raised-button.mat-primary,
+body.theme-default .mat-fab.mat-primary,
+body.theme-default .mat-mini-fab.mat-primary {
+   background-color: #304FFE !important;
+}
+body.theme-default .mat-cell, body.theme-default .mat-footer-cell {
+  color: #222!important;
+  font-family: Arial, Helvetica, sans-serif!important;
+}
+
+content .mat-button,
+content .mat-raised-button,
+content .mat-stroked-button,
+content .mat-flat-button {
+    margin: 8px 8px 8px 0 !important;
+}
+
+.mat-snack-bar-container .flex {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.snackbar-error {
+  background-color:#d32f2f!important;
+}
+
+.snackbar-done {
+  background-color: #087f23!important;
+}
+
+.snackbar-info {
+  background-color: #004c8c!important;
+}
+.snackbar-warning {
+  background-color: #c68400!important;
+}
+// 11 Close Bnt
+.close-button{
+  float: right;
+  top: -15px;
+  right:-15px;
+  .close-icon {
+      transition: 1s ease-in-out;
+    }
+  .close-icon:hover {
+      transform: rotate(180deg);
+  }
+}
+
+.mat-icon-button.close-button-dialog {
+  position: absolute;
+  right: 20px;
+  top: 9px;
+  transform: scale(1.5);
+  // background: tr !important;
+
+}
+:host .span.mat-ripple.mat-button-ripple.mat-button-ripple-round {
+  top: unset;
+  left: unset;
+  right: unset;
+  bottom: unset;
+  position: unset;
+}
+
+.close-icon {
+  transition: 1s ease-in-out;
+}
+
+.close-icon:hover {
+  transform: rotate(180deg);
+}
+
+
+:host ::ng-deep {
+  img {
+      width: 100%;
+  }
+}
+
+img {
+  width: 100%;
+}
+ngx-extended-pdf-viewer .html .unverified-signature-warning{
+    display: none;
+  }
+.owl-dt-container {
+  font-size: 13px !important;
+}
+.mat-calendar-previous-button::after, .mat-calendar-next-button::after {
+  margin: 6.5px !important;
+}
+ul.breadcrumb {
+  padding: 0px;
+  list-style: none;
+  // background-color: rgb(238, 238, 238);
+  // border-radius: 10px;
+}
+ul.breadcrumb li {
+  display: inline;
+  font-size: 13px;
+}
+ul.breadcrumb li+li:before {
+  padding: 8px;
+  color: black;
+  content: "\003e";
+}
+ul.breadcrumb li a {
+  color: #0275d8;
+  text-decoration: none;
+}
+ul.breadcrumb li a:hover {
+  color: #01447e;
+  text-decoration: underline;
+}
+
+.border-search {
+  // background-color: #fff;
+  // padding: 16px 16px; 
+  // border-radius: 5px;
+  // margin-left: 10px;
+  // margin-right: 10px;
+  // margin-bottom: 10px;
+  // border: 1px solid rgb(144, 178, 192);
+  // box-shadow: 1px 1px rgb(144, 178, 192);
+}

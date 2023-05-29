@@ -1,0 +1,56 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        {{ !data.item.id ? "Thêm mới lĩnh vực" : "Cập nhật lĩnh vực"}}
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content>
+    <div class="container" [formGroup]="formControl">
+        <div class="flex-6">
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Tên lĩnh vực<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" [(ngModel)]="data.item.tieuDe" #input formControlName="tenLinhVuc" >
+                    <mat-error *ngIf=" f.tenLinhVuc.hasError('required')">
+                        Chưa nhập tên lĩnh vực
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Lĩnh vực cha<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-select [(ngModel)]="data.item.linhVucChaId" formControlName="linhVucCha">
+                        <mat-option [value]='0'>Là lĩnh vực cha</mat-option>
+                        <div *ngFor="let item of dsLinhVucCha">
+                            <div *ngIf="item.linhVucChaId == 0; then cha else con"></div>
+                            <ng-template #cha>
+                                <mat-option [value]="item.id">{{item.tieuDe}}</mat-option>
+                            </ng-template>
+                            <ng-template #con>
+                                <mat-option [value]="item.id">&emsp;{{item.tieuDe}}</mat-option>
+                            </ng-template>
+                        </div>
+                    </mat-select>
+                    <mat-error *ngIf="f.linhVucCha.hasError('required')">
+                        Chưa chọn lĩnh vực cha
+                    </mat-error>
+                </mat-form-field>
+            </div>
+           
+            <div class="flex-row center-row">
+                <p style="width: 30%; font-weight: bold;">Trạng thái</p>
+                <mat-checkbox  formControlName="trangThai" [(ngModel)]="data.item.trangThaiHoatDong">Hoạt động</mat-checkbox>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions style="text-align: right ; float: right;" class="fs-14">
+    <button mat-raised-button color="primary" (click)="save()">
+        <mat-icon>check_box</mat-icon> Lưu thông tin
+    </button>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+</div>

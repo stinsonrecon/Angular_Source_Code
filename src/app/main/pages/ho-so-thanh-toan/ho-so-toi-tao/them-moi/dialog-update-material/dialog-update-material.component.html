@@ -1,0 +1,111 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text" style="padding-bottom: 20px">
+        Chỉnh sửa thông tin tài liệu
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content [formGroup]="formControl">
+    <div class="container">
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Mã tài liệu</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Mã tài liệu</mat-label>
+                <input readonly matInput [(ngModel)]="data.item.idGiayTo" formControlName="idGiayTo">
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Tên tài liệu</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Tên tài liệu</mat-label>
+                <input matInput [(ngModel)]="data.item.tenHoSoTT" formControlName="tenHoSoTT">
+                <mat-error *ngIf="f.tenHoSoTT.hasError('required')">
+                    Bạn chưa nhập tên tài liệu
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Nguồn tài liệu</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Nguồn tài liệu</mat-label>
+                <mat-select [(ngModel)]="data.item.nguonTaiLieu" formControlName="nguonTaiLieu">
+                    <mat-option [value]="1">Scan bản giấy</mat-option>
+                    <mat-option [value]="2">EVNPortal</mat-option>
+                    <mat-option [value]="3">D-Office</mat-option>
+                    <mat-option [value]="4">HRMS</mat-option>
+                    <mat-option [value]="5">Khác</mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+        </div>
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Phê duyệt/Ký số</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Phê duyệt/Ký số</mat-label>
+                <mat-select [(ngModel)]="data.item.pheDuyet" formControlName="pheDuyet">
+                    <mat-option [value]='1'>Có</mat-option>
+                    <mat-option [value]='2'>Không</mat-option>
+
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Nội dung tài liệu/Link liên kết</p>
+            <!-- <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%"> -->
+                <ul class="list-files">
+                    <li class="file-item" *ngFor="let a of listShowFiles">
+                        <p>{{a}}</p>
+                        <button mat-icon-button color="warn" (click)="deleteMaterial(a)">
+                            <mat-icon class="animation-scale">delete</mat-icon>
+                          </button>
+                    </li>
+                </ul>
+            <!-- </mat-form-field> -->
+        </div>
+
+        <div class="flex-row">
+            <div style="text-align:center; margin-top: 10px; width: 100%;">
+                <mat-card style="margin-top:10px;">
+                        <mat-card-content>
+                            <ul>
+                                <li *ngFor="let file of files">
+                                    <!-- <mat-progress-bar [value]="file.progress"></mat-progress-bar> -->
+                                    <span id="file-label">
+                                        {{file.data.name}}
+                                    </span>
+                                </li>
+                            </ul>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button color="warn" (click)="onClick()">
+                                <mat-icon>file_upload</mat-icon>
+                                Chọn file
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                <input 
+                    type="file" 
+                    #fileUpload 
+                    id="fileUpload" 
+                    name="fileUpload" 
+                    multiple="multiple" 
+                    accept="image/*" 
+                    style="display:none;" 
+                />
+            </div>
+        </div>
+
+
+        
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button color="primary" (click)="handleUpdateMaterials()">
+        <mat-icon>save_alt</mat-icon> Lưu
+    </button>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+</div>

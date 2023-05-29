@@ -1,0 +1,106 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        {{ !data.item.id ? "Thêm mới chức năng" : "Cập nhật chức năng"}}
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content>
+    <div class="container" [formGroup]="formControl">
+        <div class="flex-6">
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Tên chức năng<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" [(ngModel)]="data.item.tieuDe" #input formControlName="tenChucNang">
+                    <mat-error *ngIf=" f.tenChucNang.hasError('required')">
+                        Chưa nhập tên chức năng
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Chức năng cha<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-select [(ngModel)]="data.item.chucNangChaId" formControlName="chucNangCha">
+                        <mat-option [value]='0'>Là chức năng cha</mat-option>
+                        <div *ngFor="let item of objChucNang">
+                            <mat-option [value]="item.id">{{item.tieuDe}}</mat-option>
+                            <div *ngIf="item.child.length > 0">
+                                <div *ngFor="let ele of item.child">
+                                    <mat-option [value]="ele.id">&nbsp;&nbsp;&nbsp;&nbsp;{{ele.tieuDe}}</mat-option>
+                                    <div *ngIf="ele.child.length > 0">
+                                        <div *ngFor="let child of ele.child">
+                                            <mat-option [value]="child.id">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{child.tieuDe}}</mat-option>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-select>
+                    <mat-error *ngIf="f.chucNangCha.hasError('required')">
+                        Chưa nhập chức năng cha
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Loại</p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-select [(ngModel)]="data.item.type" formControlName="type">
+                        <mat-option [value]="1">Chức năng</mat-option>
+                        <mat-option [value]="2">Hành động</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Url</p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" [(ngModel)]="data.item.linkUrl" #input formControlName="url">
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Icon</p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" #input formControlName="icon" [(ngModel)]="data.item.icon">
+                    <!-- <mat-error *ngIf="f.icon.hasError('required')">
+                        Chưa nhập icon
+                    </mat-error> -->
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Thứ tự hiển thị</p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="number" #input formControlName="thuTuHienThi" [(ngModel)]="data.item.order">
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Tên phân quyền</p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput #input formControlName="claimValue" [(ngModel)]="data.item.claimValue">
+
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Mô tả</p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <textarea matInput formControlName="moTa" [(ngModel)]="data.item.moTa" cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="7" cdkAutosizeMaxRows="7"
+                        placeholder="Nội dung mô tả"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div class="flex-row center-row">
+                <p style="width: 30%; font-weight: bold;">Trạng thái</p>
+                <mat-checkbox formControlName="trangThai" [(ngModel)]="data.item.trangThai">Hoạt động</mat-checkbox>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions style="text-align: right ; float: right;" class="fs-14">
+    <button mat-raised-button color="primary" (click)="save()">
+        <mat-icon>check_box</mat-icon> Lưu thông tin
+    </button>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+</div>

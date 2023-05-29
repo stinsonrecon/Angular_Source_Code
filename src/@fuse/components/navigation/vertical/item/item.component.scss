@@ -1,0 +1,19 @@
+:host {
+
+    .folded:not(.unfolded) & {
+
+        .nav-link {
+
+            > .nav-link-title,
+            > .nav-link-badge {
+                opacity: 0;
+                transition: opacity 200ms ease;
+            }
+        }
+    }
+}
+.mat-divider-line {
+    border-top-width: 0px;
+    margin-left: 56px;
+    margin-right: 10%;
+}

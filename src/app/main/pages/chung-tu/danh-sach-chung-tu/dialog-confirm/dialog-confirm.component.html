@@ -1,0 +1,98 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<h2 mat-dialog-title>Yêu cầu chuyển tiền</h2>
+<mat-dialog-content>
+    <h3><b>Thông tin hồ sơ thanh toán</b></h3>
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex="25" style="margin-right: 5px;">Hồ sơ</span>
+        <span fxFlex="75"><b>({{ dialogData?.hoSoThanhToan.maHoSo }}) - {{ dialogData?.hoSoThanhToan.tenHoSo }}</b></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="25">Số chứng từ</span>
+        <span fxFlex="25"><b>{{ dialogData?.soChungTuERP }}</b></span>
+        <span fxFlex="25">Ngày lập</span>
+        <span fxFlex="25"><b>{{ dialogData?.ngayLapChungTu | date:'dd/MM/yyyy'}}</b></span>
+    </div>
+    <hr>
+
+
+    <h3><b>Thông tin người chuyển</b></h3>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="25">Tên tài khoản chuyển</span>
+        <span fxFlex="25"><b>{{ dialogData?.tenNguoiChuyen }}</b></span>
+        <span fxFlex="25">Ngân hàng chuyển</span>
+        <span fxFlex="25"><b>{{ dialogData?.tenNganHangChuyen }}</b></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="25">Số tài khoản chuyển</span>
+        <span fxFlex="25"><b>{{ dialogData?.soTaiKhoanChuyen }}</b></span>
+        <span fxFlex="25">Chi nhánh chuyển</span>
+        <span fxFlex="25"><b>{{dialogData?.maChiNhanhChuyen}} - {{ tenChiNhanhChuyen }}</b></span>
+    </div>
+    <hr>
+
+    <h3><b>Thông tin người nhận</b></h3>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="25">Tên người hưởng</span>
+        <span fxFlex="25"><b>{{ dialogData?.tenTaiKhoanNhan }}</b></span>
+        <span fxFlex="25">Ngân hàng hưởng </span>
+        <span fxFlex="25"><b>{{ dialogData?.tenNganHangNhan }}</b></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="25">Số tài khoản hưởng</span>
+        <span fxFlex="25"><b>{{ dialogData?.soTaiKhoanNhan }}</b></span>
+        <span fxFlex="25">Chi nhánh hưởng </span>
+        <span fxFlex="25"><b>{{dialogData?.maChiNhanhNhan}} - {{tenChiNhanhNhan }}</b></span>
+    </div>
+    <hr>
+
+    <h3><b>Thông tin giao dịch</b></h3>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="25">Số tiền chuyển </span>
+        <span fxFlex="25"><b>{{ dialogData?.soTien | number:'':'vi-VN' }} {{ dialogData?.loaiTienTe }}</b></span>
+        <span fxFlex="25">Tỷ giá</span>
+        <span fxFlex="25"><b>{{ dialogData?.tyGia }}</b></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="25">Quy đổi ra VND</span>
+        <span fxFlex="25"><b>{{ dialogData?.soTien * dialogData?.tyGia | number:'':'vi-VN' }} VND</b></span>
+        <span fxFlex="25"></span>
+        <span fxFlex="25"></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="25">Loại giao dịch</span>
+        <span fxFlex="25">
+            <!-- <b>{{ dialogData?.loaiGiaoDich }}</b>
+            <b> - {{getLoaiGiaoDich(dialogData?.loaiGiaoDich)}}</b> -->
+            <b>{{ dialogData?.tenLoaiGiaoDich}}</b>
+        </span>
+        <span fxFlex="25">Phí chuyển khoản</span>
+        <span fxFlex="25"><b>{{getLoaiPhi(dialogData?.loaiPhi)}}</b></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="23">Nội dung chuyển</span>
+        <span fxFlex="75"><b>{{ dialogData?.noiDungTT }}</b></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <span fxFlex="23">Ngày giao dịch</span>
+        <span fxFlex="75">
+            <mat-form-field appearance="outline" style="width: 60%;">
+                <mat-label>Chọn thời hạn</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="date" [min]="minDate" [required]="true">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </span>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>
+        Hủy
+    </button>
+    <button mat-raised-button color="primary" (click)="openDialogSubmit(danhSachThaoTac.btnDongYChuyenTienNganHang)" [disabled]="date === null"
+        *ngIf="enableButtonDongYChuyenTien">
+        Đồng ý
+    </button>
+</mat-dialog-actions>

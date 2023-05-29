@@ -1,0 +1,98 @@
+h3,h4,p{
+    font-family: Roboto, Arial, sans-serif;
+  }
+  
+  .text-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  
+  .centered {
+    font-family: sans-serif;
+    font-size: 1.3em;
+    text-align:center;
+  }
+  
+  .dropzone {
+      height: 200px;
+      display: table;
+      width: 100%;
+      border-radius: 14px;
+      background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='14' ry='14' stroke='%238A8A8AFF' stroke-width='2' stroke-dasharray='13%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  }
+  
+  input[type="file"]{
+    display:none;
+  }
+  
+  .textLink{
+    // background-color: #f45e61;
+    color:#000;
+    // padding:10px;
+    border-radius:5px;
+    // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .textLink::before{
+    content: "";
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      color: #fff;
+      font-size: large;
+      margin-right: 10px;
+  }
+    
+    .text-wrapper {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    
+    .centered {
+      font-family: sans-serif;
+      font-size: 1.3em;
+      text-align:center;
+    }
+  
+  
+  .fileItem{
+    width: calc(25% - 6px);
+    overflow:hidden;
+    height: fit-content;
+    margin:3px;
+    padding: 10px;
+    display:block;
+    position:relative;
+    float:left;
+    border:2px dashed #778899;
+    border-radius:5px;
+    transition: .3s ease;
+  }
+    .fileItem:hover{
+      border:2px solid #c33838;
+      background-color: #c33838bf;
+    }
+    .fileItem:hover .fileItemIcon::before{
+      content: "\f00d";
+      color: whitesmoke;
+    }
+    .fileItem:hover .fileItemText{
+      color: whitesmoke;
+    }
+  .fileItemIconDiv{
+    text-align:center;
+  }
+  .fileItemIcon::before{
+    font-style: normal;
+    content: "\f15b";
+    color:#778899;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+  }
+  .fileItemText{
+    text-align:center;
+    margin-top:10px;
+    height: 40px;
+  }
+
+  :host ::ng-deep button.mat-focus-indicator.mat-raised-button.mat-button-base.mat-primary.mat-button-disabled {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+  }

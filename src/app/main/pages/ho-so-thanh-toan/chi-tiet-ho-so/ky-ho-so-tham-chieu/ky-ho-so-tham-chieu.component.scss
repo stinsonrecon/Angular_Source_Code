@@ -1,0 +1,178 @@
+:host ::ng-deep button.mat-focus-indicator.mat-raised-button.mat-button-base.mat-primary.mat-button-disabled {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+  }
+.stepper-wrapper {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.stepper-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
+}
+
+.stepper-item::before {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 20px;
+    left: -50%;
+    z-index: 2;
+}
+
+.stepper-item::after {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 20px;
+    left: 50%;
+    z-index: 2;
+}
+
+.stepper-item .step-counter {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ccc;
+    margin-bottom: 6px;
+}
+
+.stepper-item.active {
+    font-weight: bold;
+}
+
+.stepper-item.active .step-counter {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.stepper-item.completed .step-counter {
+    background-color: #304ffe;
+    color: #fff;
+}
+
+.stepper-item.completed::after {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #304ffe;
+    width: 100%;
+    top: 20px;
+    left: 50%;
+    z-index: 3;
+}
+
+.stepper-item:first-child::before {
+    content: none;
+}
+.stepper-item:last-child::after {
+    content: none;
+}
+.container {
+    display: "flex";
+    flex-direction: row;
+    width: 100%;
+}
+.flex-row {
+    flex: 1;
+    display: "flex";
+    flex-direction: "row";
+}
+.flex-6 {
+    flex: 6;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+.flex-5 {
+    flex: 5;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+.flex-3 {
+    flex: 3;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+.flex-2 {
+    flex: 2;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+.flex-1 {
+    flex: 1;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+.flex-05 {
+    flex: 0.5;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+.flex-row {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+.full-width {
+    width: 100%;
+}
+::ng-deep .mat-paginator-page-size .mat-select-trigger {
+    width: max-content !important;
+}
+::ng-deep .cdk-overlay-pane.dialog-pheduyetct {
+    position: relative !important;
+}
+.close.mat-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    line-height: 14px;
+    min-width: auto;
+    background-color: #fff;
+}
+
+.left {
+    width: 80%;
+    border: 1px solid lightgray;
+    padding: 10px;
+}
+
+.right {
+    min-width: 20%;
+    margin-top: 1%;
+    padding: 10px;
+    display: block;
+}
+
+@media screen and (max-width: 768px) {
+    .resp {
+        flex-direction: column-reverse;
+        .left {
+            width: 100%;
+        }
+        .right {
+            max-width: 20%;
+            margin-top: 0;
+            // display: flex;
+            // flex-direction: row;
+            // :last-child {
+            //     align-items: center;
+            // }
+        }
+    }
+}

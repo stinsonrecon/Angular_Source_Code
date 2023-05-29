@@ -1,0 +1,11 @@
+.snack-container {
+    display: flex;   
+    flex-direction: row;
+    justify-content: space-between;
+    color: white;
+    p { margin: 0;}
+}
+.main {
+    color: white;
+    padding-left: 27px;
+}

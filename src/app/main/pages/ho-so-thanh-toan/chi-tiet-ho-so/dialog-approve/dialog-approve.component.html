@@ -1,0 +1,20 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<h2 mat-dialog-title>
+    <ng-container *ngIf="data?.action === 'DENIED'; else approved">Từ chối hồ sơ</ng-container>
+    <ng-template #approved>Phê duyệt hồ sơ</ng-template>
+</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Ý kiến phê duyệt <span class="color: red">(*)</span></mat-label>
+        <textarea rows="6" matInput [formControl]='ykien'>
+        </textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button [mat-dialog-close]="{submit: false}">Hủy</button>
+    <button mat-raised-button color="primary" (click)="submit()">
+        {{ data?.action === 'DENIED' ? 'Từ chối' : 'Phê duyệt'}}
+    </button>
+</mat-dialog-actions>

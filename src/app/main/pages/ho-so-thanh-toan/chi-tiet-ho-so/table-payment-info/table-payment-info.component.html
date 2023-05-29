@@ -1,0 +1,166 @@
+<div class="table-container" [formGroup]="formCreatePaymentInfo">
+    <table mat-table [dataSource]="dataToDisplay" class="fs-13">
+
+        <ng-container matColumnDef="stt">
+            <th mat-header-cell *matHeaderCellDef style="width:50px"> Stt </th>
+            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center; vertical-align: top;">
+                {{i+1}}
+            </td>
+            <!-- <td mat-footer-cell *matFooterCellDef></td> -->
+        </ng-container>
+        <ng-container matColumnDef="soTaiKhoanThuHuong">
+            <th mat-header-cell *matHeaderCellDef>Số tài khoản người thụ hưởng</th>
+            <td mat-cell *matCellDef="let element" style="vertical-align: top; width: 250px;">
+                {{element.soTKThuHuong}}
+            </td>
+            <!-- <td mat-footer-cell *matFooterCellDef>
+                <div class="box-input-footer">
+                    <mat-form-field appearance="outline" style="width: 70%;">
+                        <input 
+                            matInput
+                            readonly 
+                            type="text" 
+                            [(ngModel)]="inputStkNguoiThuHuong" 
+                            #input 
+                            formControlName="inputStkNguoiThuHuong" 
+                            placeholder="STK người thụ hưởng"
+                        >
+                        <mat-error *ngIf="formPaymentInfo.inputStkNguoiThuHuong.hasError('required')">
+                            Bạn chưa nhập tài khoản người thụ hưởng
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </td> -->
+        </ng-container>
+        <ng-container matColumnDef="tenTaiKhoanThuHuong">
+            <th mat-header-cell *matHeaderCellDef style="width: 150px;"> Tên tài khoản thụ hưởng </th>
+            <td mat-cell *matCellDef="let element" style="vertical-align: top; width: 150px;">
+                {{ element.nguoiThuHuong }}
+            </td>
+            <!-- <td mat-footer-cell *matFooterCellDef>
+                <div class="box-input-footer">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Tài khoản thụ hưởng</mat-label>
+                        <mat-select disabled [(ngModel)]="inputTenTkNhanTien" formControlName="inputTenTkNhanTien">
+                            <mat-option [value]="1">Nguyễn Văn A</mat-option>
+                            <mat-option [value]="2">Nguyễn Văn B</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </td> -->
+        </ng-container>
+        <ng-container matColumnDef="soTienThanhToan">
+            <th mat-header-cell *matHeaderCellDef style="width: 150px;"> Số tiền thanh toán</th>
+            <td mat-cell *matCellDef="let element" style="vertical-align: top; width: 150px;">
+                {{ element.tongTienDeNghiTT }}
+            </td>
+            <!-- <td mat-footer-cell *matFooterCellDef>
+                <div class="box-input-footer">
+                    <mat-form-field appearance="outline" style="width: 70%;">
+                        <input 
+                            matInput
+                            readonly 
+                            type="text" 
+                            [(ngModel)]="inputSoTienThanhToan" 
+                            #input 
+                            formControlName="inputSoTienThanhToan" 
+                        >
+                        <mat-error *ngIf="formPaymentInfo.inputSoTienThanhToan.hasError('required')">
+                            Số tiền
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </td> -->
+        </ng-container>
+        <ng-container matColumnDef="nganHangThuHuong">
+            <th mat-header-cell *matHeaderCellDef style="width: 150px;"> Ngân hàng thụ hưởng </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                {{ element.tenNganHang }}
+            </td>
+            <!-- <td mat-footer-cell *matFooterCellDef>
+                <div class="box-input-footer">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Ngân hàng thụ hưởng</mat-label>
+                        <mat-select disabled [(ngModel)]="inputNganHangThuHuong" formControlName="inputNganHangThuHuong">
+                            <mat-option [value]="1">Nguyễn Văn A</mat-option>
+                            <mat-option [value]="2">Nguyễn Văn B</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </td> -->
+        </ng-container>
+        <ng-container matColumnDef="hinhThucThanhToan">
+            <th mat-header-cell *matHeaderCellDef style="width: 200px;"> Hình thức thanh toán </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                {{ element.hinhThucTT }}
+            </td>
+            <!-- <td mat-footer-cell *matFooterCellDef>
+                <div class="box-input-footer">
+                    <mat-form-field appearance="outline" style="width: 60%;">
+                        <mat-label>Hình thức thanh toán</mat-label>
+                        <mat-select disabled [(ngModel)]="inputHinhThucThanhToan" formControlName="inputHinhThucThanhToan">
+                            <mat-option [value]="1">Chuyển khoản</mat-option>
+                            <mat-option [value]="2">Tiền mặt</mat-option>
+                            <mat-option [value]="2">Thanh toán tại quầy</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </td> -->
+        </ng-container>
+        <!-- <ng-container matColumnDef="hanhDong">
+            <th mat-header-cell *matHeaderCellDef style="width: 100px;"></th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                <div>
+                    <button 
+                        mat-icon-button
+                        color="primary" 
+                        (click)="openDialogUpdatePaymentInfo(element)"
+                    >
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button 
+                        mat-icon-button
+                        color="warn" 
+                        aria-label="Example icon button with a delete icon"
+                        (click)="deletePaymentInfo(element.id)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <div class="box-input-footer">
+                    <button mat-raised-button color="primary" (click)="savePaymentInfo()" [disabled]="formCreatePaymentInfo.invalid">
+                        Thêm mới
+                    </button>
+                </div>
+            </td>
+        </ng-container> -->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <!-- <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr> -->
+    </table>
+</div>
+
+<div class="mat-elevation-z8">
+    <!-- <button>
+        <mat-icon (click)="AddNewRow()" class="add-button">add_box</mat-icon>
+    </button>
+    <br /> -->
+    <!-- <mat-form-field style="width: 40%">
+        <mat-label>Filter</mat-label>
+        <input matInput
+        readonly (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+    </mat-form-field>
+    <mat-form-field style="width: 20%; float: right;">
+        <mat-label>Go to Page</mat-label>
+        <input matInput
+        readonly type="number" placeholder="Enter page number" [(ngModel)]="pageNumber"
+            (ngModelChange)="goToPage()">
+    </mat-form-field> -->
+    <!-- <mat-paginator-goto [length]="100" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+          (page)="paginationChange($event)"></mat-paginator-goto> -->
+    <!-- <mat-paginator [pageSizeOptions]="[5, dataSource.data.length>8? dataSource.data.length:''  ]" showFirstLastButtons>
+    </mat-paginator> -->
+</div>

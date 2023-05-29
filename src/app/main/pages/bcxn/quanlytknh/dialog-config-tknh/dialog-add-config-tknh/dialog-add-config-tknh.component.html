@@ -1,0 +1,243 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        Cấu hình ngân hàng
+    </h3>
+</div>
+<div class="container" [formGroup]="formControl">
+    <div class="box-center">
+        <mat-tab-group>
+            <mat-tab label="Thông tin cấu hình API">
+                <ng-template matTabContent>
+                    <div class="APIConfig">
+                        <div>
+                            <!-- linkTransferUrl -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Link transfer URL</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="linkTransferUrl"
+                                        [(ngModel)]="data.item.linkTransferUrl"
+                                        placeholder="Link transfer URL">
+                                </mat-form-field>
+                            </div>
+                            <!-- linkQueryBaseUrl -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Link query base URL</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="linkQueryBaseUrl"
+                                        [(ngModel)]="data.item.linkQueryBaseUrl"
+                                        placeholder="Link query base URL">
+                                </mat-form-field>
+                            </div>
+                            <!-- softwareProviderId -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Software Provider Id</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="softwareProviderId"
+                                        [(ngModel)]="data.item.softwareProviderId"
+                                        placeholder="Software Provider Id">
+                                </mat-form-field>
+                            </div>
+                            <!-- bankLanguage -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank Language</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankLanguage"
+                                        [(ngModel)]="data.item.bankLanguage"
+                                        placeholder="Bank Language">
+                                </mat-form-field>
+                            </div>
+                            <!-- bankAppointedApprover -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank Appointed Approver</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankAppointedApprover"
+                                        [(ngModel)]="data.item.bankAppointedApprover"
+                                        placeholder="Bank Appointed Approver">
+                                </mat-form-field>
+                            </div>
+                            <!-- bankChannel -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank Channel</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankChannel"
+                                        [(ngModel)]="data.item.bankChannel"
+                                        placeholder="Bank Channel">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- bankMerchantId -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank Merchant Id</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankMerchantId"
+                                        [(ngModel)]="data.item.bankMerchantId"
+                                        placeholder="Bank Merchant Id">
+                                </mat-form-field>
+                            </div>
+                            <!-- bankClientIP -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank Client IP</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankClientIP"
+                                        [(ngModel)]="data.item.bankClientIP"
+                                        placeholder="Bank Client IP">
+                                </mat-form-field>
+                            </div>
+                            <!-- bankApprover -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank Approver</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankApprover"
+                                        [(ngModel)]="data.item.bankApprover"
+                                        placeholder="Bank Approver">
+                                </mat-form-field>
+                            </div>
+                             <!-- bankSenderAddr -->
+                             <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank Sender Addr</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankSenderAddr"
+                                        [(ngModel)]="data.item.bankSenderAddr"
+                                        placeholder="Bank Sender Addr">
+                                </mat-form-field>
+                            </div>
+                            <!-- bankModel -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank Model</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankModel"
+                                        [(ngModel)]="data.item.bankModel"
+                                        placeholder="Bank Model">
+                                </mat-form-field>
+                            </div>
+                            <!-- version -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Version</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="version"
+                                        [(ngModel)]="data.item.version"
+                                        placeholder="Version">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Thông tin cấu hình H2H">
+                <ng-template matTabContent>
+                    <div class="H2HConfig">
+                        <div>
+                            <!-- ftpPath -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Đường dẫn FTP</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="ftpPath"
+                                        [(ngModel)]="data.item.ftpPath"
+                                        placeholder="FTP Path">
+                                </mat-form-field>
+                            </div>
+                            <!-- ftpUserName -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Tên đăng nhập FTP</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="ftpUserName"
+                                        [(ngModel)]="data.item.ftpUserName"
+                                        placeholder="FTP UserName">
+                                </mat-form-field>
+                            </div>
+                            <!-- ftpPassword -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Mật khẩu FTP</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="ftpPassword"
+                                        [(ngModel)]="data.item.fptPassword"
+                                        placeholder="FTP Password">
+                                </mat-form-field>
+                            </div>
+                            <!-- evndsaPath -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Đường đẫn đến file để ký số</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="evndsaPath"
+                                        [(ngModel)]="data.item.evndsaPath"
+                                        placeholder="EVN DSA Path">
+                                </mat-form-field>
+                            </div>
+                            <!-- PassPhraseDSA -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Mật khẩu để ký</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="passPhraseDSA"
+                                        [(ngModel)]="data.item.passPhraseDSA"
+                                        placeholder="Pass Phrase DSA">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- evnrsaPath -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">EVN RSA Path</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="evnrsaPath"
+                                        [(ngModel)]="data.item.evnrsaPath"
+                                        placeholder="EVN RSA Path">
+                                </mat-form-field>
+                            </div>
+                            <!-- PassPhraseRSA -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Pass Phrase RSA</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="passPhraseRSA"
+                                        [(ngModel)]="data.item.passPhraseRSA"
+                                        placeholder="PassPhraseRSA">
+                                </mat-form-field>
+                            </div>
+                            <!-- bankDSAPath -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Bank DSA Path</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankDSAPath"
+                                        [(ngModel)]="data.item.bankDSAPath"
+                                        placeholder="Bank DSA Path">
+                                </mat-form-field>
+                            </div>
+                            <!-- bankRSAPath -->
+                            <div class="flex-row">
+                                <p style="width: 35%; font-weight: bold;">Đường đẫn đến File để mã hóa</p>
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <input matInput type="text" #input formControlName="bankRSAPath"
+                                        [(ngModel)]="data.item.bankRSAPath"
+                                        placeholder="Bank RSA Path">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <!-- daXoa -->
+    <div class="flex-row" style="padding-left: 2px;">
+        <mat-checkbox 
+            class="example-margin"
+            [checked]="data.item.daXoa === false ? true : false">
+            Trạng thái
+        </mat-checkbox>
+    </div>
+
+    <div class="end" style="display: flex; justify-content: space-between; margin-top: 10px;">
+        <div class="button-submit">
+            <button mat-raised-button color="primary" (click)="save()" [disabled]="this.formControl.invalid">
+                <mat-icon>check_box</mat-icon> Lưu thông tin
+            </button>
+            <button mat-raised-button mat-dialog-close>
+                Thoát
+            </button>
+        </div>
+    </div>
+</div>

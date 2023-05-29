@@ -1,0 +1,154 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        {{ !data.item.id ? "Thêm mới người dùng" : "Sửa thông tin người dùng"}}
+    </h3>
+
+</div>
+<mat-dialog-content mat-dialog-content>
+    <div class="container" [formGroup]="formControl">
+        <div class="flex-6">
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Họ<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" #input formControlName="firstName"
+                        [(ngModel)]="this.data.item.firstName">
+                    <mat-error *ngIf=" f.firstName.hasError('required')">
+                        Chưa nhập họ
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Tên<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" #input formControlName="lastName" [(ngModel)]="this.data.item.lastName">
+                    <mat-error *ngIf=" f.lastName.hasError('required')">
+                        Chưa nhập tên
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">SĐT</p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" #input formControlName="sdt" [(ngModel)]="this.data.item.phoneNumber">
+                   
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Email<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="email" #input formControlName="email" [(ngModel)]="this.data.item.email">
+                    <mat-error *ngIf="f.email.hasError('required')">
+                        Chưa nhập email
+                    </mat-error>
+                    <mat-error *ngIf=" !f.email.hasError('required')&&formControl.get('email').invalid">
+                        Sai đinh dạng email
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Đơn vị<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-select formControlName="donVi" [(ngModel)]="this.data.item.donViId">
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="dvFilterCtrl" placeholderLabel="Tìm kiếm..."></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of dsDonViSearch" [value]="item.id">{{item.tenDonVi}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.donVi.hasError('required')">
+                        Chưa chọn đơn vị
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Tài khoản<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" [readonly] ="data.item.id" #input formControlName="taiKhoan" [(ngModel)]="this.data.item.userName">
+                    <mat-error *ngIf=" f.taiKhoan.hasError('required')">
+                        Chưa nhập tài khoản
+                    </mat-error>
+                    <mat-error *ngIf=" !f.taiKhoan.hasError('required') && f.taiKhoan.hasError('minlength')">
+                        Tài khoản quá ngắn
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row" *ngIf="!data.item.id">
+                <p style="width: 30%; font-weight: bold;">Mật khẩu<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" #input formControlName="password" [(ngModel)]="this.data.item.password">
+                    <mat-error *ngIf=" f.password.hasError('required')">
+                        Chưa nhập mật khẩu
+                    </mat-error>
+                    <mat-error *ngIf="!f.password.hasError('required')  && f.password.hasError('minlength')">
+                        Mật khẩu cần tối thiểu 8 ký tự
+                    </mat-error>
+                    <mat-error
+                        *ngIf="!f.password.hasError('required') && f.password.hasError('pattern') && !f.password.hasError('minlength')">
+                        Mật khẩu phải bao gồm số, chữ hoa, chữ thường, ký tự đặc biệt
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row" *ngIf="!data.item.id">
+                <p style="width: 30%; font-weight: bold;">Xác nhận mật khẩu<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" #input formControlName="confirmPass">
+                    <mat-error *ngIf=" f.confirmPass.hasError('required')">
+                        Chưa nhập xác nhận mật khẩu
+                    </mat-error>
+                    <mat-error *ngIf=" !f.confirmPass.hasError('required')&& f.confirmPass.hasError('notEquivalent')">
+                        Mật khẩu không khớp
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Định danh ký<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" #input formControlName="dinhDanhKy" [(ngModel)]="this.data.item.dinhDanhKy">
+                    <mat-error *ngIf=" f.dinhDanhKy.hasError('required')">
+                        Chưa nhập định danh ký
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Nhóm quyền<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-select formControlName="nhomQuyen" [(ngModel)]="data.item.applicationRoleId">
+                        <mat-option *ngFor="let item of dsRole" [value]="item.id">{{item.roleName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf=" f.nhomQuyen.hasError('required')">
+                        Chưa chọn nhóm quyền
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="width: 30%; font-weight: bold;">Loại tài khoản<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-select formControlName="accountType" [(ngModel)]="data.item.accountTypeString">
+                        <mat-option value="0">LOCAL</mat-option>
+                        <mat-option value="1">HRMS</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf=" f.accountType.hasError('required')">
+                        Chưa chọn loại tài khoản
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row" *ngIf="!data.item.isDelete">
+                <p style="width: 30%; font-weight: bold;">Trạng thái</p>
+                <mat-checkbox formControlName="trangThai" [(ngModel)]="data.item.isActive">Hoạt động</mat-checkbox>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions style="text-align: right ; float: right;" class="fs-14">
+    <button mat-raised-button color="primary" (click)="save()">
+        <mat-icon>check_box</mat-icon> Lưu thông tin
+    </button>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+</div>

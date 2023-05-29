@@ -1,0 +1,6 @@
+<h3 matDialogTitle class="confirm-dialog-title">{{title}}</h3>
+<div mat-dialog-content style="width: 500px;min-height: 50px; text-align: center;">{{confirmMessage}}</div>
+<div mat-dialog-actions style="text-align: center;">
+    <button style="padding-right: 10px;padding-left: 10px;" class="mat-focus-indicator mat-tooltip-trigger mat-raised-button mat-button-base mat-warn" (click)="dialogRef.close(false)">Không</button>
+    <button style="padding-right: 10px;padding-left: 10px;" class="mat-focus-indicator mat-tooltip-trigger mat-raised-button mat-button-base mat-primary" (click)="dialogRef.close(true)">Đồng ý</button>
+</div>

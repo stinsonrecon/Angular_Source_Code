@@ -1,0 +1,350 @@
+<div style="width: 100%">
+    <div class="content p-12">
+        <div class="flex-row">
+            <div style="width:50%;float: left;">
+                <button mat-raised-button color="primary" (click)="goBack()">
+                    <span>
+                        <mat-icon style="font-size: 20px !important;">arrow_back</mat-icon>
+                    </span>Trở về
+                </button>
+
+            </div>
+            <div style="width:50%;text-align: right;">
+                <button mat-raised-button color="warn" *ngIf="checkRole('ycbc.close') && ycbc.trangThai !== 4"
+                    (click)="dongXacNhan()">
+                    Đóng xác nhận
+                </button>
+                <button mat-raised-button color="primary" *ngIf="checkRole('ycbc.update') && ycbc.trangThai != 4"
+                    (click)="openDialogUpdateYcbc()">
+                    Sửa thông tin
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <div style="width:90%">
+                <h1 style="font-weight: bolder;">{{ycbc.tieuDe}} {{ycbc.loaiChuKy == 1 ? 'Tuần ':''}}{{ycbc.loaiChuKy
+                    == 2 ?
+                    'Tháng ':''}}{{ycbc.loaiChuKy == 3 ? 'Quý ':''}}{{ycbc.loaiChuKy == 4 ?
+                    'Năm ':''}}{{ycbc.loaiChuKy!=4? ycbc.chuKy+'/':''}}{{ycbc.nam}}</h1>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="flex-row">
+                <p style="width:50%">Hạn hoàn thành xác nhận: <strong>{{ycbc.hanHoanThanh | date :
+                        'dd/MM/yyyy'}}</strong></p>
+                <p style="width:50% ; text-align: right;">Kỳ báo cáo:
+                    <strong *ngIf="ycbc.loaiChuKy==1">Tuần</strong>
+                    <strong *ngIf="ycbc.loaiChuKy==2">Tháng</strong>
+                    <strong *ngIf="ycbc.loaiChuKy==3">Quý</strong>
+                    <strong *ngIf="ycbc.loaiChuKy==4">Năm</strong>
+                </p>
+            </div>
+
+            <hr>
+            <h3 style="font-weight: bolder;">Ghi chú</h3>
+            <p style="width:100%">{{ycbc.moTa}}</p>
+            <div class="flex-row">
+                <p>Tổng số báo cáo xác nhận: <strong>{{tongSoBcxn}}</strong></p>
+                <p style="margin-left: 20px;">Số báo cáo đã xác nhận <strong>{{soBcDaXn}}</strong></p>
+            </div>
+
+            <div *ngIf="checkRole('ycbc.thongke')" class="table-container">
+                <table mat-table [dataSource]="dsThongKe" class="mat-elevation-z8 fs-13">
+                    <ng-container matColumnDef="colspan-stt" sticky>
+                        <th mat-header-cell *matHeaderCellDef style=" width: 50px ;min-width: 50px;" [attr.rowspan]="2">
+                            TT
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="stt">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}">TT
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="colspan-ban">
+                        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2">
+                            Ban
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="ban">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}">Ban
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i = index" style="text-align: left">
+                            {{element.tenDonVi}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="colspan-daXacNhan">
+                        <th mat-header-cell *matHeaderCellDef [attr.colspan]="2">Đã xác nhận</th>
+                    </ng-container>
+                    <ng-container matColumnDef="solieudung">
+                        <th mat-header-cell *matHeaderCellDef style=" width: 150px">Số liệu đúng</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: right">
+                            {{element.soLieuDung}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="chuaDung">
+                        <th mat-header-cell *matHeaderCellDef style=" width: 150px">Chưa đúng</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: right">
+                            {{element.soLieuChuaDung}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="colspan-chuaXacNhan">
+                        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2" style=" width: 150px">
+                            Chưa xác nhận
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="chuaXacNhan">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}">Chưa xác nhận
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="text-align: right;">{{element.chuaXacNhan}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="colspan-tongSo">
+                        <th mat-header-cell *matHeaderCellDef [attr.rowspan]="2" style=" width: 150px">
+                            Tổng số
+                        </th>
+                    </ng-container>
+                    <ng-container matColumnDef="tongSo">
+                        <th mat-header-cell *matHeaderCellDef [ngStyle]="{'display': 'none'}">Tổng số
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="text-align: right">{{element.daXacNhan +
+                            element.chuaXacNhan}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns1Lv2"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns1Lv1"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns1Lv1;"></tr>
+                </table>
+            </div>
+            <div class="container">
+                <div class="flex-row">
+                    <h3 style="font-weight: bold;width:50%">Danh sách báo cáo xác nhận</h3>
+                    
+                    <div style="width:50%">
+                    
+                        <button *ngIf="changeView" style="float: right;" mat-raised-button color="primary"
+                            (click)="changeView=!changeView">
+                            <mat-icon style="font-size: 20px !important;">view_comfy</mat-icon> Xem dạng lưới
+                        </button>
+                        <button *ngIf="!changeView" style="float: right;" mat-raised-button color="primary"
+                            (click)="changeView=!changeView">
+                            <mat-icon style="font-size: 20px !important;">table_chart</mat-icon> Xem dạng bảng
+                        </button>
+                        <button *ngIf="!changeView && (ycbc.trangThai != 1)" style="float: right;" mat-raised-button color="primary"
+                            (click)="downloadFileMergeByID()">
+                            Tải xuống
+                        </button>
+                        <button *ngIf="ycbc.trangThai == 2" style="float: right;" mat-raised-button color="primary"
+                            (click)="downloadTemplate()">
+                            Tải biểu mẫu
+                        </button>
+                        <div class="flex-row" style="float: right; margin-right: 10px;">
+                            <label style="margin-right: 10px;width: 120px;margin-top: 16px;">Trạng thái</label>
+                            <mat-form-field appearance="outline" style="width:100%;margin-top: 7px !important;">
+                                <mat-label>Trạng thái</mat-label>
+                                <mat-select [(ngModel)]="searchItem.trangThaiXacNhan" (selectionChange)="getBcxnById()">
+                                    <mat-option [value]='-99'>---Tất cả---</mat-option>
+                                    <mat-option [value]='1'>Đã xác nhận</mat-option>
+                                    <mat-option [value]='2'>Chưa xác nhận</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div *ngIf="changeView" class="table-container">
+                    <table #table mat-table [dataSource]="dsBaoCaoXacNhan" cdkDropList
+                        [cdkDropListData]="dsBaoCaoXacNhan" (cdkDropListDropped)="dropTable($event)">
+                        <!-- <ng-container matColumnDef="drag">
+                            <th mat-header-cell *matHeaderCellDef style=" width: 30px">
+
+                            </th>
+                            <td mat-cell *matCellDef="let element;" style="text-align: center">
+                                <mat-icon style="pointer-events: all;" cdkDragHandle>drag_indicator</mat-icon>
+                            </td>
+                        </ng-container> -->
+                        <ng-container matColumnDef="stt">
+                            <th mat-header-cell *matHeaderCellDef style=" width: 50px">
+                                STT
+                            </th>
+                            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center">
+                                <!-- {{i+1}} -->
+                                <mat-form-field appearance="outline" style="width:65px"  >
+                                    <mat-select [(ngModel)]="element.sapXep" (ngModelChange)="saveGiaThuTu(element)">  
+                                        <mat-option *ngFor="let item of dsThuTu" [value]="item.giatri">{{item.hienthi}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="tenBaoCao">
+                            <th mat-header-cell *matHeaderCellDef>Tên báo cáo</th>
+                            <td mat-cell style="pointer-events: all;" cdkDragHandle *matCellDef="let element">
+                                {{element.tenBaoCao}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="tenLinhVuc">
+                            <th mat-header-cell *matHeaderCellDef>Lĩnh vực</th>
+                            <td mat-cell style="pointer-events: all;" cdkDragHandle *matCellDef="let element">
+                                {{element.tenLinhVuc}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="banXN">
+                            <th mat-header-cell *matHeaderCellDef>Ban xác nhận</th>
+                            <td mat-cell style="pointer-events: all;" cdkDragHandle *matCellDef="let element">
+                                {{element.tenDonVi}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="loaiBaoCao">
+                            <th mat-header-cell *matHeaderCellDef>Loại báo cáo</th>
+                            <td mat-cell style="pointer-events: all;" cdkDragHandle *matCellDef="let element">
+                                <div *ngIf="element.soLieuId==1">Tự động</div>
+                                <div *ngIf="element.soLieuId==2">Attach file</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="trangThai">
+                            <th mat-header-cell *matHeaderCellDef>Trạng thái</th>
+                            <td mat-cell style="pointer-events: all;" cdkDragHandle *matCellDef="let element">
+                                <div *ngIf="element.trangThaiXacNhan">Đã xác nhận</div>
+                                <div *ngIf="!element.trangThaiXacNhan">Chưa xác nhận</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="soLieu">
+                            <th mat-header-cell *matHeaderCellDef>Số liệu</th>
+                            <td mat-cell style="pointer-events: all;cursor: point !important;" cdkDragHandle
+                                *matCellDef="let element">
+
+                                <div *ngIf="element.trangThaiDuLieu && element.trangThaiDuLieu==1">Đúng</div>
+                                <div *ngIf="element.trangThaiDuLieu && element.trangThaiDuLieu==2">Chưa đúng</div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="thoiGianXN">
+                            <th mat-header-cell *matHeaderCellDef>Thời gian XN</th>
+                            <td mat-cell cdkDragHandle *matCellDef="let element"
+                                style="pointer-events: all; text-align: center">
+                                {{element.thoiGianXacNhan | date : 'dd/MM/yyyy'}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="thaoTac">
+                            <th mat-header-cell *matHeaderCellDef style="width: 70px">Thao tác</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center;pointer-events: all;">
+                                <!-- <span style="text-decoration: underline; cursor: pointer;"
+                                    matTooltip="Xem yêu cầu báo cáo">Xem</span>
+                                <span style="margin-left: 5px; text-decoration: underline; cursor: pointer;"
+                                    matTooltip="Sửa yêu cầu báo cáo">Sửa</span>
+                                <span style="margin-left: 5px;  text-decoration: underline;  cursor: pointer;color: red;"
+                                    matTooltip="Xoá yêu cầu báo cáo">Xoá</span> -->
+                                <div>
+
+                                    <mat-icon
+                                        *ngIf="element.fileBaoCao !=null && element.fileBaoCao != '' && element.fileBaoCao != 'wwwroot/fileTableAu/template.pptx'"
+                                        matTooltip="Xem file xác nhận báo cáo" class="cursor-pointer"
+                                        (click)="openDialogViewImageXacNhan(element)">visibility
+                                    </mat-icon>
+
+                                    <mat-icon matTooltip="Xác nhận" *ngIf="ycbc.trangThai == 2"
+                                        class="cursor-pointer" (click)="openDialogXacNhan(element)">verified_user
+                                    </mat-icon>
+                                    <mat-icon matTooltip="Xem lịch sử" *ngIf="ycbc.trangThai == 3 || ycbc.trangThai == 4"
+                                        class="cursor-pointer" (click)="openDialogXemLichSu(element)">history</mat-icon>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns" 
+                            cdkDrag [cdkDragDisabled]="!checkRole('ycbc.order')" [cdkDragData]="row"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!changeView" style="width : 100%;">
+            <div #contenedor class="categories" cdkDropListGroup>
+                <ng-container *ngFor="let item of dsBaoCaoXacNhan;let i=index">
+                    <div class="categories-item" cdkDropList cdkDropListOrientation="horizontal"
+                        [cdkDropListData]="{item:item,index:i}" (cdkDropListDropped)="drop($event)">
+                        <div class="inner" cdkDrag [cdkDragDisabled]="!checkRole('ycbc.order')">
+                            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                            <div class="flex-row" style="height: 39px;">
+                                <div
+                                    style="width:90%; float:left; text-overflow: ellipsis;white-space: nowrap;">
+                                    <a style="font-size: 16px; font-weight: bold;">{{(i+1) + ". " + item.tenBaoCao}}</a><span *ngIf="item.thoiGianCapNhatDuLieu" style="font-size: 13px;font-style: italic;">(Số liệu tại thời điểm: {{item.thoiGianCapNhatDuLieu
+                                        | date:'hh:mm dd/MM/yyyy'}})</span>
+                                </div>
+                                <div style="width:10%; float:right">
+                                    <mat-icon *ngIf="item.trangThaiDuLieu == 1"
+                                        style="color: blue; float: right;margin-top: 17px;">check_circle
+                                    </mat-icon>
+                                    <mat-icon *ngIf="!item.trangThaiDuLieu || item.trangThaiDuLieu == 2"
+                                        style="color: red; float: right;margin-top: 17px;">
+                                        remove_circle_outline</mat-icon>
+                                </div>
+                            </div>
+
+                            <div class="flex-row">
+                                <div style="width:50%; float: left;">Thời điểm xác nhận: <u *ngIf="item.thoiGianXacNhan  else elseBlock">{{item.thoiGianXacNhan
+                                        | date:'hh:mm dd/MM/yyyy'}}                                        
+                                    </u>
+                                    <ng-template #elseBlock><span style="color: red;">Chưa xác nhận</span></ng-template>
+                                </div>
+                                <div class="flex-row" style="width:50%; float: right;">
+                                    <div style="width:100%">
+                                        <button style="float: right;" *ngIf="ycbc.trangThai == 2"
+                                            mat-raised-button color="primary" (click)="openDialogXacNhan(item)">
+                                            Xác nhận
+                                        </button>
+                                        <button style="float: right;" *ngIf="ycbc.trangThai == 3 || ycbc.trangThai == 4" mat-raised-button
+                                            color="primary" (click)="openDialogXemLichSu(item)">
+                                            Lịch sử
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:100%;height: 100%;border:1px solid blue;background-color: #efefef;">
+                                <div *ngIf="(item.fileBaoCao !=null && item.fileBaoCao != '' && item.fileBaoCao != 'wwwroot/fileTableAu/template.pptx');then confirmedContent else unconfirmContent"
+                                    class="data-font"> </div>
+                                <img *cdkDragPreview #confirmedContent style="width:250px;height:250px"
+                                    [src]="item.fileBaoCao !=null && item.fileBaoCao != '' ? environment.apiUrl + item.fileBaoCao : environment.apiUrl + '/fileTableAu/unconfirm.jpg'">
+
+                                <ng-template #confirmedContent class="data-font">
+                                    <img (click)="openDialogViewImageXacNhan(item)" style="width:100%; height:100%"
+                                        [src]="environment.apiUrl + item.fileBaoCao" />
+                                </ng-template>
+                                <input type="file" accept=".ppt, .pptx" (change)="changeName(item)" #fileUpload style="display: none;">
+                                <ng-template #unconfirmContent class="data-font">
+                                    <div *ngIf="ycbc.trangThai == 2 && item.soLieuId == 2 then getAttachFile else showImage"></div>
+                                    <ng-template #showImage>
+                                        <div style="width:100%; height:100%;">
+                                            <div class="box">
+                                                <div class="box-content">
+                                                    <p>Chưa cập nhật dữ liệu báo cáo</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #getAttachFile>
+                                        <div style="width:100%; height:100%;">
+                                            <div class="box" (dragover)="onDragOver($event, item)" (drop)="onDrop($event, item)" (dragleave)="onDragLeave($event, item)" [class.active]="item.isActive">
+                                                <div class="box-content">
+                                                    <p>Kéo file vào đây</p>
+                                                    <p>-hoặc-</p>
+                                                    <button mat-flat-button color="primary" style="margin-bottom: 10px;" (click)="fileUpload.click()">Chọn file</button>
+                                                    <p>{{item.tenFile || "Không có file nào được chọn"}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ng-template>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>

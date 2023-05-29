@@ -1,0 +1,50 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<h2 mat-dialog-title>{{ data.action === 'CREATE' ? 'Thêm quy trình' : 'Cập nhật quy trình' }}</h2>
+<div class="container" [formGroup]="formQuyTrinh">
+    <div class="box-center">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Loại hồ sơ<span style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-select formControlName="loaiHoSoId">
+                    <!-- <mat-option>
+                        <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm" [formControl]="filterNH"></ngx-mat-select-search>
+                    </mat-option> -->
+                    <mat-option value="">---Chọn loại hồ sơ---</mat-option> 
+                    <mat-option *ngFor="let item of listLoaiHoSo" [value]='item.loaiHoSoId'>{{item.tenLoaiHoSo}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Tên quy trình<span style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="tenQuyTrinh">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Ngày hiệu lực<span style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" formControlName="ngayHieuLuc">
+                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Mô tả</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="moTa">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Trạng thái<span style="color: red;">(*)</span></span>
+            <mat-checkbox formControlName="trangThai" style="flex: 1 1 100%; box-sizing: border-box; max-width: 70%;">Hoạt động</mat-checkbox>
+        </div>
+        <mat-dialog-actions align="end">
+            <button *ngIf="data.action == 'CREATE'" (click)="createQuyTrinh()" mat-raised-button color="primary">Lưu</button>
+            <button *ngIf="data.action == 'UPDATE'" (click)="updateQuyTrinh()" mat-raised-button color="primary">Lưu</button>
+            <!-- <button mat-raised-button (click)="close()">Hủy</button> -->
+        </mat-dialog-actions>
+    </div>
+</div>

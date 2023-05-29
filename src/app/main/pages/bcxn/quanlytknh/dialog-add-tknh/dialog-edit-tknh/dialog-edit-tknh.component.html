@@ -1,0 +1,111 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        Chỉnh sửa
+    </h3>
+</div>
+<div class="container" [formGroup]="formControl">
+    <div class="box-center">
+        <div class="flex-row">
+            <p style="width: 35%; font-weight: bold;">Tên ngân hàng<span style="color: red;">(*)</span></p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <input matInput type="text" #input formControlName="TenNganHang"
+                    placeholder="Nhập tên ngân hàng">
+                <mat-error *ngIf="f.TenNganHang.hasError('required')">
+                    Chưa nhập tên ngân hàng
+                </mat-error>
+                <mat-error *ngIf="f.TenNganHang.hasError('maxlength')">
+                    Tên ngân hàng quá dài
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 35%; font-weight: bold;">Mã ngân hàng (NAPAS)</p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <input matInput type="text" #input formControlName="MaNganHang"
+                    placeholder="Mã ngân hàng">
+                <mat-error *ngIf="f.MaNganHang.hasError('maxlength')">
+                    Mã ngân hàng quá dài
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 35%; font-weight: bold;">Mã ngân hàng ERP</p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <input matInput type="text" #input formControlName="MaNganHangERP"
+                    placeholder="Mã ngân hàng ERP">
+                <!-- <mat-error *ngIf="f.MaNganHangERP.hasError('required')">
+                    Bạn chưa nhập mã ngân hàng ERP
+                </mat-error> -->
+                <mat-error *ngIf="f.MaNganHangERP.hasError('maxlength')">
+                    Mã ngân hàng ERP quá dài
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 35%; font-weight: bold;">Tên viết tắt <span style="color: red;">(*)</span></p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <textarea matInput placeholder="Tên viết tắt"
+                   formControlName="TenVietTat" #input>
+                </textarea>
+                <mat-error *ngIf="f.TenVietTat.hasError('required')">
+                    Bạn chưa nhập tên viết tắt
+                </mat-error>
+                <mat-error *ngIf="f.TenVietTat.hasError('maxlength')">
+                    Tên viết tắt quá dài
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 35%; font-weight: bold;">Ghi chú</p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <textarea 
+                    matInput 
+                    placeholder="Ghi chú"
+                   formControlName="GhiChu" 
+                   #input
+                >
+                </textarea>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 35%; font-weight: bold;">Phương thức tiếp nhận</p>
+            <mat-form-field appearance="outline" style="width:100%;margin-top: 7px !important;">
+                <mat-label>Phương thức tiếp nhận</mat-label>
+                <mat-select formControlName="PhuongThucKetNoi">
+                    <mat-option [value]='1'>H2H (Chuyển File) </mat-option>
+                    <mat-option [value]='2'>API</mat-option>
+                    <mat-option [value]='3'>Chưa kết nối</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 35%; font-weight: bold;">Lookup Type</p>
+            <mat-form-field appearance="outline" style="width:100%">
+                <mat-label>Lookup Type</mat-label>
+                <mat-select formControlName="LookupType">
+                    <mat-option value='CITAD'>CITAD</mat-option>
+                    <mat-option value='NAPAS'>NAPAS</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <mat-checkbox formControlName="TrangThaiTiepNhan">
+                Hoạt động
+            </mat-checkbox>
+        </div>
+    </div>
+    
+    <div class="end" style="display: flex; justify-content: space-between; margin-top: 10px;">
+        <div class="button-submit">
+            <button mat-raised-button color="primary" (click)="save()" [disabled]="this.formControl.invalid">
+                <mat-icon>check_box</mat-icon> Lưu thông tin
+            </button>
+            <button mat-raised-button mat-dialog-close>
+                Thoát
+            </button>
+        </div>
+    </div>
+</div>

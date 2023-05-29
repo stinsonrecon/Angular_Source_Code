@@ -1,0 +1,88 @@
+.filter {
+    ::ng-deep .mat-form-field-wrapper {
+        padding: 0 !important;
+    }
+}
+
+::ng-deep .timKiem {
+    padding: 5px 16px 0px 16px !important;
+}
+
+::ng-deep .mat-menu-panel {
+    max-width: none !important;
+}
+
+ngx-mat-select-search {
+    ::ng-deep .mat-select-search-inner {
+        height: 3.25rem;
+        box-shadow: none;
+    }
+}
+.container {
+    display: "flex";
+    flex-direction: row;
+    width: 100%;
+}
+.flex-row {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+.full-width {
+    width: 100%;
+}
+.respSearch {
+    justify-content: space-between;
+    min-width: 425px;
+    padding-right: 50px;
+}
+
+
+@media only screen and (max-width: 2021px) and (min-width: 824px) {
+    .respSearch {
+        flex-direction: row !important;
+        min-width: 33.33%;
+        padding-right: 0;
+        mat-form-field {
+            max-width: 80% !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 823px) and (min-width: 569px) {
+    .respSearch {
+        flex-direction: row !important;
+        min-width: 50%;
+        padding-right: 0;
+        mat-form-field {
+            max-width: 90% !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 568px) and (min-width: 481px) {
+    .respSearch {
+        flex-direction: row !important;
+        min-width: 50%;
+        width: 50%;
+        padding-right: 0;
+        mat-form-field {
+            max-width: 90% !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .respSearch {
+        width: 100%;
+        min-width: 100%;
+        display: flex;
+        flex-direction: column !important;
+        margin-top: 5px;
+        padding: 0 5px;
+        mat-form-field {
+            max-width: 100% !important;
+            width: 100%;
+        }
+    }
+}

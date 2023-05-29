@@ -1,0 +1,520 @@
+<div style="width: 100%">
+    <div style="background-color: white; padding-top: 10px; padding-bottom: 0px; margin-left: 5px">
+        <ul class="breadcrumb">
+            <li>Quản lý hồ sơ thanh toán</li>
+            <li>Lập hồ sơ thanh toán</li>
+          </ul>
+    </div>
+<div class="container" [formGroup]="formControl">
+    <div class="button-submit">
+        <!-- <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="saveAndSend()" 
+            [disabled]="formControl.invalid || checkFile || loadingAPI"
+        >
+            <mat-icon>check_box</mat-icon> Lưu & Gửi
+        </button> -->
+        <button 
+            color="primary" 
+            mat-raised-button 
+            mat-dialog-close 
+            (click)="save(danhSachThaoTac.btnLuu)" 
+            [disabled]="formControl.invalid || checkFile || loadingAPI"
+            *ngIf="enableButtonLuu"
+        >
+            Lưu
+        </button>
+        <button 
+            mat-raised-button 
+            mat-dialog-close 
+            color="primary"
+            (click)="showToTrinh(danhSachThaoTac.btnLuuVaDeNghiTT)" 
+            [disabled]="formControl.invalid || checkFile || loadingAPI"
+            *ngIf="enableButtonLuuVaDeNghiTT"
+        >
+            Lưu và đề nghị TT
+        </button>
+        <button mat-raised-button mat-dialog-close (click)="back()">
+            Quay lại
+        </button>
+    </div>
+    <div class="box-inner">
+        <div class="box-1">
+            <div class="flex-row">
+                <p style="font-weight: bold;" class="title-box1">Mã hồ sơ<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <input matInput type="text" [(ngModel)]="maHoSo" #input formControlName="maHoSo" readonly>
+                    <mat-error *ngIf="f.maHoSo.hasError('required')">
+                        Bạn chưa nhập mã hồ sơ
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="font-weight: bold;" class="title-box1">Loại hồ sơ<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-label>Chọn loại hồ sơ</mat-label>
+                    <mat-select [(ngModel)]="loaiHoSo" formControlName="loaiHoSo"
+                        (selectionChange)="doSomething($event)">
+                        <mat-option>
+                            <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                [formControl]="filterLoaiHoSo"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let hoSo of filteredLoaiHoSo" [value]=hoSo.loaiHoSoId>{{hoSo.tenLoaiHoSo || ''}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.type.hasError('required')">
+                        Bạn chưa chọn loại hồ sơ
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="flex-row">
+                <!-- <mat-checkbox 
+                    style="margin-right: 30px;"  
+                    formControlName="coHieuLuc" 
+                    [(ngModel)]="coHieuLuc">
+                    Có hiệu lực
+                </mat-checkbox> -->
+                <mat-checkbox formControlName="coBaoGomTaiLieuBanCung" [(ngModel)]="coBaoGomTaiLieuBanCung">
+                    Có bao gồm tài liệu bản cứng
+                </mat-checkbox>
+            </div>
+        </div>
+        <div class="box-2">
+            <div class="flex-row">
+                <p style="font-weight: bold;" class="title-box-2">Năm hồ sơ<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 60%;">
+                    <mat-label>Chọn năm hồ sơ</mat-label>
+                    <mat-select formControlName="namHoSo" [(ngModel)]="namHoSo">
+                        <mat-option *ngFor="let year of listYears" [value]="year">{{year}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.namHoSo.hasError('required')">
+                        Chưa nhập chọn năm hồ sơ
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="font-weight: bold;" class="title-box-2">Thời hạn lưu trữ<span style="color: red;">(*)</span>
+                </p>
+                <mat-form-field appearance="outline" style="width: 60%;">
+                    <mat-label>Chọn thời hạn lưu trữ</mat-label>
+                    <mat-select [(ngModel)]="thoiHanLuuTru" formControlName="thoiHanLuuTru">
+                        <mat-option [value]="0">Vĩnh viễn</mat-option>
+                        <mat-option [value]="10">10 năm</mat-option>
+                        <mat-option [value]="5">5 năm</mat-option>
+                        <mat-option [value]="3">3 năm</mat-option>
+                        <mat-option [value]="1">1 năm</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.thoiHanLuuTru.hasError('required')">
+                        Bạn chưa chọn thời hạn lưu trữ
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="font-weight: bold;" class="title-box-2">Thời hạn yêu cầu TT</p>
+                <!-- <mat-form-field appearance="outline" style="width: 60%">
+                    <input matInput type="text" [(ngModel)]="thoiHanYeuCauThanhToan" #input formControlName="thoiHanYeuCauThanhToan" >
+                </mat-form-field> -->
+                <mat-form-field appearance="outline" style="width: 60%;">
+                    <mat-label>Chọn thời hạn</mat-label>
+                    <!-- #docregion toggle -->
+                    <input matInput [matDatepicker]="picker" formControlName="date" [(ngModel)]="date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <!-- #enddocregion toggle -->
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="box-3">
+            <div class="flex-row">
+                <p style="font-weight: bold;" class="title-box-3">Lần thanh toán<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 60%;">
+                    <mat-label>Chọn lần thanh toán</mat-label>
+                    <mat-select formControlName="lanThanhToan" [(ngModel)]="lanThanhToan">
+                        <mat-option [value]="1">Lần 1</mat-option>
+                        <mat-option [value]="2">Lần 2</mat-option>
+                        <mat-option [value]="3">Lần 3</mat-option>
+                        <mat-option [value]="4">Lần 4</mat-option>
+                        <mat-option [value]="5">Lần 5</mat-option>
+                        <mat-option [value]="6">Lần 6</mat-option>
+                        <mat-option [value]="7">Quyết toán</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.lanThanhToan.hasError('required')">
+                        Bạn chưa chọn lần thanh toán
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p style="font-weight: bold;" class="title-box-3">Mức độ ưu tiên<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 60%;">
+                    <mat-label>Chọn mức độ ưu tiên</mat-label>
+                    <mat-select [(ngModel)]="mucDoUuTien" formControlName="mucDoUuTien">
+                        <mat-option [value]="1">Bình thường</mat-option>
+                        <mat-option [value]="2">Ưu tiên</mat-option>
+                        <mat-option [value]="3">Ưu tiên cao</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.mucDoUuTien.hasError('required')">
+                        Bạn chưa chọn mức độ ưu tiên
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <mat-checkbox formControlName="hinhThucThanhToan" [(ngModel)]="hinhThucThanhToan">
+                    Thanh toán 1 lần
+                </mat-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="box-center">
+        <div class="flex-row">
+            <p style="width: 11%; font-weight: bold;">Tên hồ sơ TT<span style="color: red;">(*)</span></p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <input matInput type="text" [(ngModel)]="tenVietTat" #input formControlName="tenVietTat"
+                    placeholder="Thanh toán VPP năm 2021">
+                <mat-error *ngIf="f.tenVietTat.hasError('required')">
+                    Chưa nhập tên hồ sơ thanh toán
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <!-- <div class="flex-row">
+            <p style="width: 11%; font-weight: bold;">Tên đầy đủ<span style="color: red;">(*)</span></p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <input 
+                    matInput type="text" 
+                    [(ngModel)]="tenDayDu" 
+                    #input 
+                    formControlName="tenDayDu" 
+                    placeholder="Hồ sơ thanh toán hợp đồng văn phòng phẩm cho cơ quan EVN năm 2021"
+                >
+                <mat-error *ngIf="f.tenDayDu.hasError('required')">
+                    Chưa nhập tên đầy đủ
+                </mat-error>
+            </mat-form-field>
+        </div> -->
+        <div class="flex-row">
+            <p style="width: 11%; font-weight: bold;">Mô tả</p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <textarea matInput placeholder="Hồ sơ thanh toán hợp đồng văn phòng phẩm cho cơ quan EVN năm 2021"
+                    formControlName="moTaBaoCao" [(ngModel)]="moTaBaoCao">
+                </textarea>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <button color="primary" mat-raised-button mat-dialog-close (click)="chonHoSoThamChieu()">
+             Chọn hồ sơ tham chiếu
+            </button>
+
+            <!-- <ul> -->
+                <!-- <div class="box-hstc">
+                    <span *ngFor="let hstc of listArrayChecked" class="name-hstc">{{hstc.tenHoSo}}</span>
+                </div> -->
+                
+            <!-- </ul> -->
+        </div>
+        <div>
+            <div class="table-container">
+                <table mat-table [dataSource]="listArrayChecked" class="mat-elevation-z8 fs-13 table" [formGroup]="formCreateMaterial">
+                    <ng-container matColumnDef="stt">
+                        <th mat-header-cell *matHeaderCellDef style="width:1px"> Stt </th>
+                        <td mat-cell class="mat-cell" *matCellDef="let element; let i = index"
+                            style="text-align: center; vertical-align: top;">
+                            {{i+1}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="maTaiLieu">
+                        <th mat-header-cell *matHeaderCellDef style="width:200px">Tên hồ sơ</th>
+                        <td mat-cell class="mat-cell" *matCellDef="let element" style="vertical-align: top; width: 200px;">
+                            {{element.tenHoSo}} - ({{ element.maSoHoSoTT }})
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="nguonTaiLieu">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;">Số tiền</th>
+                        <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                            {{ formatNumber(element.soTien) ||'' }}
+                        </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="noiDungAndLink">
+                        <th mat-header-cell *matHeaderCellDef style="width: 50px;">Trạng thái </th>
+                        <td mat-cell class="mat-cell" *matCellDef="let element; let i = index"
+                            style="text-align: center;vertical-align: top;">
+                            {{ renderTrangThaiHoSo(element.trangThaiHoSo) }}
+                        </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="lichSuThayDoi">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px;">Hành động</th>
+                        <td mat-cell class="mat-cell" *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                            <div class="detail-history">
+                                <button 
+                                    mat-icon-button 
+                                    color="warn"
+                                    aria-label="Example icon button with a delete icon"
+                                    (click)="deleteHoSoThamChieu(element)"
+                                    style="margin-top: -4px;"
+                                >
+                                <svg class="animation-scale" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="16px" height="16px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 448 512"><path d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z" fill="currentColor"/></svg>
+                            </button>
+                            </div>
+                        </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsMaterial;" class="header-row"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsMaterial" class="row"></tr>
+                    <!-- <tr mat-footer-row *matFooterRowDef="displayedColumnsMaterial"  [style.display]="showWhenEdit ? 'table-row' : 'none'"></tr> -->
+                </table>
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Thông Tin Thanh Toán -->
+    <div style="display: flex; align-items: center;">
+        <h3 class="payment-information">Thông tin thanh toán</h3>
+        <div class="line"></div>
+    </div>
+    <div class="billing-information">
+        <div class="bill-left">
+
+            <div class="flex-row">
+                <p class="name-input-box-4">Người yêu cầu TT<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <input matInput type="text" [(ngModel)]="nguoiYeuCauThanhToan" #input
+                        formControlName="nguoiYeuCauThanhToan" placeholder="VD: Nguyễn Văn A">
+                    <mat-error *ngIf="f.nguoiYeuCauThanhToan.hasError('required')">
+                        Bạn chưa nhập người yêu cầu TT
+                    </mat-error>
+                    <mat-error *ngIf="f.nguoiYeuCauThanhToan.hasError('maxlength')">
+                        Tên không được quá 30 ký tự
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p class="name-input-box-4">Đơn vị yêu cầu<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <mat-label>Chọn đơn vị yêu cầu</mat-label>
+                    <mat-select [(ngModel)]="donViYeuCau" formControlName="donViYeuCau" [disabled]="true">
+                        <mat-option *ngFor="let donVi of dataDonViYeuCau" [value]=donVi.id>{{donVi.tenDonVi || ''}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.donViYeuCau.hasError('required')">
+                        Bạn chưa chọn đơn vị yêu cầu
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="bill-right">
+            <div class="flex-row">
+                <p class="name-input-box-5">Tổng số tiền yêu cầu TT<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 49%;">
+                    <input 
+                        matInput 
+                        type="text" 
+                        [(ngModel)]="tongTienThanhToanVND" 
+                        (paste)="onPaste($event)"
+                        #input
+                        formControlName="tongTienThanhToanVND" 
+                        placeholder="VD: 3.000.000" 
+                        inputNumber
+                        maxlength="20"
+                    >
+                    <mat-error *ngIf="f.tongTienThanhToanVND.hasError('required')">
+                        Vui lòng nhâp tổng số tiền
+                    </mat-error>
+                    <mat-error *ngIf="f.tongTienThanhToanVND.hasError('pattern')">
+                        Số tiền không đúng định dạng
+                    </mat-error>
+                    <mat-error *ngIf="f.tongTienThanhToanVND.hasError('maxlength')">
+                        Số tiền quá lớn
+                    </mat-error>
+                </mat-form-field>
+                <!-- <div class="flex-row"> -->
+                    <!-- <p class="name-input">Loại tiền<span style="color: red;">(*)</span></p> -->
+                <mat-form-field appearance="outline" style="width: 18%; margin-left: 10px;">
+                    <mat-label>Chọn loại tiền</mat-label>
+                    <mat-select [(ngModel)]="loaiTien" formControlName="loaiTien">
+                        <mat-option [value]="1">VND</mat-option>
+                        <mat-option [value]="2">USD</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.loaiTien.hasError('required')">
+                        Bạn chưa chọn loại tiền
+                    </mat-error>
+                </mat-form-field>
+                    <!-- </div> -->
+                    
+                </div>
+                <p style="margin-top: -10px;"> <b>Thành chữ: </b> <span style="font-style:italic" class="convertVN">{{convertToVietnamese()}}</span> </p>
+            <div class="flex-row">
+                <p class="name-input-box-5">Bộ phận yêu cầu<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width" style="width: 67%;">
+                    <mat-label>Chọn bộ phận yêu cầu</mat-label>
+                    <mat-select [(ngModel)]="boPhanYeuCau" formControlName="boPhanYeuCau">
+                        <mat-option>
+                            <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                [formControl]="filterBoPhan"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let bophan of filteredBoPhan" [value]=bophan.id>{{bophan.tenDonVi || ''}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.boPhanYeuCau.hasError('required')">
+                        Bạn chưa chọn bộ phận
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <h3 style="font-weight: bold;">Thông tin người thụ hưởng</h3>
+
+    <div class="bill-left">
+        <div class="flex-row">
+            <p class="name-HTTT">Hình thức thanh toán<span style="color: red;">(*)</span></p>
+            <mat-form-field appearance="outline" class="bill-input-HTTT">
+                <mat-label>Hình thức thanh toán</mat-label>
+                <mat-select [(ngModel)]="hinhThucChi" formControlName="hinhThucChi" [disabled]="true">
+                    <mat-option [value]="1">Chuyển khoản</mat-option>
+                    <mat-option [value]="2">Tiền mặt</mat-option>
+                    <mat-option [value]="3">Thanh toán tại quầy</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div style="display: flex;">
+        <div class="bill-left">
+            <div class="flex-row">
+                <p class="name-input-box-4">Tên người thụ hưởng<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <mat-select 
+                        (selectionChange)="handleChangeAccountBank($event.value)" 
+                        [formControl]="bankCtrl"
+                        placeholder="Chọn tài khoản" 
+                        #singleSelect 
+                        formControlName="NguoiThuHuong"
+                    >
+                        <mat-option>
+                            <ngx-mat-select-search 
+                                [formControl]="bankFilterCtrl"
+                                placeholderLabel="Tìm tên tài khoản..."
+                            ></ngx-mat-select-search>
+                        </mat-option>
+                        <ng-container *ngFor="let bank of filteredBanks | async">
+                            <mat-option 
+                                style="height: 46px !important;" 
+                                [value]="bank" 
+                                *ngIf="bank.trangThai === 1"
+                            >
+                                <div style="display: flex; flex-direction: column;" >
+                                    <span>{{bank.tenTaiKhoan}} </span>
+                                    <span style="margin-top: -12px;">({{bank.tenNganHangVietTat}} -
+                                        {{bank.soTaiKhoan}})</span>
+                                </div>
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <!-- </p> -->
+            </div>
+            <div class="flex-row">
+                <p class="name-input-box-4">Số tài khoản thụ hưởng<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <input matInput type="text" #input formControlName="SoTKThuHuong" placeholder="Số tài khoản"
+                        readonly>
+                    <mat-error *ngIf="f.SoTKThuHuong.hasError('required')">
+                        Bạn chưa nhập số tài khoản thụ hưởng
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="bill-right">
+            <div class="flex-row">
+                <p class="name-input-box-5">Ngân hàng thụ hưởng<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-label>Ngân hàng thụ hưởng</mat-label>
+                    <!-- <mat-select formControlName="nganHangId">
+                        <mat-option [value]="bank.nganHangId + '/' + bank.maNganHang" *ngFor="let bank of dataBanks" >{{bank.tenNganHang}}</mat-option>
+                    </mat-select> -->
+                    <input matInput type="text" #input formControlName="nganHangId" placeholder="" [disabled]="true">
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p class="name-input-box-5">Tên chi nhánh<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" style="width: 70%;">
+                    <mat-label>Tên chi nhánh</mat-label>
+                    <!-- <mat-select formControlName="nganHangId">
+                        <mat-option [value]="bank.nganHangId + '/' + bank.maNganHang" *ngFor="let bank of dataBanks" >{{bank.tenNganHang}}</mat-option>
+                    </mat-select> -->
+                    <input matInput type="text" #input formControlName="chiNhanhYeuCau" placeholder=""
+                        [disabled]="true">
+                </mat-form-field>
+            </div>
+
+        </div>
+    </div>
+    <div class="flex-row">
+        <p style="font-weight: bold;" class="noidungthanhtoan">Nội dung thanh toán<span style="color: red;">(*)</span></p>
+        <mat-form-field appearance="outline" class="inputNoiDungTT">
+            <input 
+                matInput 
+                type="text" 
+                #input
+                formControlName="noiDungThanhToan" 
+                placeholder="Nhập nội dung thanh toán (tối đa 210 ký tự)"
+                (input)="formatNoiDungTT($event.target.value)"
+                maxlength="210"
+            >
+            <mat-error *ngIf="f.noiDungThanhToan.hasError('required')">
+                Bạn chưa nhập nội dung thanh toán
+            </mat-error>
+            <mat-error *ngIf="f.noiDungThanhToan.hasError('maxlength')">
+                Nội dung thanh toán không được quá 210 ký tự
+            </mat-error>
+            <mat-error *ngIf="f.noiDungThanhToan.hasError('pattern')">
+                Ký tự cho phép: chữ, số và các ký tự đặc biết bao gồm  () , ; . + [ ] :
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <!-- <div class="bill-bottom">
+        <app-table-payment-info></app-table-payment-info>
+    </div>       -->
+
+
+    <!-- Danh Sách Tài Liệu -->
+    <div class="materials">
+        <div style="display: flex; align-items: center;">
+            <h3 class="payment-information">Danh mục các tài liệu</h3>
+            <div class="line"></div>
+        </div>
+
+        <app-table-add-materials></app-table-add-materials>
+    </div>
+    <div class="button-submit">
+        <!-- <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="saveAndSend()" 
+            [disabled]="formControl.invalid || checkFile || loadingAPI"
+        >
+            <mat-icon>check_box</mat-icon> Lưu & Gửi
+        </button> -->
+        <button 
+            color="primary" 
+            mat-raised-button 
+            mat-dialog-close 
+            (click)="save(danhSachThaoTac.btnLuu)" 
+            [disabled]="formControl.invalid || checkFile || loadingAPI"
+            *ngIf="enableButtonLuu"
+        >
+            Lưu
+        </button>
+        <button mat-raised-button mat-dialog-close color="primary" (click)="showToTrinh(danhSachThaoTac.btnLuuVaDeNghiTT)"
+            [disabled]="formControl.invalid || checkFile || loadingAPI"
+            *ngIf="enableButtonLuuVaDeNghiTT">
+            Lưu và đề nghị TT
+        </button>
+        <button mat-raised-button mat-dialog-close (click)="back()">
+            Quay lại
+        </button>
+    </div>    
+</div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>

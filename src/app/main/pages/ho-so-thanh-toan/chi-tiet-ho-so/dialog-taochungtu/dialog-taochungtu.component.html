@@ -1,0 +1,214 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<h2 mat-dialog-title>Yêu cầu lập chứng từ</h2>
+<mat-dialog-content class="mat-typography dialog-taochungtu">
+    <ng-container>
+        <h2>Thông tin đề nghị thanh toán</h2>
+        <hr>
+        <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxFlex="49">
+                <label fxFlex="40">Hồ sơ thanh toán</label>
+                <label fxFlex="60">{{ data?.hstt }}</label>
+            </div>
+
+            <div fxFlex="49">
+                <label fxFlex="40">Loại hồ sơ</label>
+                <label fxFlex="60">{{ data?.loaiHoSo }}</label>
+            </div>
+        </div>
+
+        <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxFlex="49">
+                <label fxFlex="40">Nội dung thanh toán</label>
+                <label fxFlex="60">{{ data?.noiDungThanhToan }}</label>
+            </div>
+            <div fxFlex="49">
+                <label fxFlex="40">Tổng tiền đề nghị</label>
+                <label fxFlex="60">{{ data?.tongTienDeNghi | number: '1.0-2': 'vi-VN' }} {{data?.loaiTienTe}}</label>
+            </div>
+        </div>
+
+        <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxFlex="49">
+                <label fxFlex="40">Chủ tài khoản nhận</label>
+                <label fxFlex="60">{{ data?.chuTkNhan }}</label>
+            </div>
+            <div fxFlex="49">
+                <label fxFlex="40">Ngân hàng nhận</label>
+                <label fxFlex="60">{{ data?.nganHangNhan }}</label>
+            </div>
+
+
+        </div>
+
+        <div class="row" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div fxFlex="49">
+                <label fxFlex="40">Số tài khoản nhận</label>
+                <label fxFlex="60">{{ data?.soTkNhan }}</label>
+            </div>
+            <div fxFlex="49">
+                <label fxFlex="40">Chi nhánh</label>
+                <label fxFlex="60">{{ tenChiNhanh }}</label>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container>
+        <h2>Thông tin thanh toán thực tế</h2>
+        <hr>
+        <form [formGroup]="formPayment">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Người thanh toán <span style="color: red">(*)</span></label>
+                    <mat-form-field fxFlex="60" appearance="outline">
+                        <input matInput formControlName="TenNguoiChuyen" type="text">
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Đơn vị thanh toán <span style="color: red">(*)</span></label>
+                    <mat-form-field fxFlex="60" appearance="outline">
+                        <mat-select formControlName="DonViThanhToanId">
+                            <mat-option>
+                                <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                    [formControl]="filterDonVi"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let item of filteredDonVi" [value]="item.id">
+                                {{item.tenDonVi}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Tổng thanh toán thực tế <span style="color: red;">(*)</span></label>
+                    <div fxFlex="60" fxLayout="row" fxLayoutAlign="space-between start">
+                        <div fxLayout="column" fxFlex="80">
+                            <mat-form-field fxFlex="69" appearance="outline">
+                                <input matInput maxlength="16" inputNumber formControlName="SoTien" type="text">
+                            </mat-form-field>
+                            <span *ngIf="formPayment.get('SoTien').hasError('incorrectMoney')" style="color: red;">
+                                Tổng thanh toán thực tế không được lớn hơn tổng tiền đề nghị
+                            </span>
+                        </div>
+                        <mat-form-field fxFlex="30" appearance="outline">
+                            <mat-select formControlName="LoaiTienTe">
+                                <mat-option value="VND">VND</mat-option>
+                                <mat-option value="USD">USD</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Tỷ giá <span style="color: red;">(*)</span></label>
+                    <mat-form-field fxFlex="60" appearance="outline">
+                        <input maxlength="7" matInput inputNumber formControlName="TyGia" type="text">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Chủ tài khoản thụ hưởng <span style="color: red;">(*)</span></label>
+                    <mat-form-field fxFlex="60" appearance="outline">
+                        <mat-label>Tài khoản thụ hưởng</mat-label>
+                        <mat-select formControlName="TenTaiKhoanNhan" (selectionChange)="changeTaiKhoan($event)">
+                            <mat-option>
+                                <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                                    [formControl]="filterTaiKhoan"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option style="height: 46px !important;" *ngFor="let acc of filteredTaiKhoan"
+                                [value]="acc.taiKhoanId">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span>{{acc.tenTaiKhoan}} </span>
+                                    <span style="margin-top: -12px;">({{acc.tenNganHangVietTat}} -
+                                        {{acc.soTaiKhoan}})</span>
+                                </div>
+                            </mat-option>
+                        </mat-select>
+                        <!-- <input matInput formControlName="TenTaiKhoanNhan" type="text"> -->
+                    </mat-form-field>
+                </div>
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Ngân hàng thụ hưởng <span style="color: red;">(*)</span></label>
+                    <mat-form-field fxFlex="60" appearance="outline">
+                        <mat-select [disabled]="true" formControlName="MaNganHangNhan">
+                            <mat-option *ngFor="let item of listBank" [value]="item.nganHangId">
+                                {{item.tenNganHang}}
+                            </mat-option>
+                        </mat-select>
+                        <!-- <input readonly matInput formControlName="MaNganHangNhan" type="text"> -->
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Số tài khoản thụ hưởng <span style="color: red;">(*)</span></label>
+                    <mat-form-field appearance="outline" fxFlex="60">
+                        <input readonly matInput class="textColor" formControlName="SoTaiKhoanNhan" type="text">
+                    </mat-form-field>
+
+                </div>
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Chi nhánh <span style="color: red;">(*)</span></label>
+                    <mat-form-field fxFlex="60" appearance="outline">
+                        <mat-select [disabled]="true" formControlName="ChiNhanh">
+                            <mat-option *ngFor="let item of listChiNhanh" [value]="item.chiNhanhNganHangId">
+                                {{item.tenChiNhanh}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="49" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="40">Ngày lập chứng từ <span style="color: red;">(*)</span></label>
+                    <mat-form-field fxFlex="60" appearance="outline">
+                        <!-- <input matInput [matDatepicker]="picker" formControlName="NgayLap">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker> -->
+                        <input matInput [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" formControlName="NgayLap">
+                        <owl-date-time #dt1></owl-date-time>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="98" fxLayout="row" fxLayoutAlign="start center">
+                    <label fxFlex="20">Nội dung thanh toán <span style="color: red;">(*)</span></label>
+                    <div fxLayout="column" fxFlex="80">
+                        <mat-form-field appearance="outline">
+                            <textarea (input)="formatNoiDungTT($event.target.value)" matInput formControlName="NoiDungTT" type="text"></textarea>
+                        </mat-form-field>
+                        <span *ngIf="formPayment.get('NoiDungTT').hasError('incorrectMessage')" style="color: red;">
+                            Ký tự cho phép: chữ (không nhận ký tự tiếng việt), số và các ký tự đặc biết bao gồm () , ; .
+                            + [ ] :
+                        </span>
+                        <span *ngIf="formPayment.get('NoiDungTT').hasError('maxlength')" style="color: red;">
+                            Số ký tự cho phép không quá 210 ký tự
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div [ngClass]="requiredCheckbox ? 'required': ''" fxLayout="row" fxLayoutAlign="center center">
+                <!-- [disabled]="true" -->
+                <mat-checkbox formControlName="CTGS_CM">Lập chứng từ CM</mat-checkbox>
+                <mat-checkbox formControlName="CTGS_AP">Lập chứng từ ghi số (AP)</mat-checkbox>
+                <mat-checkbox formControlName="CTGS_GL">Lập chứng từ ghi số (GL)</mat-checkbox>
+            </div>
+
+        </form>
+    </ng-container>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button (click)="submit(false, 0)">Hủy</button>
+    <button mat-raised-button color="primary" (click)="submit(true, 1)">Xác nhận</button>
+</mat-dialog-actions>

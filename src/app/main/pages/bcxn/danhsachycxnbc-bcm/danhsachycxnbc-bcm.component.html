@@ -1,0 +1,124 @@
+<div style="width: 100%">
+    <div class="content p-12">
+        <div class="container">
+            <div class="flex-row">
+
+                <p style="width: 10%;">Loại báo cáo</p>
+                <mat-form-field appearance="outline" style="width: 20%;">
+                    <mat-label>Loại báo cáo</mat-label>
+                    <mat-select [(ngModel)]="searchItem.loaiBaoCao" (selectionChange)="getDsYcbc()">
+                        <mat-option [value]='-99'>---Tất cả---</mat-option>
+                        <mat-option [value]='1'>Tuần</mat-option>
+                        <mat-option [value]='2'>Tháng</mat-option>
+                        <mat-option [value]='3'>Quý </mat-option>
+                        <mat-option [value]='4'>Năm</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p style="width: 10%;  margin-left: 5%;">Năm</p>
+                <mat-form-field appearance="outline" style="width: 20%;">
+                    <mat-label>Năm</mat-label>
+                    <mat-select [(ngModel)]="searchItem.nam" (selectionChange)="getDsYcbc()">
+                        <mat-option [value]='-99'>---Tất cả---</mat-option>
+                        <mat-option *ngFor="let item of namList" [value]="item">{{item ? item : "Tất cả"}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p style="width: 10%;  margin-left: 5%;">Trạng thái</p>
+                <mat-form-field appearance="outline" style="width: 20%;">
+                    <mat-label>Trạng thái</mat-label>
+                    <mat-select [(ngModel)]="searchItem.trangThai" (selectionChange)="getDsYcbc()">
+                        <mat-option [value]='-99'>---Tất cả---</mat-option>
+                        <mat-option *ngIf="checkNhomQuyen" [value]='1'>Dự thảo</mat-option>
+                        <mat-option [value]='2'>Đang xác nhận</mat-option>
+                        <mat-option [value]='3'>Hết hạn xác nhận</mat-option>
+                        <mat-option [value]='4'>Đã đóng</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <button mat-raised-button color="primary" (click)="getDsYcbc({pageIndex:0})">
+                    <mat-icon>search</mat-icon> Tìm kiếm
+                </button>
+            </div>
+            <h3 style="font-weight: bold;">Tổng số yêu cầu báo cáo xác nhận: {{totalRecord}}</h3>
+            <div class="table-container">
+                <table mat-table [dataSource]="dsYcbc">
+
+                    <ng-container matColumnDef="stt">
+                        <th mat-header-cell *matHeaderCellDef style=" width: 50px">
+                            STT
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i = index" style="text-align: center">
+                            {{i+1}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="tieuDe">
+                        <th mat-header-cell *matHeaderCellDef>Tiêu đề</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.tieuDe}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="yeuCauXacNhanBC">
+                        <th mat-header-cell *matHeaderCellDef>Kỳ giao ban</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.loaiChuKy == 1 ? 'Tuần ':''}}{{element.loaiChuKy == 2 ?
+                            'Tháng ':''}}{{element.loaiChuKy == 3 ? 'Quý ':''}}{{element.loaiChuKy == 4 ?
+                            'Năm ':''}}{{element.loaiChuKy!=4? element.chuKy+'/':''}}{{element.nam}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="bcDaXN">
+                        <th mat-header-cell *matHeaderCellDef style="width:150px">Báo cáo đã XN</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center;">
+                            {{element.baoCaoDaXN}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="hanXN">
+                        <th mat-header-cell *matHeaderCellDef style="width:150px">Hạn xác nhận</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center;">
+                            {{element.hanHoanThanh | date: 'dd/MM/yyy'}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="thoiGianTao">
+                        <th mat-header-cell *matHeaderCellDef style="width:150px">Thời gian tạo</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center;">
+                            {{element.thoiGianTao| date: 'dd/MM/yyy'}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="trangThai">
+                        <th mat-header-cell *matHeaderCellDef style="width:150px">Trạng thái</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            <div *ngIf="element.trangThai==1">Dự thảo</div>
+                            <div *ngIf="element.trangThai==2">Đang xác nhận</div>
+                            <div *ngIf="element.trangThai==3">Hết hạn xác nhận</div>
+                            <div *ngIf="element.trangThai==4">Đã đóng</div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="thaoTac">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px">Thao tác</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            <!-- <span style="text-decoration: underline; cursor: pointer;"
+                                matTooltip="Xem yêu cầu báo cáo">Xem</span>
+                            <span style="margin-left: 5px; text-decoration: underline; cursor: pointer;"
+                                matTooltip="Sửa yêu cầu báo cáo">Sửa</span>
+                            <span style="margin-left: 5px;  text-decoration: underline;  cursor: pointer;color: red;"
+                                matTooltip="Xoá yêu cầu báo cáo">Xoá</span> -->
+                            <!-- <mat-icon matTooltip="Xem yêu cầu báo cáo" class="cursor-pointer">info</mat-icon> -->
+                            <mat-icon matTooltip="Tải file báo cáo tổng hợp" class="cursor-pointer"
+                                (click)="downloadCompletedFileMerge(element.id)" *ngIf="element.trangThai==4">cloud_download</mat-icon>
+                            <mat-icon matTooltip="Xem yêu cầu báo cáo" class="cursor-pointer"
+                                (click)="view(element.id)" *ngIf="checkRole('ycbc-bcm.detail')">visibility</mat-icon>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+            </div>
+            <div style=" width: 100% ;float:right;">
+                <mat-paginator [length]="totalRecord" [pageSize]="searchItem.pageSize" [pageIndex]="searchItem.pageIndex - 1" [pageSizeOptions]="[5,10,20,50]"
+                    (page)="getDsYcbc($event)" showFirstLastButtons>
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

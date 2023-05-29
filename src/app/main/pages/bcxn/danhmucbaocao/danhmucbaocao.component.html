@@ -1,0 +1,175 @@
+<div style="width: 100%">
+    <div style="background-color: white; padding-top: 10px; padding-bottom: 0px; margin-left: 5px">
+        <ul class="breadcrumb">
+            <li>Quản lý danh mục</li>
+            <li>Danh mục báo cáo</li>
+          </ul>
+    </div>
+    <div class="content p-12">
+        <h3>Danh mục báo cáo</h3>
+        <div class="container">
+            <div class="flex-row">
+                <div class="flex-6">
+                    <div class="flex-row">
+                        <p style="width: 10%;">Lĩnh vực</p>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>Lĩnh vực</mat-label>
+                            <mat-select [(ngModel)]="searchItem.linhVucId" (ngModelChange)="toHeadPage(); getBaoCao()">
+                                <mat-option [value]='-99'>---Tất cả---</mat-option>
+                                <div *ngFor="let item of dsLinhVuc">
+                                    <div *ngIf="item.linhVucChaId == 0; then cha else con"></div>
+                                    <ng-template #cha>
+                                        <mat-option [value]="item.id">{{item.tieuDe}}</mat-option>
+                                    </ng-template>
+                                    <ng-template #con>
+                                        <mat-option [value]="item.id">&emsp;{{item.tieuDe}}</mat-option>
+                                    </ng-template>
+                                </div>
+                            </mat-select>
+                        </mat-form-field>
+                        <p style="width: 10%; margin-left: 5%;">Loại báo cáo</p>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>Loại báo cáo</mat-label>
+                            <mat-select [(ngModel)]="searchItem.loaiBaoCao" (ngModelChange)="toHeadPage(); getBaoCao()">
+                                <mat-option [value]='-99'>---Tất cả---</mat-option>
+                                <mat-option [value]='1'>Tuần</mat-option>
+                                <mat-option [value]='2'>Tháng</mat-option>
+                                <mat-option [value]='3'>Quý</mat-option>
+                                <mat-option [value]='4'>Năm</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <p style="width: 10%; margin-left: 5%;">Ban chủ trì</p>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>Ban chủ trì</mat-label>
+                            <mat-select [(ngModel)]="searchItem.donViId" (ngModelChange)="toHeadPage(); getBaoCao()">
+                                <mat-option [value]='-99'>---Tất cả---</mat-option>
+                                <div *ngFor="let item of dsPhongBan">
+                                    <div *ngIf="item.donViChaId == 0; then cha else con"></div>
+                                    <ng-template #cha>
+                                        <mat-option [value]="item.id">{{item.tenDonVi}}</mat-option>
+                                    </ng-template>
+                                    <ng-template #con>
+                                        <mat-option [value]="item.id">&emsp;{{item.tenDonVi}}</mat-option>
+                                    </ng-template>
+                                </div>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex-row">
+                        <p style="width: 10%;">Trạng thái</p>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <mat-label>Trạng thái</mat-label>
+                            <mat-select [(ngModel)]="searchItem.trangThai" (ngModelChange)="toHeadPage(); getBaoCao()">
+                                <mat-option [value]='-99'>---Tất cả---</mat-option>
+                                <mat-option [value]='0'>Không hoạt động</mat-option>
+                                <mat-option [value]='1'>Hoạt động</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <p style="width: 10%; margin-left: 5%;">Từ khoá</p>
+                        <mat-form-field appearance="outline" style="width: 20%;">
+                            <input matInput #input [(ngModel)]="searchItem.tuKhoa">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div style="float:left;" class="flex-row">
+                    <button mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Tìm kiếm"
+                        (click)="toHeadPage(); getBaoCao()">
+                        <mat-icon>search</mat-icon> Tìm kiếm
+                    </button>
+                    <button mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Thêm mới báo cáo"
+                        (click)="openDialogAddBaoCao()">
+                        <mat-icon>add</mat-icon> Thêm mới
+                    </button>
+                </div>
+                <div style=" width: 100%; float:right;">
+                    <mat-paginator #paginator [length]="totalRecord" [pageSize]="searchItem.pageSize" [pageSizeOptions]="[10,20,50]" (page)="getBaoCao($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+            <div class="table-container">
+                <table mat-table [dataSource]="dsBaoCao" class="mat-elevation-z8 fs-13" cdkDropList
+                    [cdkDropListData]="dsBaoCao" (cdkDropListDropped)="dropTable($event)">
+
+                    <ng-container matColumnDef="stt">
+                        <th mat-header-cell *matHeaderCellDef style=" width: 50px">
+                            STT
+                        </th>
+                        <!-- <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}} </td> -->
+                        <td mat-cell *matCellDef="let element; let i = index" style="text-align: center">
+                            <mat-form-field appearance="outline" style="width:70px"  >
+                                <mat-select [(ngModel)]="element.order" (ngModelChange)="saveGiaThuTu(element)">  
+                                    <mat-option *ngFor="let item of dsThuTu" [value]="item.giatri">{{item.hienthi}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="tenBaoCao">
+                        <th mat-header-cell *matHeaderCellDef>Tên báo cáo</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.tenBaoCao}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="linhVuc">
+                        <th mat-header-cell *matHeaderCellDef>Lĩnh vực</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.tenLinhVuc}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="phongBan">
+                        <th mat-header-cell *matHeaderCellDef>Phòng ban</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.tenDonVi}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="urlLink">
+                        <th mat-header-cell *matHeaderCellDef>Url Link</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.urlLink}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="soLieu">
+                        <th mat-header-cell *matHeaderCellDef>Số liệu</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            <div *ngIf="element.soLieuId == 1; then auto else manual"></div>
+                            <ng-template #auto>Tự động</ng-template>
+                            <ng-template #manual>Attach file</ng-template>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="trangThai">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px">Trạng thái</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            <div *ngIf="element.trangThaiHoatDong; then active else noActive"></div>
+                            <ng-template #active>Hoạt động</ng-template>
+                            <ng-template #noActive>Không hoạt động</ng-template>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="thaoTac">
+                        <th mat-header-cell *matHeaderCellDef style="width: 100px">Thao tác</th>
+                        <td mat-cell *matCellDef="let element" style="text-align: center">
+                            <mat-icon class="cursor-pointer" matTooltip="Xem báo cáo" matTooltipPosition="above"
+                                (click)="openDialogViewBaoCao(element)">
+                                visibility
+                            </mat-icon>
+                            <mat-icon class="cursor-pointer" matTooltip="Cập nhật báo cáo" matTooltipPosition="above"
+                                (click)="openDialogUpdateBaoCao(element)">
+                                edit
+                            </mat-icon>
+                            <mat-icon class="cursor-pointer" matTooltip="Xóa báo cáo" matTooltipPosition="above" style="color: red;"
+                                (click)="deleteBaoCaoById(element.id)">
+                                delete
+                            </mat-icon>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"
+                        cdkDrag [cdkDragData]="row"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

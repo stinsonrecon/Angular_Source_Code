@@ -1,0 +1,10 @@
+<div class="nav" [ngClass]="{'horizontal':layout === 'horizontal', 'vertical':layout === 'vertical'}">
+    <ng-container>
+        <ng-container *ngFor="let item of itemParent">
+            <!-- <fuse-nav-vertical-group [item]="item"></fuse-nav-vertical-group> -->
+            <fuse-nav-vertical-collapsable [navigation]="navigation"
+                                           [item]="item"></fuse-nav-vertical-collapsable>
+            <!-- <fuse-nav-vertical-item [item]="item"></fuse-nav-vertical-item> -->
+        </ng-container>
+    </ng-container>
+</div>

@@ -1,0 +1,75 @@
+<div style="min-width: 1000px;">
+    <button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <div>
+        <h3 mat-dialog-title class="fs-16 color-text">
+            Phê duyệt tờ trình/ Đề nghị thanh toán
+        </h3>
+    </div>
+    <div class="container" *ngIf="data.item" style="overflow: auto;">
+        <div class="stepper-wrapper">
+            <!-- <div class="stepper-item completed" [ngClass]="class1">
+                <div class="step-counter">1</div>
+                <div class="step-name">Người lập<br>
+                    <span>(Đã ký)</span>
+                </div>
+            </div>
+            <div class="stepper-item" [ngClass]="class2">
+                <div class="step-counter">2</div>
+                <div class="step-name">Kế toán trưởng<br>
+                    <span>{{data.item.capKy > 2 ? '(Đã ký)' : '(Chưa ký)'}}</span>
+                </div>
+            </div>
+            <div class="stepper-item" [ngClass]="class3">
+                <div class="step-counter">3</div>
+                <div class="step-name">Thủ trưởng cơ quan<br>
+                    <span>{{data.item.capKy > 3 ? '(Đã ký)' : '(Chưa ký)'}}</span>
+                </div>
+            </div> -->
+        </div>
+        <div fxLayout="row" fxLayout.lt-md="column-reverse" fxLayoutAlign="space-between">
+            <div fxFlex="80%" fxLayout="column" fxLayoutGap=".5rem">
+                <app-view-pdf [pdfSource]="pdfSource"></app-view-pdf>
+            </div>
+            <div fxFlex="18%" fxLayout="column" fxLayoutGap=".5rem">
+                <div fxLayout="column">
+                    <div fxLayout="row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Nội dung phê duyệt</mat-label>
+                            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                                [formControl]="noiDung" cdkAutosizeMaxRows="7" placeholder="Nội dung phê duyệt"></textarea>
+                                <mat-checkbox [checked]="isChecked" (change)="valueChange($event)">Đồng ý</mat-checkbox>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row">
+                        <button mat-raised-button color="primary" (click)="kyDuyet(danhSachThaoTac.btnDongyKyToTrinh)"
+                            *ngIf="enableButtonDongYKy" style="width: 100px">Đồng ý</button>
+                    </div>
+                    <div fxLayout="row">
+                        <button mat-raised-button color="warn" (click)="cancel(danhSachThaoTac.btnTuChoiKyToTrinh)"
+                            *ngIf="enableButtonTuChoiKyToTrinh" style="width: 100px">Trả lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="flex-row">
+            <div class="left" style="width: 80%; border: 1px solid lightgray; padding: 10px;">
+                <app-view-pdf [pdfSource]="pdfSource"></app-view-pdf>
+            </div>
+            <div class="right" style="min-width: 20%; margin-top: 1%; padding: 10px;">
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Nội dung phê duyệt</mat-label>
+                        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            [formControl]="noiDung" cdkAutosizeMaxRows="7" placeholder="Nội dung phê duyệt"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="flex-row">
+                    <button mat-raised-button color="primary" (click)="kyDuyet()">Đồng ý</button>
+                    <button mat-raised-button color="warn" (click)="cancel()">Trả lại</button>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>

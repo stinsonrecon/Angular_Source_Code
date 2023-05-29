@@ -1,0 +1,99 @@
+.button-search{
+    margin-bottom: 20px !important;
+    margin-left: 110px !important;
+}
+
+.table{
+    overflow-x: auto;
+    height: 500px;
+}
+// .mat-table{
+//     width: fit-content;
+// }
+.container {
+    display: "flex";
+    flex-direction: row;
+    width: 100%;
+}
+.flex-row {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+.full-width {
+    width: 100%;
+}
+::ng-deep .mat-paginator-page-size .mat-select-trigger {
+    width: max-content !important;
+}
+.link {
+    cursor: pointer;
+    text-decoration: none;
+    color: #7676fc;
+}
+
+.respSearch {
+    justify-content: space-between;
+    min-width: 425px;
+    padding-right: 50px;
+}
+
+@media only screen and (max-width: 2021px) and (min-width: 1326px) {
+    .respSearch {
+        flex-direction: row !important;
+        min-width: 25%;
+        padding-right: 0;
+        mat-form-field {
+            max-width: 80% !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 1325px) and (min-width: 824px) {
+    .respSearch {
+        flex-direction: row !important;
+        min-width: 33.33%;
+        padding-right: 0;
+        mat-form-field {
+            max-width: 80% !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 823px) and (min-width: 569px) {
+    .respSearch {
+        flex-direction: row !important;
+        min-width: 50%;
+        padding-right: 0;
+        mat-form-field {
+            max-width: 90% !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 568px) and (min-width: 481px) {
+    .respSearch {
+        flex-direction: row !important;
+        min-width: 50%;
+        width: 50%;
+        padding-right: 0;
+        mat-form-field {
+            max-width: 90% !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .respSearch {
+        width: 100%;
+        min-width: 100%;
+        display: flex;
+        flex-direction: column !important;
+        margin-top: 5px;
+        padding: 0 5px;
+        mat-form-field {
+            max-width: 100% !important;
+            width: 100%;
+        }
+    }
+}

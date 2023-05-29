@@ -1,0 +1,100 @@
+.container {
+    width: 100%;
+    padding: 15px;
+}
+
+.box-1, .box-2  {
+    width: 33.33%;
+    padding-right: 40px;
+}
+
+.box-3 {
+    width: 33.33%;
+}
+
+.flex-row, .flex-row-right {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-row-right {
+    justify-content: end;
+}
+
+.flex-row-inner-right {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 8px;
+}
+
+.box-inner {
+    display: flex;
+    flex-direction: row;
+}
+
+.name-input{
+    font-weight: bold; 
+    width: 35%;
+}
+
+.billing-information {
+    display: flex;
+    width: 100%;
+}
+
+.bill-left {
+    width: 50%;
+    padding-right: 90px;
+
+    .bill-input-width {
+        width: 100%;
+
+        @media(max-width: 1600px) {
+            width: 70%;
+        }
+    }
+}
+
+.bill-right {
+    width: 50%;
+}
+
+.payment-information {
+    font-weight: bold;
+    text-transform: uppercase;
+    // width: 300px;
+    position: relative;
+    &::after {
+        content: "";
+        height: 1px;
+        width: 75%;
+        display: block;
+        background: #222;
+        position: absolute;
+        margin-top: 1px;
+        right: 2px;
+        top: 10px;
+    }
+}
+
+.flow-chart {
+    padding: .5rem;
+    ::ng-deep .diagram {
+        background: whitesmoke;
+        width: 100%;
+        height: 300px!important;
+        border: 1px solid black;
+    }
+
+    .palette {
+        background: whitesmoke;
+        width: auto;
+        height: 300px!important;
+        border: 1px solid black;
+    }
+}
+
+:host ::ng-deep button.mat-focus-indicator.mat-raised-button.mat-button-base.mat-primary.mat-button-disabled {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+  }

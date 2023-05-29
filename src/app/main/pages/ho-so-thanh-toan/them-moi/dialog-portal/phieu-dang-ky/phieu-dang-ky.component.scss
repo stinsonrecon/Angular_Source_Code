@@ -1,0 +1,31 @@
+.add-document {
+    &:hover {
+        color: blue;
+        cursor: pointer;
+    }
+}
+
+.pickDocument {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: orangered;
+}
+
+.link {
+    cursor: pointer;
+    text-decoration: none;
+    color: #7676fc;
+}
+
+.params {
+    display: flex;
+}
+
+.resSearch {
+    width: 30%;
+    mat-form-field {
+        width: 80%;
+        max-width: 80%;
+    }
+}

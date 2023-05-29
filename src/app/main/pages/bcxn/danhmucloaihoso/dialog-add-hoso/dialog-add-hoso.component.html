@@ -1,0 +1,75 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        {{ isNew ? 'Thêm mới loại hồ sơ' : 'Cập nhật loại hồ sơ' }}
+    </h3>
+</div>
+<mat-dialog-content class="mat-typography" [formGroup]="formControl">
+    <div class="box-center">
+        <div class="flex-row">
+            <p style="min-width: 150px; font-weight: bold;">Tên loại hồ sơ<span style="color: red;">(*)</span></p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <input matInput type="text" [(ngModel)]="data.item.tenLoaiHoSo" #input formControlName="tenHoSo"
+                    placeholder="Nhập tên loại hồ sơ">
+                <mat-error *ngIf="f.tenHoSo.hasError('required')">
+                    Chưa nhập tên loại hồ sơ
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="min-width: 150px; font-weight: bold;">Mã loại hồ sơ<span style="color: red;">(*)</span></p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <input matInput type="text" [(ngModel)]="data.item.maLoaiHoSo" #input formControlName="maLoaiHoSo"
+                    placeholder="Nhập mã loại hồ sơ">
+                <mat-error *ngIf="f.maLoaiHoSo.hasError('required')">
+                    Chưa nhập mã loại hồ sơ
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="min-width: 150px; font-weight: bold;">Mô tả</p>
+            <mat-form-field appearance="outline" style="width: 100%">
+                <textarea matInput placeholder="Nhập mô tả"
+                    [(ngModel)]="data.item.moTa" formControlName="moTa" #input>
+                </textarea>
+            </mat-form-field>
+        </div>
+        <div class="flex-row" style="max-width: 234px;">
+            <p style="min-width: 150px; font-weight: bold;">Trạng thái</p>
+            <mat-checkbox formControlName="trangThai">Hoạt động</mat-checkbox>
+        </div>
+    </div>
+
+    <div class="materials" *ngIf="isNew">
+        <h3>Danh sách tài liệu</h3>
+        <app-table-tai-lieu-yeu-cau *ngIf="data.actions === 'CREATE'" [actions]="data.actions" [dataRes]="data.item.giayToLoaiHoSoResponse" [item]="data.item"></app-table-tai-lieu-yeu-cau>
+        <app-table-tai-lieu-yeu-cau-update *ngIf="data.actions === 'UPDATE'" [actions]="data.actions" [dataRes]="data.item.giayToLoaiHoSoResponse" [item]="data.item"></app-table-tai-lieu-yeu-cau-update>
+    </div>
+
+    <div class="materials">
+        <h3>Định nghĩa quy trình phê duyệt</h3>
+        <div class="flow-chart">
+            <gojs-diagram [initDiagram]='initDiagram' [nodeDataArray]='diagramNodeData'
+                [linkDataArray]='diagramLinkData' [modelData]='diagramModelData' [skipsDiagramUpdate]='false'
+                (modelChange)='diagramModelChange($event)' [divClassName]='diagramDivClassName'>
+            </gojs-diagram>
+        </div>
+    </div>
+</mat-dialog-content>
+<div class="end" style="display: flex; justify-content: space-between; margin-top: 10px;" mat-dialog-actions>
+    <div class="button-submit">
+        <button mat-raised-button color="primary" (click)="link()" *ngIf="isNew">
+            Định nghĩa quy trình phê duyệt
+        </button>
+    </div>
+    <div class="button-submit">
+        <button mat-raised-button color="primary" (click)="save()">
+            <mat-icon>check_box</mat-icon> Lưu thông tin
+        </button>
+        <button mat-raised-button mat-dialog-close>
+            Thoát
+        </button>
+    </div>
+</div>

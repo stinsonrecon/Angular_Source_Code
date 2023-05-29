@@ -1,0 +1,75 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<h2>
+    <ng-template >Tạo phiếu thẩm tra</ng-template>
+</h2>
+<mat-dialog-content class="mat-typography">
+    <h1>Lập Phiếu thẩm tra</h1>
+    <!-- <div class="flex-row" [formGroup]="FormPhieuThamTra">
+        <p style="font-weight: bold;" class="title-box1">Loại hồ sơ<span style="color: red;">(*)</span></p>
+        <mat-form-field appearance="outline" style="width: 70%;">
+            <mat-label>Chọn loại hồ sơ</mat-label>
+            <mat-select [(ngModel)]="loaiHoSo" formControlName="loaiHoSo"
+                (selectionChange)="doSomething($event)">
+                <mat-option>
+                    <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm"
+                        [formControl]="filterLoaiHoSo"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let hoSo of filteredLoaiHoSo" [value]=hoSo.id>{{hoSo.tenGiayTo || ''}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="FormPhieuThamTra.controls.loaiHoSo.hasError('required')">
+                Bạn chưa chọn loại hồ sơ
+            </mat-error>
+        </mat-form-field>
+        
+    </div> -->
+    <div>
+        <div class="dropzone" fileDragDrop (filesChangeEmiter)="onFileChange($event)">
+            <div class="text-wrapper">
+                <div class="centered">
+                    <input 
+                        #fileInput 
+                        type="file" 
+                        name="file" 
+                        id="file" 
+                        value=null 
+                        (click)="fileInput.value = null" 
+                        (change)="onFileChange($event.target.files)"
+                    >
+                    <label *ngIf="doc === ''" for="file"><span class="textLink">Kéo thả tài liệu vào đây
+                            hoặc</span><br /> <span style="color: cornflowerblue;"> + Bấm vào đây để tải
+                            lên</span></label>
+                    <label *ngIf="doc !== ''" for="file">
+                        <span class="textLink">{{doc}}</span> <span (click)="handleDeleteFile()" style="color: red; cursor: pointer; margin-left: 5px;"> <svg class="animation-scale"
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true" role="img" width="16px" height="16px"
+                                preserveAspectRatio="xMidYMid meet" viewBox="0 0 448 512">
+                                <path
+                                    d="M32 464a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128H32zm272-256a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zm-96 0a16 16 0 0 1 32 0v224a16 16 0 0 1-32 0zM432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"
+                                    fill="currentColor" />
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+
+            </div>
+        </div>
+
+        <button 
+            color="primary" 
+            mat-raised-button 
+            (click)="taoPhieuThamTra(danhSachThaoTac.btnTaoPhieuThamTraDetail)"
+        >
+            Tạo và ký phiếu thẩm tra
+        </button>
+        <!-- <button 
+            color="primary" 
+            mat-raised-button 
+            (click)="viewTaiLieu()"
+        >
+            Xem tài liệu
+        </button> -->
+    </div>
+</mat-dialog-content>

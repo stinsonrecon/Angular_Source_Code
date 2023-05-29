@@ -1,0 +1,35 @@
+<div style="min-width: 1000px;">
+    <button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <div>
+        <h3 mat-dialog-title class="fs-16 color-text">
+            Thông tin chứng từ
+        </h3>
+    </div>
+    <div class="container" *ngIf="dataView" style="overflow: auto;">
+        <div class="stepper-wrapper">
+            <div class="stepper-item" [ngClass]="class1">
+                <div class="step-counter">1</div>
+                <div class="step-name">Kế toán ngân hàng <br>{{dataView.ChungTu?.trangThaiCT >
+                    constTrangThaiChungTu.daLap ? '(Đã ký)' : '(Chưa
+                    ký)'}}</div>
+            </div>
+            <div class="stepper-item" [ngClass]="class2">
+                <div class="step-counter">2</div>
+                <div class="step-name">Kế toán trưởng <br>{{dataView.ChungTu?.trangThaiCT >
+                    constTrangThaiChungTu.dangDuyetMotChuKy ? '(Đã ký)' : '(Chưa
+                    ký)'}}</div>
+            </div>
+            <div class="stepper-item" [ngClass]="class3">
+                <div class="step-counter">3</div>
+                <div class="step-name">Thủ trưởng cơ quan <br>{{dataView.ChungTu?.trangThaiCT >
+                    constTrangThaiChungTu.dangDuyetHaiChuKy ? '(Đã ký)' : '(Chưa
+                    ký)'}}</div>
+            </div>
+        </div>
+        <div style="width: 100%; border: 1px solid lightgray; padding: 10px;margin-bottom: 50px;">
+            <app-view-phieu-chi-ngan-hang [id]="data.id" [element]="data.element"></app-view-phieu-chi-ngan-hang>
+        </div>
+    </div>
+</div>

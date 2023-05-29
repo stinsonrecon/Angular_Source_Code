@@ -1,0 +1,20 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<h2 mat-dialog-title></h2>
+<mat-dialog-content>
+    <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="16px">
+        <span>Nhập lại mật khẩu</span>
+        <mat-form-field appearance="outline">
+            <input matInput type="password" [formControl]="password">
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button mat-dialog-close>
+        Hủy
+    </button>
+    <button mat-raised-button color="primary" (click)="submit()">
+        Xác nhận
+    </button>
+</mat-dialog-actions>

@@ -1,0 +1,44 @@
+<div style="min-width: 1000px;">
+    <button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <div>
+        <h3 mat-dialog-title class="fs-16 color-text">
+            Ký chứng từ ghi sổ
+        </h3>
+    </div>
+    <div class="container" *ngIf="dataView" style="overflow: auto;">
+        <div class="stepper-wrapper">
+            <div class="stepper-item" [ngClass]="class1">
+                <div class="step-counter">1</div>
+                <div class="step-name">Cấp 1 <br>{{dataView.ChungTu?.capKy >
+                    4 ? '(Đã ký)' : '(Chưa
+                    ký)'}}</div>
+            </div>
+            <div class="stepper-item" [ngClass]="class2">
+                <div class="step-counter">2</div>
+                <div class="step-name">Cấp 2 <br>{{dataView.ChungTu?.capKy >
+                    5 ? '(Đã ký)' : '(Chưa
+                    ký)'}}</div>
+            </div>
+        </div>
+        <div class="flex-row resp">
+            <div class="left">
+                <app-view-phieu-chi-ngan-hang [id]="data.item.id" [ctgs]="data.ctgs" [element]="data.item.element"></app-view-phieu-chi-ngan-hang>
+            </div>
+            <div class="right">
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Nội dung ký</mat-label>
+                        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            [formControl]="noiDung" cdkAutosizeMaxRows="7" placeholder="Nội dung ký"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="flex-row">
+                    <button mat-raised-button color="primary" (click)="kyDuyet(danhSachThaoTac.btnDongyKyChungTuGhiSo)" *ngIf="enableDoYKyChungTuGhiSo">Ký</button>
+                    <button mat-raised-button color="warn" (click)="khongDuyet(danhSachThaoTac.btnTuChoiKyChungTuGhiSo)" *ngIf="enableTuChoiKyChungTuGhiSo">Không ký</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,141 @@
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">
+        Yêu cầu lập chứng từ
+    </h3>
+</div>
+<div class="container" [formGroup]="formControl">
+    <h3 class="payment-information">Thông tin thanh toán</h3>
+    <div class="billing-information">
+        <div class="bill-left">
+            <div class="flex-row">
+                <p class="name-input">Người thanh toán<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <input matInput type="text" [(ngModel)]="nguoiThanhToan" #input
+                        formControlName="nguoiThanhToan">
+                    <mat-error *ngIf="f.nguoiThanhToan.hasError('required')">
+                        Bạn chưa nhập người yêu cầu thanh toán
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p class="name-input">Tổng tiền đề nghị<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <input matInput type="text" [(ngModel)]="tongTienDeNghi" #input
+                        formControlName="tongTienDeNghi">
+                    <mat-error *ngIf="f.tongTienDeNghi.hasError('required')">
+                        Bạn chưa nhập người yêu cầu thanh toán
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p class="name-input">Tổng thanh toán thực tế<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <input matInput type="text" [(ngModel)]="tongTTThucTe" #input
+                        formControlName="tongTTThucTe">
+                    <mat-error *ngIf="f.tongTTThucTe.hasError('required')">
+                        Bạn chưa nhập người yêu cầu thanh toán
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p class="name-input">Ngày lập chứng từ<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <mat-label>Chọn ngày</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="creDate" [(ngModel)]="creDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="bill-right">
+            <div class="flex-row">
+                <p class="name-input">Đơn vị thanh toán<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <mat-label>Chọn đơn vị thanh toán</mat-label>
+                    <mat-select [(ngModel)]="donViTT" formControlName="donViTT">
+                        <mat-option *ngFor="let donVi of dataDonViTT" [value]=donVi.id>{{donVi.tenDonVi || ''}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.donViTT.hasError('required')">
+                        Bạn chưa chọn đơn vị thanh toán
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p class="name-input">Loại tiền<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <mat-label>Chọn loại tiền</mat-label>
+                    <mat-select [(ngModel)]="loaiTien" formControlName="loaiTien">
+                        <mat-option *ngFor="let donVi of dataLoaiTien" [value]=donVi.id>{{donVi.tenDonVi || ''}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.loaiTien.hasError('required')">
+                        Bạn chưa chọn loại tiền
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p class="name-input">Tỷ giá</p>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <input matInput type="text" [(ngModel)]="tyGia" #input formControlName="tyGia">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex-row">
+            <mat-checkbox style="margin-right: 30px;" formControlName="chungTuAP" [(ngModel)]="chungTuAP">
+                Lập chứng từ ghi số (AP)
+            </mat-checkbox>
+            <mat-checkbox style="margin-right: 30px;" formControlName="chungTuCM" [(ngModel)]="chungTuCM">
+                Lập chứng từ CM
+            </mat-checkbox>
+            <mat-checkbox style="margin-right: 30px;" formControlName="chungTuGL" [(ngModel)]="chungTuGL">
+                Lập chứng từ ghi số (GL)
+            </mat-checkbox>
+        </div>
+    </div>
+
+    <h3 class="payment-information">Thông tin thụ hưởng</h3>
+    <div class="billing-information">
+        <div class="bill-left">
+            <div class="flex-row">
+                <p class="name-input">Số tài khoản nhận<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <input matInput type="text" [(ngModel)]="STKNhan" #input
+                        formControlName="STKNhan">
+                    <mat-error *ngIf="f.STKNhan.hasError('required')">
+                        Bạn chưa nhập số tài khoản nhận
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="flex-row">
+                <p class="name-input">Ngân hàng nhận<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <mat-label>Chọn ngân hàng</mat-label>
+                    <mat-select [(ngModel)]="nganHangNhan" formControlName="nganHangNhan">
+                        <mat-option *ngFor="let donVi of dataNganHangNhan" [value]=donVi.id>{{donVi.tenDonVi || ''}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.nganHangNhan.hasError('required')">
+                        Bạn chưa chọn ngân hàng
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        <div class="bill-right">
+            <div class="flex-row">
+                <p class="name-input">Chủ tài khoản nhận<span style="color: red;">(*)</span></p>
+                <mat-form-field appearance="outline" class="bill-input-width">
+                    <input matInput type="text" [(ngModel)]="chuTaiKhoanNhan" #input
+                        formControlName="chuTaiKhoanNhan">
+                    <mat-error *ngIf="f.chuTaiKhoanNhan.hasError('required')">
+                        Bạn chưa nhập chủ tài khoản nhận
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="button-submit">
+        <button mat-raised-button color="primary" (click)="save()">
+            <mat-icon>check_box</mat-icon> Lập chứng từ
+        </button>
+    </div>
+</div>

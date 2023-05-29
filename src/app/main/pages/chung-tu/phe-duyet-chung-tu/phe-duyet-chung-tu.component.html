@@ -1,0 +1,59 @@
+<div style="min-width: 1000px;">
+    <button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <div>
+        <h3 mat-dialog-title class="fs-16 color-text">
+            Phê duyệt chứng từ
+        </h3>
+    </div>
+    <div class="container" *ngIf="dataView" style="overflow: auto;">
+        <div class="stepper-wrapper">
+            <!-- <div class="stepper-item" [ngClass]="class1">
+                <div class="step-counter">1</div>
+                <div class="step-name">Kế toán ngân hàng <br>{{dataView.ChungTu?.trangThaiCT >
+                    constTrangThaiChungTu.daLap ? '(Đã ký)' : '(Chưa
+                    ký)'}}</div>
+            </div>
+            <div class="stepper-item" [ngClass]="class2">
+                <div class="step-counter">2</div>
+                <div class="step-name">Kế toán trưởng <br>{{dataView.ChungTu?.trangThaiCT >
+                    constTrangThaiChungTu.dangDuyetMotChuKy ? '(Đã ký)' : '(Chưa
+                    ký)'}}</div>
+            </div>
+            <div class="stepper-item" [ngClass]="class3">
+                <div class="step-counter">3</div>
+                <div class="step-name">Thủ trưởng cơ quan <br>{{dataView.ChungTu?.trangThaiCT >
+                    constTrangThaiChungTu.dangDuyetHaiChuKy ? '(Đã ký)' : '(Chưa
+                    ký)'}}</div>
+            </div> -->
+        </div>
+        <div class="flex-row resp">
+            <div class="left">
+                <app-view-phieu-chi-ngan-hang [id]="data.item.id" [element]="this.data.item.element"></app-view-phieu-chi-ngan-hang>
+            </div>
+            <div class="right">
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Nội dung phê duyệt</mat-label>
+                        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                            [formControl]="noiDung" cdkAutosizeMaxRows="7" placeholder="Nội dung phê duyệt"></textarea>
+                            <mat-checkbox [(ngModel)]="isChecked">Đồng ý</mat-checkbox>
+                    </mat-form-field>
+                </div>
+                <div class="flex-row">
+                    <button mat-raised-button color="primary" (click)="kyDuyet(danhSachThaoTac.btnDongYKyChungTu)" *ngIf="enableButtonDongYKyChungTu"
+                        style="width: 100px">
+                        Đồng ý
+                    </button>
+                </div>
+                <div class="flex-row">
+                    <button mat-raised-button color="warn" (click)="khongDuyet(danhSachThaoTac.btnTuChoiKyChungTu)" *ngIf="enableButtonTuChoiKyChungTu"
+                        style="width: 100px">
+                        Không duyệt
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

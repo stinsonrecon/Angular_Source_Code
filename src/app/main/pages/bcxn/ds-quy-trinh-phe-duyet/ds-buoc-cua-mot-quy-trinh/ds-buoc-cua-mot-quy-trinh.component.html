@@ -1,0 +1,101 @@
+<div style="width: 100%">
+    <div class="content p-12">
+        <h3>Danh sách các bước của một quy trình</h3>
+        <div class="container">
+            <div class="flex-row">
+                <div style="float:left;" class="flex-row">
+                    <button mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Tạo mới"
+                    (click)="openDialogBuocThucHien(this.data.data.quyTrinhPheDuyetId, 'CREATE')">
+                            <mat-icon>search</mat-icon> Tạo mới
+                        </button>
+                </div>
+                <div style=" width: 100%; float:right;">
+                    <!-- <mat-paginator #paginator [length]="totalRecord" [pageSize]="searchItem.pageSize"
+                        showFirstLastButtons [pageSizeOptions]="[10,20,50]" (page)="getDSQuyTrinh($event)">
+                    </mat-paginator> -->
+                </div>
+            </div>
+            <div class="table">
+                <div class="table-container">
+                    <table mat-table [dataSource]="dataTable" class="mat-elevation-z8 fs-13">
+
+                        <ng-container matColumnDef="stt">
+                            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                                STT
+                            </th>
+                            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="buocPheDuyetTruoc">
+                            <th mat-header-cell *matHeaderCellDef style="width: 100px;">Bước phê duyệt trước</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.tenBuocPheDuyetTruoc}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="buocPheDuyetSau">
+                            <th mat-header-cell *matHeaderCellDef>Bước phê duyệt sau</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{element.tenBuocPheDuyetSau}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="trangThaiHoSo">
+                            <th mat-header-cell *matHeaderCellDef>Trạng thái hồ sơ</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                {{getTrangThaiHoSo(element.trangThaiHoSo)}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="trangThaiChungTu">
+                            <th mat-header-cell *matHeaderCellDef>Trạng thái chứng từ</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{getTrangThaiChungTu(element.trangThaiChungTu)}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="tenBuoc">
+                            <th mat-header-cell *matHeaderCellDef>Tên bước</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center; font-weight: bold;">
+                                {{element.tenBuoc}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="thuTu">
+                            <th mat-header-cell *matHeaderCellDef>Thứ tự thực hiện</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                {{element.thuTu}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="thoiGianXuLy">
+                            <th mat-header-cell *matHeaderCellDef>Thời gian xử lý</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                {{element.thoiGianXuLy}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="taiKhoan">
+                            <th mat-header-cell *matHeaderCellDef>Tài khoản</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                {{element.taiKhoan}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="nguoiThucHien">
+                            <th mat-header-cell *matHeaderCellDef>Người thực hiện</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                {{element.tenNguoiThucHien}}
+                            </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="thaoTac">
+                            <th mat-header-cell *matHeaderCellDef style="width: 70px">Thao tác</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                <mat-icon class="cursor-pointer" matTooltip="Định nghĩa bước thực hiện" matTooltipPosition="above"
+                                    style="color: green;" (click)="openDialogBuocThucHien(element, 'UPDATE')">
+                                    edit
+                                </mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

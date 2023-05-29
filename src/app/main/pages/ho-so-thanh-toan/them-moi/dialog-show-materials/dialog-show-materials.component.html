@@ -1,0 +1,36 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text" style="padding-bottom: 20px">
+        {{captionPdf}}
+    </h3>
+</div>
+
+<ng-container *ngIf="data.file?.type === 'pdf'">
+    <ngx-extended-pdf-viewer [language]="'vi'" [showUnverifiedSignatures]="true" [base64Src]="dataBase64" height="70vh" [minifiedJSLibraries]="false" [zoom]="'page-actual'">
+    </ngx-extended-pdf-viewer>
+</ng-container>
+
+<ng-container *ngIf="data.file?.type !== 'pdf' && data.file?.type !== 'docx' && data.file?.type !== 'doc'">
+    <div style="display: flex; justify-content: center;">
+        <img [src]="fileImg" style="width: 500px; height: 500px; object-fit: contain;">
+    </div>
+</ng-container>
+<mat-dialog-content mat-dialog-content>
+
+<div *ngIf="data.file?.type === 'doc' || data.file?.type === 'docx'">
+    <span>Không thể hiển thị file, vui lòng tải xuống</span>
+</div>
+
+</mat-dialog-content>
+<div mat-dialog-actions style="float: right;">
+    <!-- <a class="btn-download-document link" (click)="downloadFile()" *ngIf="data.file?.type !== 'pdf'">
+        Download Tài liệu
+        <mat-icon class="icon-download">cloud_download</mat-icon>
+    </a> -->
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>   
+</div>
+

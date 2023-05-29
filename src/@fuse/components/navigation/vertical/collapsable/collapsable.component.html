@@ -1,0 +1,65 @@
+<ng-container>
+
+    <!-- normal collapsable -->
+    <a class="nav-link link-group" [ngClass]="item.classes" *ngIf="item.chucNangChaId == 0"
+       (click)="toggleOpen($event)">
+        <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a>
+
+    <!-- item.url -->
+    <a class="nav-link" *ngIf="item.chucNangChaId !== 0"
+    >
+        <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a>
+
+    <!-- item.externalUrl -->
+    <!-- <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && item.externalUrl && !item.function"
+       (click)="toggleOpen($event)"
+       [href]="item.url" [target]="item.openInNewTab ? '_blank' : '_self'">
+        <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a> -->
+
+    <!-- item.function -->
+    <!-- <span class="nav-link" [ngClass]="item.classes" *ngIf="!item.url && item.function"
+          (click)="toggleOpen($event);item.function()">
+        <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </span> -->
+
+    <!-- item.url && item.function -->
+    <!-- <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && !item.externalUrl && item.function"
+       (click)="toggleOpen($event);item.function()"
+       [routerLink]="[item.url]" [routerLinkActive]="['active', 'accent']"
+       [routerLinkActiveOptions]="{exact: item.exactMatch || false}">
+        <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a> -->
+
+    <!-- item.externalUrl && item.function -->
+    <!-- <a class="nav-link" [ngClass]="item.classes" *ngIf="item.url && item.externalUrl && item.function"
+       (click)="toggleOpen($event);item.function()"
+       [href]="item.url" [target]="item.openInNewTab ? '_blank' : '_self'">
+        <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a> -->
+
+    <ng-template #itemContent>
+        <mat-icon class="nav-link-icon" *ngIf="item.icon">{{item.icon}}</mat-icon>
+        <span class="nav-link-title" *ngIf="item.linkUrl" [routerLink]="[item.linkUrl]" [translate]="item.translate">{{item.tieuDe}}</span>
+        <span class="nav-link-title" *ngIf="!item.linkUrl" [translate]="item.translate">{{item.tieuDe}}</span>
+        <!-- <span class="nav-link-badge" *ngIf="item.badge" [translate]="item.badge.translate"
+              [ngStyle]="{'background-color': item.badge.bg,'color': item.badge.fg}">
+            {{item.badge.title}}
+        </span> -->
+        <mat-icon *ngIf="filterItemChild(item.id).length" class="collapsable-arrow">keyboard_arrow_right</mat-icon>
+    </ng-template>
+
+    <div class="children" [@slideInOut]="isOpen">
+        <ng-container *ngFor="let item of filterItemChild(item.id); last as last">
+            <fuse-nav-vertical-item class="item-in-chilren" [item]="item" [last]="last"></fuse-nav-vertical-item>
+           
+            <!-- <fuse-nav-vertical-collapsable
+                                           [item]="item"></fuse-nav-vertical-collapsable> -->
+            <!-- <fuse-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></fuse-nav-vertical-group> -->
+        </ng-container>
+    </div>
+
+
+</ng-container>

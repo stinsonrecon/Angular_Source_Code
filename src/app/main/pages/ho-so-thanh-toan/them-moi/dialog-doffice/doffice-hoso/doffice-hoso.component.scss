@@ -1,0 +1,21 @@
+.link {
+    cursor: pointer;
+    text-decoration: none;
+    color: #7676fc;
+}
+.flex-row{
+    display: flex;
+    flex:1; 
+    flex-direction: row;
+}
+.nowrap {
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+    width: 100%;
+    justify-content: left;
+    margin-top: 10px;
+    border-left: 4px solid #2196f3;
+}

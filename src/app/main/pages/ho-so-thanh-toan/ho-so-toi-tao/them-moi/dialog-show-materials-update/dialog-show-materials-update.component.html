@@ -1,0 +1,34 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text" style="padding-bottom: 20px">
+        {{formatName(doc)}}
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content >
+    <div class="container">
+            <div *ngIf="this.checkImg === 'pdf' " class="container" style="width: 100%; border: 1px solid lightgray; padding: 10px;margin-bottom: 50px;">
+                <app-view-pdf-hstt [pdfSource]="pdfSource"></app-view-pdf-hstt>
+            </div>
+            <div *ngIf="this.checkImg === 'png' || this.checkImg === 'jpg' || this.checkImg === 'jpeg' || this.checkImg === 'gif'">
+                <div style="display: flex; justify-content: center;">
+                    <img style="width: 500px; height: 500px; object-fit: contain;" [src]="formatLinkMaterial()" />
+                </div>
+            </div>
+            <div *ngIf="this.checkImg === 'docx' ">
+                <span style="text-align: center; display: block; width: 100%;">Không thể dọc file này, vui lòng tài xuống</span>
+            </div>
+    </div>
+    
+</mat-dialog-content>
+<div mat-dialog-actions style="float: right;">
+    <a class="btn-download-document" (click)="onClickDownloadPdf()">
+        Download Tài liệu
+        <mat-icon class="icon-download">cloud_download</mat-icon>
+    </a>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+    
+</div>

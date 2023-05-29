@@ -1,0 +1,11 @@
+<article>
+    <section  class="snack-container">
+        <p>
+            <mat-icon>{{data.type}}</mat-icon> {{this.data.title}}
+        </p>
+        <button mat-icon-button (click)="snackBar.dismiss()">
+            <mat-icon style="color: #fff;">close</mat-icon>
+        </button>
+    </section>
+    <main class="main">{{data.message}}</main>
+</article>

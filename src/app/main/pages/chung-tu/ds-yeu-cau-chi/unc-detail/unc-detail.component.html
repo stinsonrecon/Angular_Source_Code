@@ -1,0 +1,91 @@
+<div orientation="horizontal">
+    <div>
+        <h3 mat-dialog-title class="fs-16 color-text">
+            Chi tiết ủy nhiệm chi
+        </h3>
+    </div>
+    <div class="container" *ngIf="dataView">
+        <div class="flex-row">
+            <div style="width: 100%; border: 1px solid lightgray; padding: 10px;">
+                <div class="top" style="width: 100%; text-align: center;">
+                    <span style="float: right;">Số: 366C</span>
+                    <h2><b>ỦY NHIỆM CHI</b></h2>
+                    <h3><b>CHUYỂN KHOẢN, CHUYỂN TIỀN THƯ, ĐIỆN</b></h3>
+                    <p>Ngày lập {{ dataView.ChungTu?.ngayLapChungTu == "0001-01-01T00:00:00" ? null : dataView.ChungTu?.ngayLapChungTu | date:'dd/MM/yyyy' }}</p>
+                </div>
+                <div class="body">
+                    <p>Tên đơn vị trả tiền: <b>{{ dataView.ChungTu?.donViThanhToan.tenDonVi }}</b></p>
+                    <p>Số tài khoản: {{ dataView.ChungTu?.soTaiKhoanChuyen }}</p>
+                    <div style="display: flex; justify-content: space-between; width: 60%;">
+                        <p>Tại ngân hàng: {{ dataView.ChungTu?.tenNganHangChuyen }}</p>
+                        <p>Tỉnh, TP: {{ dataView.ChungTu?.maTinhTPChuyen }}</p>
+                    </div>
+                    <div style="display: flex; height: 10px;">
+                        <hr style="width: 100%;">
+                        <fieldset style="margin-top: -78px; width: 25%; height: 165px; position: relative;">
+                            <legend>PHẦN DO NH GHI<br>TÀI KHOẢN NỢ</legend>
+                            <!-- <p>123.456.789 VND</p> -->
+                            <div style="position: absolute; width: 100%; left: 0; top: 30%;">
+                                <hr>
+                                <p style="text-align: center;">TÀI KHOẢN CÓ</p>
+                                <!-- <p>123.456.789 VND</p> -->
+                            </div>
+                        </fieldset>
+                    </div>
+                    <p>Tên đơn vị nhận tiền: <b>{{ dataView.ChungTu?.tenTaiKhoanNhan }}</b></p>
+                    <p>Số tài khoản: <b>{{ dataView.ChungTu?.soTaiKhoanNhan }}</b></p>
+                    <div style="display: flex; justify-content: space-between; width: 60%;">
+                        <p>Tại ngân hàng: {{ dataView.ChungTu?.maNganHangNhan }}</p>
+                        <p>Tỉnh, TP: </p>
+                    </div>
+                    <div style="display: flex; height: 10px;">
+                        <hr style="width: 100%;">
+                        <fieldset style="width: 25%; height: 85px; margin-top: -15px;">
+                            <p style="text-align: center;">SỐ TIỀN BẰNG SỐ</p>
+                            {{ dataView.ChungTu?.soTien * dataView.ChungTu?.tyGia | number:'':'vi-VN' }} {{
+                            dataView.ChungTu?.loaiTienTe }}
+                        </fieldset>
+                    </div>
+                    <p>Số tiền bằng chữ: <span style="font-style: italic;">{{DocTienBangChu(dataView.ChungTu?.soTien *
+                            dataView.ChungTu?.tyGia)}}</span></p>
+                    <p>Nội dung thanh toán: {{ dataView.ChungTu?.noiDungTT }}</p>
+                </div>
+                <div class="footer" style="display: flex; height: 150px; margin-top: 30px;">
+                    <div class="div1"
+                        style="text-align: center; border-right: 2px solid #000; width: 33%; padding:0 10px ;">
+                        <P><b>Đơn vị trả tiền</b></P>
+                        <div style="text-align: center; width: 100%; display: flex; justify-content: space-between;">
+                            <b>Kế toán</b>
+                            <b>Chủ tài khoản</b>
+                        </div>
+                    </div>
+                    <div class="div2"
+                        style="text-align: center; border-right: 2px solid #000; width: 33%; padding:0 10px ;">
+                        <P><b>Ngân hàng A</b></P>
+                        <div
+                            style="text-align: center; width: 100%; display: flex; justify-content: space-between;margin-bottom: 0.4em;">
+                            <b>Ghi số ngày</b>
+                            <b>............................................</b>
+                        </div>
+                        <div style="text-align: center; width: 100%; display: flex; justify-content: space-between;">
+                            <b>Kế toán</b>
+                            <b>Trưởng phòng kế toán</b>
+                        </div>
+                    </div>
+                    <div class="div3" style="text-align: center; width: 33%; padding:0 10px ;">
+                        <p><b>Ngân hàng B</b></p>
+                        <div
+                            style="text-align: center; width: 100%; display: flex; justify-content: space-between;margin-bottom: 0.4em;">
+                            <b>Ghi số ngày</b>
+                            <b>............................................</b>
+                        </div>
+                        <div style="text-align: center; width: 100%; display: flex; justify-content: space-between;">
+                            <b>Kế toán</b>
+                            <b>Trưởng phòng kế toán</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

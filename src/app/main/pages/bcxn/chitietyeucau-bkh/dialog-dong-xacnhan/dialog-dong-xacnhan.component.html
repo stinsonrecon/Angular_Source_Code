@@ -1,0 +1,52 @@
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text">Đóng xác nhận yêu cầu báo cáo</h3>
+</div>
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<mat-dialog-content mat-dialog-content>
+    <div class="flex-row">
+       
+        <div class="container">
+            <div [formGroup]="formControl">
+                <div>
+                    <label style="margin-right: 10px;">File đính kèm<span style="color: red;">(*)</span></label>
+                    <input #file type="file" formControlName="file" (change)="uploadFile(file)" accept=".ppt, .pptx" style="display: none" />
+                    <button  style="margin-right: 10px;" mat-raised-button color="basic">
+                        <mat-icon style="cursor: pointer;padding-top: 3px;" matTooltip="File" (click)="file.click()">attach_file</mat-icon>
+                        
+                        <label (click)="file.click()">Chọn file</label>
+                    </button>
+                    <label style="margin-left:5px">{{
+                        tenFile
+                    }} <span> <mat-icon class="cursor-pointer" style="color: red;text-align: center;vertical-align: text-top;" matTooltip="Xoá file" *ngIf="tenFile"
+                        (click)="removeFile()">delete</mat-icon></span></label>
+                    
+                    <mat-error style="padding: 0 1em; font: 400 9px/1.125 Muli, Helvetica Neue, Arial, sans-serif;"
+                        *ngIf="!data.item.file">
+                        Chưa chọn file
+                    </mat-error>
+                </div>
+                <div class="flex-row">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Ghi chú</mat-label>
+                        <textarea matInput formControlName="ghiChu" [(ngModel)]="ghiChu" cdkTextareaAutosize
+                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="7" cdkAutosizeMaxRows="7"
+                            placeholder="Ghi chú"></textarea>
+                        <!-- <mat-error *ngIf="f.moTa.hasError('required')">
+                            Chưa nhập mô tả
+                        </mat-error> -->
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions style="text-align: right ; float: right;">
+    <button mat-raised-button color="primary" (click)="dongXacNhan()">
+        Đóng xác nhận
+    </button>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+</div>

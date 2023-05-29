@@ -1,0 +1,28 @@
+.container {
+    display: "flex";
+    flex-direction: row;
+    width: 100%;
+}
+.flex-row{
+    display: flex;
+    flex:1; 
+    flex-direction: row;
+}
+.full-width {
+    width:100%;
+}
+::ng-deep .mat-paginator-page-size .mat-select-trigger {
+    width:max-content !important;
+}
+
+::ng-deep .cdk-overlay-pane.dialog-portal {
+    position: relative!important;
+  }
+  .close.mat-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    line-height: 14px;
+    min-width: auto;
+  }

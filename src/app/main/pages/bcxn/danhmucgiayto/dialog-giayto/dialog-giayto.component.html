@@ -1,0 +1,36 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+<h2 mat-dialog-title>{{ data.action === 'DETAIL' ? 'Chi tiết' : data.action === 'UPDATE' ? 'Cập nhật' : 'Tạo' }} giấy tờ
+</h2>
+<mat-dialog-content>
+    <form [formGroup]="formGiayTo">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30">Mã giấy tờ</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="MaGiayTo">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30">Tên giấy tờ</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="TenGiayTo">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30">Nguồn</span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="Nguon">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30">Trạng thái</span>
+            <mat-checkbox formControlName="TrangThai" style="flex: 1 1 100%; box-sizing: border-box; max-width: 70%;">Hoạt động</mat-checkbox>
+        </div>
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button *ngIf="data.action === 'UPDATE'" mat-raised-button color="primary" (click)="submit('UPDATE')">Cập nhật</button>
+    <button *ngIf="data.action === 'CREATE'" mat-raised-button color="primary" (click)="submit('CREATE')">Tạo</button>
+</mat-dialog-actions>

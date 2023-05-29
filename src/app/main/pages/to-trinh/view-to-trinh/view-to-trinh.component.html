@@ -1,0 +1,38 @@
+<div style="min-width: 1000px;">
+    <button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+    <div>
+        <h3 mat-dialog-title class="fs-16 color-text">
+            Chi tiết tờ trình/ Đề nghị thanh toán
+        </h3>
+    </div>
+    <div class="container" style="overflow: auto;">
+        <div class="stepper-wrapper">
+            <!-- <div class="stepper-item completed" [ngClass]="class1">
+                <div class="step-counter">1</div>
+                <div class="step-name">Người lập<br>
+                    <span>(Đã ký)</span>
+                </div>
+            </div>
+            <div class="stepper-item" [ngClass]="class2">
+                <div class="step-counter">2</div>
+                <div class="step-name">Kế toán trưởng<br>
+                    <span>{{data.item.capKy > 2 ? '(Đã ký)' : '(Chưa ký)'}}</span>
+                </div>
+            </div>
+            <div class="stepper-item" [ngClass]="class3">
+                <div class="step-counter">3</div>
+                <div class="step-name">Thủ trưởng cơ quan<br>
+                    <span>{{data.item.capKy > 3 ? '(Đã ký)' : '(Chưa ký)'}}</span>
+                </div>
+            </div> -->
+        </div>
+        <div class="flex-row" style="width: 100%; border: 1px solid lightgray; padding: 10px;margin-bottom: 50px;">
+            <!-- <ngx-extended-pdf-viewer [base64Src]="pdfSource" height="70vh"
+                [zoom]="'page-width'">
+            </ngx-extended-pdf-viewer> -->
+            <app-view-pdf [pdfSource]="pdfSource" style="width: 100%;"></app-view-pdf>
+        </div>
+    </div>
+</div>

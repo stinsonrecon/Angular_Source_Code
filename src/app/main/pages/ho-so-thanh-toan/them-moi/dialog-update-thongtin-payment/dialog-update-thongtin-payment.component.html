@@ -1,0 +1,75 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="true">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text" style="padding-bottom: 20px">
+        Chỉnh sửa thông tin thanh toán
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content [formGroup]="formControl">
+    <div class="container">
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Số tài khoản người thụ hưởng</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Số tài khoản người thụ hưởng</mat-label>
+                <input matInput [(ngModel)]="data.item.soTaiKhoanThuHuong" formControlName="soTaiKhoanThuHuong">
+                <mat-error *ngIf="f.soTaiKhoanThuHuong.hasError('required')">
+                    Chưa nhập tên báo cáo
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Tên tài khoản người thụ hưởng</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Tên tài khoản người thụ hưởng</mat-label>
+                <input matInput [(ngModel)]="data.item.tenTaiKhoanThuHuong" formControlName="tenTaiKhoanThuHuong">
+                <mat-error *ngIf="f.tenTaiKhoanThuHuong.hasError('required')">
+                    Chưa nhập tên tài khoản thụ hưởng
+                </mat-error>
+            </mat-form-field>
+            
+        </div>
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Số tiền thanh toán</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Số tiền thanh toán</mat-label>
+                <input matInput [(ngModel)]="data.item.soTienThanhToan" formControlName="soTienThanhToan">
+                <mat-error *ngIf="f.soTaiKhoanThuHuong.hasError('required')">
+                    Chưa nhập số tiền
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Ngân hàng thụ hưởng</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Ngân hàng thụ hưởng</mat-label>
+                <mat-select [(ngModel)]="data.item.nganHangThuHuong" formControlName="nganHangThuHuong">
+                    <mat-option [value]="1">TechComBank</mat-option>
+                    <mat-option [value]="2">BIDV</mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+        </div>
+        <div class="flex-row">
+            <p style="width: 45%;font-weight: bold;">Hình thức thanh toán</p>
+            <mat-form-field appearance="outline" style="width: 75%; margin-left: 5%">
+                <mat-label>Hình thức thanh toán </mat-label>
+                <mat-select [(ngModel)]="data.item.hinhThucThanhToan" formControlName="hinhThucThanhToan">
+                    <mat-option [value]='1'>Chuyển khoản</mat-option>
+                    <mat-option [value]='2'>Tiền mặt</mat-option>
+                    <mat-option [value]='3'>Thanh toán tại quầy</mat-option>
+
+                </mat-select>
+            </mat-form-field>
+        </div>
+        
+    </div>
+</mat-dialog-content>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button color="primary" (click)="handleUpdatePaymentInfo()">
+        <mat-icon>save_alt</mat-icon> Lưu
+    </button>
+    <button mat-raised-button mat-dialog-close>
+        Thoát
+    </button>
+</div>

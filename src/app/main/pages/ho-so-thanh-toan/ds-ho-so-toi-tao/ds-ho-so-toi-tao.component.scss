@@ -1,0 +1,166 @@
+.container {
+    width: 100%;
+
+    .chon-du-an {
+        margin-bottom: 8px;
+    }
+
+    .main {
+        .control-select {
+            display: flex;
+            align-items: center;
+
+            .form-field {
+                padding-top: 2px;
+                width: max-content;
+                min-width: 100px;
+                padding-right: 5px;
+            }
+        }
+
+        .noi-dung-danh-gia {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+::ng-deep .container .chon-du-an .mat-divider {
+    display: none !important;
+}
+
+.center {
+    text-align: center;
+}
+
+.container {
+    display: "flex";
+    flex-direction: row;
+    width: 100%;
+}
+
+.flex-row {
+    flex: 1;
+    display: "flex";
+    flex-direction: "row";
+}
+
+.flex-6 {
+    flex: 6;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.flex-5 {
+    flex: 5;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.flex-3 {
+    flex: 3;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.flex-2 {
+    flex: 2;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.flex-1 {
+    flex: 1;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.flex-05 {
+    flex: 0.5;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.flex-row {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
+
+.m-17 {
+    margin-top: 17px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.padding-5 {
+    padding: 0px 5px;
+}
+
+.title-lo-thau {
+    padding: 10px 0px;
+}
+
+.m-10 {
+    margin: 0px 10px;
+}
+
+.right {
+    text-align: right;
+}
+
+// ::ng-deep.mat-menu-panel {
+//     max-width: none !important;
+//   }
+::ng-deep .timKiem {
+    padding: 5px 16px 0px 16px !important;
+}
+
+::ng-deep .mat-menu-panel {
+    max-width: none !important;
+}
+
+.filter {
+    ::ng-deep .mat-form-field-wrapper {
+        padding: 0 !important;
+    }
+}
+
+.action-paginator {
+    display: flex;
+    justify-content: space-between;
+}
+
+mat-paginator {
+    display: flex;
+    justify-content: flex-start;
+    ::ng-deep .mat-paginator-page-size-select{
+        width: 70px;
+    }
+}
+
+button {
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        mat-icon {
+            font-size: 24px !important;
+        }
+    }
+}
+
+.link {
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(118, 118, 252);
+}
+
+ngx-mat-select-search {
+    ::ng-deep .mat-select-search-inner {
+        height: 3.25rem;
+        box-shadow: none;
+    }
+}

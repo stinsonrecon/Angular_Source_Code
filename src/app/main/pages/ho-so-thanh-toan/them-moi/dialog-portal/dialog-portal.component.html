@@ -1,0 +1,22 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text" style="padding-bottom: 20px">
+        Chọn phiếu đăng ký/tổng hợp từ Portal
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content>
+    <mat-tab-group>
+        <mat-tab label="Phiếu đăng ký">
+            <ng-template matTabContent>
+                <app-phieu-dang-ky [data]="dataPhieuDangKy"></app-phieu-dang-ky>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="Phiếu tổng hợp">
+            <ng-template matTabContent>
+                <app-phieu-tong-hop [data]="dataPhieuTongHop"></app-phieu-tong-hop>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>

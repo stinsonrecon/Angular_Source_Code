@@ -1,0 +1,22 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<div>
+    <h3 mat-dialog-title class="fs-16 color-text" style="padding-bottom: 20px">
+        Chọn Hồ sơ/văn bản từ DOFFICE
+    </h3>
+</div>
+<mat-dialog-content mat-dialog-content>
+    <mat-tab-group>
+        <mat-tab label="Hồ sơ">
+            <ng-template matTabContent>
+                <app-doffice-hoso [data]="data.item.data"></app-doffice-hoso>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="Văn bản">
+            <ng-template matTabContent>
+                <app-doffice-vanban [data]="data.item.data"></app-doffice-vanban>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>

@@ -1,0 +1,226 @@
+<div style="width: 100%">
+    <div style="background-color: white; padding-top: 10px; padding-bottom: 0px; margin-left: 5px">
+        <ul class="breadcrumb">
+            <li>Phê duyệt hồ sơ chứng từ</li>
+            <li>Danh sách yêu cầu chi</li>
+          </ul>
+    </div>
+    <div class="content p-12">
+        <h3>Danh sách yêu cầu chi</h3>
+        <div class="container">
+            <div class="flex-row respRow border-search" style="flex-wrap: wrap;">
+                <!-- <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;"> -->
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Ngân hàng chuyển</mat-label>
+                        <mat-select [(ngModel)]="searchItem.NganHangChiId">
+                            <mat-option [value]="''">---Tất cả---</mat-option>
+                            <mat-option *ngFor="let item of listBank" [value]='item.nganHangId'>{{ item.maNganHang }} -
+                                {{item.tenNganHang}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Ngân hàng hưởng</mat-label>
+                        <mat-select [(ngModel)]="searchItem.NganHangThuHuongId">
+                            <mat-option [value]="''">---Tất cả---</mat-option>
+                            <mat-option *ngFor="let item of listBank" [value]='item.nganHangId'>{{ item.maNganHang }} -
+                                {{item.tenNganHang}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;"> -->
+
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Ngày yêu cầu</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate [(ngModel)]='searchItem.NgayYeuCauChiTu' placeholder="Từ ngày">
+                            <input matEndDate [(ngModel)]='searchItem.NgayYeuCauChiDen' placeholder="Đến ngày">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Ngày chi thực tế</mat-label>
+                        <mat-date-range-input [rangePicker]="picker1">
+                            <input matStartDate [(ngModel)]='searchItem.ThoiGianChiTu' placeholder="Từ ngày">
+                            <input matEndDate [(ngModel)]='searchItem.ThoiGianChiDen' placeholder="Đến ngày">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker1></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Trạng thái</mat-label>
+                        <mat-select [(ngModel)]="searchItem.TrangThaiChi">
+                            <mat-option [value]="-99">---Tất cả---</mat-option>
+                            <mat-option [value]="0">Lỗi chưa xác định</mat-option>
+                            <mat-option [value]="1">Đã gửi lệnh chi</mat-option>
+                            <mat-option [value]="2">Đã chuyển tiền</mat-option>
+                            <mat-option [value]="3">Đã cập nhật kết quả ERP</mat-option>
+                            <mat-option [value]="-2">Không gửi được lệnh chi</mat-option>
+                            <mat-option [value]="-1">Lệnh chi tiền lỗi tham số</mat-option>
+                            <mat-option [value]="-3">Ngân hàng xử lý lỗi</mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+                <div class="respSearch">
+                    <mat-form-field floatLabel="always" appearance="outline" fxFlex="60">
+                        <mat-label>Từ khóa</mat-label>
+                        <input matInput [(ngModel)]="searchItem.TuKhoa" type="text" placeholder="Tìm kiếm">
+                    </mat-form-field>
+                </div>
+                <div class="respSearch">
+                    <!-- <p class="m-4" fxFlex="10"></p> -->
+                    <div class="" fxFlex="60">
+                        <button mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Tìm kiếm"
+                            (click)="search()">
+                            <mat-icon>search</mat-icon> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="table">
+                <div class="table-container">
+                    <table mat-table [dataSource]="listYeuCauChi" class="mat-elevation-z8 fs-13">
+
+                        <ng-container matColumnDef="stt">
+                            <th mat-header-cell *matHeaderCellDef style="width: 50px">
+                                TT
+                            </th>
+                            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center"> {{i+1}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="maYeuCauChi">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%">Mã yêu cầu chi</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{element.yeuCauChiTienId}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="soChungTu">
+                            <th mat-header-cell *matHeaderCellDef style="width: 7%">Số chứng từ</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{element.chungTu.soChungTuERP}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="noiDungTT">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%">Nội dung thanh toán</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.chungTu.noiDungTT}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ketQuaChi">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%">Kết quả chi</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{element.maKetQuaChi}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="loaiGiaoDich">
+                            <th mat-header-cell *matHeaderCellDef style="width: 5%">Loại giao dịch</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                <!-- {{getLoaiGiaoDich(element.chungTu.loaiGiaoDich)}} -->
+                                {{element.chungTu.tenLoaiGiaoDich}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ngayYeuCauChi">
+                            <th mat-header-cell *matHeaderCellDef style="width: 80px">Ngày yêu cầu chi</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{element.ngayYeuCauChi | date:"dd/MM/yyyy"}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="soTien">
+                            <th mat-header-cell *matHeaderCellDef style="width: 80px">Số tiền thanh toán VND</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: right">
+                                {{element.soTienTT | currency: "VND":"":"1.0-2":"vi-VN"}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="donViHuong">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%">Đơn vị chuyển</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                <!-- {{element.nganHangThuHuong}} -->
+                                {{element.chungTu?.tenTaiKhoanChuyen}}
+                                <br>
+                                ({{element.chungTu?.tenNganHangChuyen}} - {{element.chungTu?.soTaiKhoanChuyen}})
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="donViNhan">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%">Đơn vị hưởng</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                <!-- {{element.nganHangChi}} -->
+                                {{element.chungTu?.tenTaiKhoanNhan}}
+                                <br>
+                                ({{element.chungTu?.tenNganHangNhan}} - {{element.chungTu?.soTaiKhoanNhan}} )
+                            </td>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="nguoiThuHuong">
+                            <th mat-header-cell *matHeaderCellDef style="width: 80px">Người thụ hưởng</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{element.nguoiThuHuong}}
+                            </td>
+                        </ng-container> -->
+                        <ng-container matColumnDef="loaiPhiChuyen">
+                            <th mat-header-cell *matHeaderCellDef style="width: 80px">Loại phí chuyển</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{getLoaiPhi(element.chungTu.loaiPhi)}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="ngayChiThucTe">
+                            <th mat-header-cell *matHeaderCellDef style="width: 80px">Ngày chi thực tế</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{element.thoiGianChi}}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="trangThaiChi">
+                            <th mat-header-cell *matHeaderCellDef style="width: 80px">Trạng thái chi</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: left">
+                                {{ getTrangThai(element.trangThaiChi) }}
+                            </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="thaoTac">
+                            <th mat-header-cell *matHeaderCellDef style="width: 70px">Thao tác</th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center">
+                                <mat-icon class="cursor-pointer" matTooltip="Xem thông tin chứng từ"
+                                    matTooltipPosition="above" (click)="getUNC(element)">
+                                    info
+                                </mat-icon>
+                                <mat-icon class="cursor-pointer"
+                                    *ngIf="element.chungTu.trangThaiCT === constTrangThaiChungTu.daGuiNganHang || element.chungTu.trangThaiCT === constTrangThaiChungTu.daThanhToan || element.chungTu.trangThaiCT === constTrangThaiChungTu.daDong"
+                                    matTooltip="Xem chi tiết yêu cầu chi" matTooltipPosition="above"
+                                    (click)="openDialogViewYCC(element.chungTu.chungTuId)">
+                                    visibility
+                                </mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+            </div>
+            <div style=" width: 100%; float:right;">
+                <mat-paginator [length]="totalRecord" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons
+                    (page)="pageChange($event)">
+                </mat-paginator>
+            </div>
+            <div style="width:100%; text-align: center;" *ngIf="!listYeuCauChi">
+                <p>Không có bản ghi nào</p>
+            </div>
+        </div>
+    </div>
+</div>

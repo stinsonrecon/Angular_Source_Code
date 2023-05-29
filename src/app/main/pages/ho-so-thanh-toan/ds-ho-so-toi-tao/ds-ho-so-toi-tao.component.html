@@ -1,0 +1,204 @@
+<div style="width: 100%">
+    <div style="background-color: white; padding-top: 10px; padding-bottom: 0px; margin-left: 5px">
+        <ul class="breadcrumb">
+            <li>Quản lý hồ sơ thanh toán</li>
+            <li>Danh sách hồ sơ</li>
+        </ul>
+    </div>
+    <div class="content p-12">
+        <h3>Danh sách hồ sơ</h3>
+        <div class="filter" fxLayout="column" fxLayoutAlign="start start">
+            <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%">
+                <p class="m-4" fxFlex="10">Loại hồ sơ</p>
+                <mat-form-field appearance="outline" fxFlex="20">
+                    <mat-select [(ngModel)]="searchItem.LoaiHoSo">
+                        <mat-option [value]="''">---Tất cả---</mat-option>
+                        <mat-option *ngFor="let item of dsLoaiHs" [value]='item.loaiHoSoId'>{{ item.tenLoaiHoSo }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <p class="m-4" fxFlex="10">Đơn vị đề nghị</p>
+                <mat-form-field appearance="outline" fxFlex="20">
+                    <mat-select [(ngModel)]="searchItem.BoPhanYeuCau">
+                        <mat-option>
+                            <ngx-mat-select-search class="filter" placeholderLabel="Tìm kiếm" [formControl]="filterDonVi"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option [value]="0">---Tất cả---</mat-option>
+                        <mat-option *ngFor="let item of filteredDonVi" [value]='item.id'>{{ item.tenDonVi }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <p class="m-4" fxFlex="10">Trạng thái hồ sơ</p>
+                <mat-form-field appearance="outline" fxFlex="20">
+                    <mat-select [(ngModel)]="searchItem.TinhTrangPheDuyet">
+                        <mat-option [value]="0">---Tất cả---</mat-option>
+                        <mat-option [value]="5">Khởi tạo</mat-option>
+                        <mat-option [value]='1'>Chưa phê duyệt</mat-option>
+                        <mat-option [value]='2'>Đã phê duyệt</mat-option>
+                        <mat-option [value]='3'>Yêu cầu thay đổi</mat-option>
+                        <mat-option [value]='6'>Đã tạo chứng từ</mat-option>
+                        <mat-option [value]='4'>Đã thanh toán</mat-option>
+                        <mat-option [value]='7'>Đã đóng</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%">
+                <p class="m-4" fxFlex="10">Ngày lập CT</p>
+                <mat-form-field appearance="outline" fxFlex="20">
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate [(ngModel)]='searchItem.TuNgay' placeholder="Từ ngày">
+                        <input matEndDate [(ngModel)]='searchItem.DenNgay' placeholder="Đến ngày">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+
+                <p class="m-4" fxFlex="10">Từ khóa</p>
+                <mat-form-field appearance="outline" fxFlex="20">
+                    <input matInput [(ngModel)]="searchItem.TuKhoa" type="text" placeholder="Tìm kiếm hồ sơ">
+                </mat-form-field>
+
+                <p class="m-4" fxFlex="10">Từ khóa</p>
+
+                <button class="m-4" mat-raised-button color="primary" matTooltipPosition="above" matTooltip="Tìm kiếm"
+                    (click)="searchHs()">
+                    <span>
+                        <mat-icon>search</mat-icon> Tìm kiếm
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="table-container">
+            <table mat-table [dataSource]="listTest" class="fs-13">
+
+                <ng-container matColumnDef="stt">
+                    <th mat-header-cell *matHeaderCellDef style="width:50px"> Stt </th>
+                    <td mat-cell *matCellDef="let element; let i = index"
+                        style="text-align: center; vertical-align: top;">
+                        {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="maHoSo">
+                    <th mat-header-cell *matHeaderCellDef> Mã hồ sơ </th>
+                    <td mat-cell *matCellDef="let element" style="vertical-align: top;">
+                        <!-- <div style="word-break: break-word !important;white-space: pre-line"></div> -->
+                        {{ element.maHoSo }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="tenHoSo">
+                    <th mat-header-cell *matHeaderCellDef> Tên hồ sơ </th>
+                    <td mat-cell *matCellDef="let element" style="vertical-align: top;">
+                        <a class="link" (click)="view(element.id)">{{ element.tenVietTat }}</a>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="loaiHoSo">
+                    <th mat-header-cell *matHeaderCellDef> Loại hồ sơ </th>
+                    <td mat-cell *matCellDef="let element" style="vertical-align: top;">
+                        <div>{{ element.loaiHoSo }}</div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="donViDeNghiTT">
+                    <th mat-header-cell *matHeaderCellDef> Đơn vị đề nghị TT </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left;vertical-align: top;">
+                        {{ element.donVi }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="nguoiTao">
+                    <th mat-header-cell *matHeaderCellDef> Người yêu cầu </th>
+                    <td mat-cell *matCellDef="let element" style="vertical-align: top;">
+                        {{ element.tenNguoiTao }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="tongTienDeNghiTT">
+                    <th mat-header-cell *matHeaderCellDef> Số tiền đề nghị TT
+                    </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;vertical-align: top;">
+                        {{ element.tongTienDeNghiTT | number:"1.0-2":"vi-VN" }} {{element.loaiTienTe}}
+                    </td>
+                </ng-container>
+                <!-- <ng-container matColumnDef="thoiHanYeuCauTT">
+                    <th mat-header-cell *matHeaderCellDef> Thời hạn yêu cầu TT </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;vertical-align: top;">
+                        {{ element.thoiGianThanhToan | date:'dd/MM/yyyy' }}
+                    </td>
+                </ng-container> -->
+                <ng-container matColumnDef="ngayTao">
+                    <th mat-header-cell *matHeaderCellDef> Ngày gửi yêu cầu </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;vertical-align: top;">
+                        {{ element.ngayTao | date:'dd/MM/yyyy' }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="ngayPheDuyet">
+                    <th mat-header-cell *matHeaderCellDef> Ngày phê duyệt </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: right;vertical-align: top;">
+                        {{ element.ngayDuyet === '0001-01-01T00:00:00' ? '' : (element.ngayDuyet |
+                        date:'dd/MM/yyyy') }}
+                    </td>
+                </ng-container>
+                <!-- <ng-container matColumnDef="hinhThucTT">
+                    <th mat-header-cell *matHeaderCellDef> Hình thức TT </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left;vertical-align: top;">
+                        {{ getHinhThucTT(element.hinhThucTT) }}
+                    </td>
+                </ng-container> -->
+                <ng-container matColumnDef="ngayThanhToan">
+                    <th mat-header-cell *matHeaderCellDef> Ngày thanh toán </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: left;vertical-align: top;">
+                        {{ element.ngayThanhToan === '0001-01-01T00:00:00' ? '' : (element.ngayThanhToan |
+                        date:'dd/MM/yyyy') }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="trangThaiHoSo">
+                    <th mat-header-cell *matHeaderCellDef> Trạng thái hồ sơ </th>
+                    <td mat-cell *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                        {{ getTrangThai(element.trangThaiHoSo) }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="hanhDong">
+                    <th mat-header-cell *matHeaderCellDef style="width: 100px;">Thao tác</th>
+                    <td mat-cell *matCellDef="let element" style="text-align: center;vertical-align: top;">
+                        <button mat-icon-button (click)="view(element.id)">
+                            <mat-icon matTooltip="Xem hồ sơ" matTooltipPosition="above">info</mat-icon>
+                        </button>
+                        <button 
+                            mat-icon-button 
+                            (click)="edit(element)"
+                            *ngIf="element.trangThaiHoSo === constTrangThaiHoSo.khoiTao 
+                            && user.id === element.nguoiTaoId
+                            || element.trangThaiHoSo === constTrangThaiHoSo.yeuCauThayDoi
+                            && user.id === element.nguoiTaoId
+                            "
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button 
+                            mat-icon-button 
+                            (click)="delete(element.id)" 
+                            *ngIf="element.trangThaiHoSo === constTrangThaiHoSo.khoiTao && user.id === element.nguoiTaoId"
+                        >
+                            <mat-icon color="warn">delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <div class='action-paginator'>
+                <mat-paginator [length]="totalRecord" [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons
+                    (page)="pageChange($event)">
+                </mat-paginator>
+
+                <button mat-raised-button color="primary" (click)="redirectCreate()">
+                    <span>
+                        <mat-icon>add</mat-icon>Thêm mới
+                    </span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

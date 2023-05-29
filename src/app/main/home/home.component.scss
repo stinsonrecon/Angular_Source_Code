@@ -1,0 +1,41 @@
+.row{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0.3rem;
+}
+.example-card {
+    width: 25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .card-icon {
+        overflow: hidden;
+    transition-duration: 0.8s;
+    transition-property: transform;
+    }
+}
+.example-card:hover {
+    cursor: pointer;
+    .card-icon{
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+    }
+
+    .title{
+        color: #335FB3;
+        position: relative;
+        font-family: sans-serif;
+        text-transform: uppercase;
+    }
+}
+.card-icon {
+    width: 65px;
+    height: 65px;
+}
+.title {
+    padding-top: 12px;
+    font-size: 16px;
+    font-weight: 400;
+    color: black;
+}

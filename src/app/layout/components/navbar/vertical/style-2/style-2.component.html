@@ -1,0 +1,25 @@
+<div class="navbar-header" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
+
+    <div class="logo d-sm-none">
+        <!-- <img class="logo-icon" src="assets/images/logos/fuse.svg"> -->
+        <img class="logo-icon d-block d-sm-none" src="/assets/images/logos/logo-small.png">
+        <span class="logo-text"><b>EPAYMENT</b></span>
+    </div>
+
+    <button mat-icon-button class="toggle-sidebar-folded"
+            (click)="toggleSidebarFolded()" fxHide.lt-lg>
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <button mat-icon-button class="toggle-sidebar-opened"
+            (click)="toggleSidebarOpened()" fxHide.gt-md>
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+
+</div>
+
+<div class="navbar-content" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}"
+     [ngClass]="fuseConfig.layout.navbar.primaryBackground">
+    <fuse-navigation layout="vertical"></fuse-navigation>
+
+</div>

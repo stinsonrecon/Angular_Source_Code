@@ -1,0 +1,30 @@
+<button mat-icon-button class="close-button-dialog" [mat-dialog-close]="false">
+    <mat-icon class="close-icon">close</mat-icon>
+</button>
+<h2 mat-dialog-title>{{ data.actions === 'create' ? 'Thêm quốc gia' : 'Cập nhật quốc gia' }}</h2>
+<div class="container" [formGroup]="formQuocGia">
+    <div class="box-center">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Tên quốc gia<span style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="tenQuocGia">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Mã quốc gia<span style="color: red;">(*)</span></span>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <input matInput formControlName="maQuocGia">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex="30" style="width: 35%; font-weight: bold;">Trạng thái<span style="color: red;">(*)</span></span>
+            <mat-checkbox formControlName="trangThai" style="flex: 1 1 100%; box-sizing: border-box; max-width: 70%;">Hoạt động</mat-checkbox>
+        </div>
+        <mat-dialog-actions align="end">
+            <button *ngIf="data.actions == 'create'" mat-raised-button (click)="createQuocGia()" color="primary">Lưu</button>
+            <button *ngIf="data.actions == 'update'" mat-raised-button (click)="updateQuocGia()" color="primary">Lưu</button>
+            <button mat-raised-button (click)="close()">Hủy</button>
+        </mat-dialog-actions>
+    </div>
+</div>
